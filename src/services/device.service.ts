@@ -1,7 +1,6 @@
 import express = require('express');
 import { requireToken } from '../middleware/auth.middleware';
-import { LocationModel } from '../models/location.model';
-import { getDeviceCollection, getLocationCollection } from './mongodb.service';
+import { getDeviceCollection } from './mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { locationRoutes } from './location.service';
 import { DeviceModel } from '../models/device.model';
