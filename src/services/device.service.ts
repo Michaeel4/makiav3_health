@@ -17,7 +17,7 @@ deviceRoutes.post('/device', requireToken, async (req, res) => {
 });
 
 deviceRoutes.get('/device', requireToken, async (req, res) => {
-    res.json(await getDeviceCollection().find({}));
+    res.json(await getDeviceCollection().find({}).toArray());
 });
 
 deviceRoutes.put('/device', requireToken, async (req, res) => {

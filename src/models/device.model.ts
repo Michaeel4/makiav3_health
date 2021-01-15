@@ -5,5 +5,4 @@ export interface DeviceModel {
     locationId: string;
     name: string;
     status: DeviceStatus;
-    host: string;
 }

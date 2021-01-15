@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { CredentialsModel } from '../models/credentials.model';
 
-export interface Credentials {
-    user: string;
-    password: string;
-}
+
 
 const API_TOKEN = 'ngiWZumJeEww4Q6tLt2pYi5W9Damk8';
-const users: Credentials[] = [
+const users: CredentialsModel[] = [
     {
         user: 'danny',
         password: 'vK4HbZu48bCMV6dRoQGz'
@@ -26,7 +24,7 @@ const users: Credentials[] = [
 ];
 
 export function requireToken(req: Request, res: Response, next: NextFunction) {
-    const token = req.header('token');
+    const token = req.header('Token');
     if (token === API_TOKEN) {
         next();
     } else {
@@ -34,7 +32,7 @@ export function requireToken(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export function authenticate(credentials: Credentials): string | null {
+export function authenticate(credentials: CredentialsModel): string | null {
     return users.some(user => user.user === credentials.user && user.password === credentials.password)
         ? API_TOKEN : null;
 }

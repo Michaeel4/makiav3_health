@@ -16,7 +16,7 @@ locationRoutes.post('/location', requireToken, async (req, res) => {
 });
 
 locationRoutes.get('/location', requireToken, async (req, res) => {
-    res.json(await getLocationCollection().find({}));
+    res.json(await getLocationCollection().find({}).toArray());
 });
 
 locationRoutes.put('/location', requireToken, async (req, res) => {
