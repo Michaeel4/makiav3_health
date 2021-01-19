@@ -25,8 +25,8 @@ export class Server {
         this.app.use(deviceRoutes);
         this.app.use(authRoutes);
 
-        this.app.listen(3001);
-        console.log(`Server started at port 3001`);
+        this.app.listen(3002);
+        console.log(`Server started at port 3002`);
     }
 
 }
