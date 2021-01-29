@@ -6,7 +6,7 @@ import {locationRoutes} from "./services/location.service";
 import { deviceRoutes } from './services/device.service';
 import { authRoutes } from './services/auth.service';
 import { clientRoutes } from './services/client.service';
-
+import fileUpload from 'express-fileupload';
 export class Server {
     private app = express();
 
@@ -23,6 +23,7 @@ export class Server {
         }));
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(cors());
+        this.app.use(fileUpload())
 
         this.app.use(locationRoutes);
         this.app.use(deviceRoutes);
