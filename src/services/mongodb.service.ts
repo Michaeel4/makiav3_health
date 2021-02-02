@@ -21,4 +21,11 @@ export function getLocationCollection(): mongodb.Collection {
     return mongoClient.db("healthcheck").collection('location');
 }
 
+export function getUserCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("healthcheck").collection('user');
+}
+
 export {mongoClient};

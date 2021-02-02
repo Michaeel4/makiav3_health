@@ -1,38 +1,31 @@
 import { NextFunction, Request, Response } from 'express';
-import { CredentialsModel } from '../models/credentials.model';
+import passport from 'passport';
+import { UserModel } from '../models/user.model';
 
 
-
-const API_TOKEN = 'ngiWZumJeEww4Q6tLt2pYi5W9Damk8';
-const users: CredentialsModel[] = [
-    {
-        user: 'danny',
-        password: 'vK4HbZu48bCMV6dRoQGz'
-    },
-    {
-        user: 'christoph',
-        password: 'VY75QPyKV5C8tzyVi8UL'
-    },
-    {
-        user: 'wolfgang',
-        password: 'BqLLtkm6hu56G4S6EF3S'
-    },
-    {
-        user: 'felix',
-        password: 'sabLbM9ogLBxzzCUVQmA'
-    }
-];
-
-export function requireToken(req: Request, res: Response, next: NextFunction) {
-    const token = req.header('Token');
-    if (token === API_TOKEN) {
-        next();
-    } else {
-        res.status(403).end();
-    }
+export function requireUser(req: Request, res: Response, next: NextFunction) {
+    passport.authenticate('jwt', {session: false}, async (err, user: UserModel, info) => {
+        if (err) {
+            console.error(err);
+        }
+        if (info) {
+            // req.log.info(info.message);
+            res.send(info.message);
+        } else if (user) {
+            req.user = user;
+            next();
+        } else {
+            res.status(403).end();
+        }
+    })(req, res, next);
 }
-
-export function authenticate(credentials: CredentialsModel): string | null {
-    return users.some(user => user.user === credentials.user && user.password === credentials.password)
-        ? API_TOKEN : null;
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+    requireUser(req, res, () => {
+        const user: UserModel | undefined = req.user as any;
+        if (user?.admin) {
+            next();
+        } else {
+            res.status(403).end();
+        }
+    });
 }

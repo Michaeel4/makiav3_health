@@ -1,12 +1,20 @@
 import express = require('express');
-import { requireToken } from '../middleware/auth.middleware';
+import { requireAdmin, requireUser } from '../middleware/auth.middleware';
 import { LocationModel } from '../models/location.model';
 import { getLocationCollection } from './mongodb.service';
 import { v4 as uuid} from 'uuid';
+import { UserModel } from '../models/user.model';
+
+export function isAllowedForLocation(user: UserModel, location: LocationModel) {
+        return user.admin || user.allowedLocations.findIndex(allowed => {
+            return location._id === allowed
+        }) > -1;
+}
+
 
 const locationRoutes = express.Router();
 
-locationRoutes.post('/location', requireToken, async (req, res) => {
+locationRoutes.post('/location', requireAdmin, async (req, res) => {
    const location: LocationModel = req.body;
    await getLocationCollection().insertOne({
        ...location,
@@ -15,19 +23,18 @@ locationRoutes.post('/location', requireToken, async (req, res) => {
    res.status(200).end();
 });
 
-locationRoutes.get('/location', requireToken, async (req, res) => {
-    res.json(await getLocationCollection().find({}).toArray());
-});
+locationRoutes.get('/location', requireUser, async (req, res) => {
+    const user: UserModel = req.user as UserModel;
 
-locationRoutes.put('/location', requireToken, async (req, res) => {
-    const location: LocationModel = req.body;
-    await getLocationCollection().replaceOne({_id: location._id}, location);
-    res.status(200).end();
-});
+    if (user) {
+        const locations: LocationModel[] = await getLocationCollection().find({}).toArray();
+        const allowedLocations = locations.filter(location => isAllowedForLocation(user, location));
+        res.json(allowedLocations);
+    } else {
+        res.sendStatus(403);
+    }
 
-locationRoutes.delete('/location/:id', requireToken, async (req, res) => {
-    await getLocationCollection().deleteOne({_id: req.params.id});
-    res.status(200).end();
+
 });
 
 
