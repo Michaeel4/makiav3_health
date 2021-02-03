@@ -16,15 +16,19 @@ export async function getUsers(): Promise<UserModel[]> {
 }
 
 export async function getUserById(id?: string): Promise<UserModel | null> {
-    return await getUserCollection().findOne<UserModel>({
+    const user = await getUserCollection().findOne<UserModel>({
         _id: id
     });
+    delete user?.password;
+    return user;
 }
 
 export async function getUserByUsername(username: string): Promise<UserModel | null> {
-    return await getUserCollection().findOne<UserModel>({
+    const user = await getUserCollection().findOne<UserModel>({
         username
     });
+    delete user?.password;
+    return user;
 }
 
 export async function registerUser(user: UserModel): Promise<string | null> {
