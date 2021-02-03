@@ -16,19 +16,15 @@ export async function getUsers(): Promise<UserModel[]> {
 }
 
 export async function getUserById(id?: string): Promise<UserModel | null> {
-    const user = await getUserCollection().findOne<UserModel>({
+    return await getUserCollection().findOne<UserModel>({
         _id: id
     });
-    delete user?.password;
-    return user;
 }
 
 export async function getUserByUsername(username: string): Promise<UserModel | null> {
-    const user = await getUserCollection().findOne<UserModel>({
+    return await getUserCollection().findOne<UserModel>({
         username
     });
-    delete user?.password;
-    return user;
 }
 
 export async function registerUser(user: UserModel): Promise<string | null> {
@@ -105,6 +101,7 @@ userRoutes.get('/user', requireAdmin, (async (req, res, next) => {
     }
 }));
 userRoutes.get('/user/own', requireUser, (async (req, res, next) => {
+    delete (req.user as UserModel).password;
     res.json(req.user);
 }));
 
