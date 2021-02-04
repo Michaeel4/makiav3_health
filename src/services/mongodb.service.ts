@@ -28,4 +28,12 @@ export function getUserCollection(): mongodb.Collection {
     return mongoClient.db("healthcheck").collection('user');
 }
 
+export function getInventoryCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("healthcheck").collection('inventory');
+}
+
+
 export {mongoClient};

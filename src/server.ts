@@ -9,6 +9,7 @@ import fileUpload from 'express-fileupload';
 import { userRoutes } from './services/user.service';
 import passport from 'passport';
 import { initPassportStrategies } from './middleware/passport';
+import { inventoryRoutes } from './services/inventory.service';
 export class Server {
     private app = express();
 
@@ -35,6 +36,7 @@ export class Server {
         this.app.use(deviceRoutes);
         this.app.use(userRoutes);
         this.app.use(clientRoutes);
+        this.app.use(inventoryRoutes);
 
         this.app.listen(3003);
         console.log(`Server started at port 3003`);
