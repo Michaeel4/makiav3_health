@@ -6,6 +6,6 @@ export interface HealthCheckServerConfig {
 
 export const config: HealthCheckServerConfig = {
     uploadDir: '/home/health/images',
-    jwtSecret: 'abc',
+    jwtSecret: '66F6943FEC7755A2788F756839A54E',
     bcryptRounds: 12
 }

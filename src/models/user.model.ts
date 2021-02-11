@@ -5,7 +5,6 @@ export interface UserModel extends UserCredentials {
     telephone: string;
     admin: boolean;
     allowedLocations: string[];
-
 }
 
 export interface UserCredentials {

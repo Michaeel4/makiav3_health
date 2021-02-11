@@ -60,8 +60,6 @@ export async function loginUser(credentials: UserCredentials): Promise<string | 
 const userRoutes = express.Router();
 userRoutes.post('/register', async (req, res, next) => {
     try {
-        // save original password while trimming the body, allow whitespace in password start and en
-
             const token = await registerUser(req.body);
             if (token) {
                 res.send(token);

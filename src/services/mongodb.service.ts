@@ -34,6 +34,11 @@ export function getInventoryCollection(): mongodb.Collection {
     }
     return mongoClient.db("healthcheck").collection('inventory');
 }
-
+export function getProjectCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("healthcheck").collection('project');
+}
 
 export {mongoClient};
