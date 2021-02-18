@@ -40,5 +40,4 @@ export function getProjectCollection(): mongodb.Collection {
     }
     return mongoClient.db("healthcheck").collection('project');
 }
-
 export {mongoClient};

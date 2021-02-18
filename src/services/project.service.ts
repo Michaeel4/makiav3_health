@@ -12,7 +12,8 @@ projectRoutes.post('/project', requireAdmin, async (req, res) => {
     const project: ProjectModel = req.body;
     await getProjectCollection().insertOne({
         ...project,
-        _id: uuid()
+        _id: uuid(),
+        deviceToken: uuid()
     });
     res.status(200).end();
 });
