@@ -1,11 +1,17 @@
 export interface HealthCheckServerConfig {
-    uploadDir: string;
+    uploadDirs: {
+        health: string;
+        meat: string;
+    };
     jwtSecret: string;
     bcryptRounds: number;
 }
 
 export const config: HealthCheckServerConfig = {
-    uploadDir: '/home/health/images',
+    uploadDirs: {
+        health: '/home/health/images',
+        meat: '/home/meat/images'
+    },
     jwtSecret: '66F6943FEC7755A2788F756839A54E',
     bcryptRounds: 12
 }

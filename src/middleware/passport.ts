@@ -1,6 +1,6 @@
 import { StrategyOptions } from 'passport-jwt';
 import { config } from '../config';
-import { getUserByUsername } from '../services/user.service';
+import { getUserByUsername } from '../services/user/user.controller';
 
 
 const passport = require('passport');

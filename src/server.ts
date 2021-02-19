@@ -2,15 +2,17 @@ import bodyParser = require('body-parser');
 import cors = require('cors');
 import express = require('express');
 import {initMongoDb} from './services/mongodb.service';
-import {locationRoutes} from "./services/location.service";
-import { deviceRoutes } from './services/device.service';
-import { clientRoutes } from './services/client.service';
 import fileUpload from 'express-fileupload';
-import { userRoutes } from './services/user.service';
 import passport from 'passport';
 import { initPassportStrategies } from './middleware/passport';
-import { inventoryRoutes } from './services/inventory.service';
-import { projectRoutes } from './services/project.service';
+import { locationRoutes } from './services/location/location.routes';
+import { userRoutes } from './services/user/user.routes';
+import { deviceRoutes } from './services/device/device.routes';
+import { clientRoutes } from './services/client/client.routes';
+import { inventoryRoutes } from './services/inventory/inventory.routes';
+import { projectRoutes } from './services/project/project.routes';
+import { reviveDates } from './utils';
+import { meatRoutes } from './services/meat/meat.routes';
 export class Server {
     private app = express();
 
@@ -39,21 +41,10 @@ export class Server {
         this.app.use(clientRoutes);
         this.app.use(inventoryRoutes);
         this.app.use(projectRoutes);
+        this.app.use(meatRoutes);
 
         this.app.listen(3003);
         console.log(`Server started at port 3003`);
     }
 
-}
-const dateRegex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/;
-
-function reviveDates(key: string, value: any) {
-    let match;
-    if (typeof value === 'string' && (match = value.match(dateRegex))) {
-        const milliseconds = Date.parse(match[0]);
-        if (!isNaN(milliseconds)) {
-            return new Date(milliseconds);
-        }
-    }
-    return value;
 }

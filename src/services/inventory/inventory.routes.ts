@@ -1,24 +1,25 @@
-import express = require('express');
-import { requireAdmin } from '../middleware/auth.middleware';
-import { getInventoryCollection } from './mongodb.service';
-import { v4 as uuid } from 'uuid';
-import { InventoryEntryModel } from '../models/inventory-entry.model';
+import { requireAdmin } from '../../middleware/auth.middleware';
+import { InventoryEntryModel } from '../../models/inventory-entry.model';
+import {
+    createInventoryEntry,
+    deleteInventoryEntryById,
+    getInventoryEntries,
+    updateInventoryEntry
+} from './inventory.controller';
+import express from 'express';
 
 const inventoryRoutes = express.Router();
 
 inventoryRoutes.post('/inventory', requireAdmin, async (req, res) => {
     const entry: InventoryEntryModel = req.body;
-    await getInventoryCollection().insertOne({
-        ...entry,
-        _id: uuid()
-    });
+    await createInventoryEntry(entry);
     res.status(200).end();
 });
 
 inventoryRoutes.post('/inventory/:id', requireAdmin, async (req, res) => {
     const entry: InventoryEntryModel = req.body;
     try {
-        await getInventoryCollection().replaceOne({_id: req.params.id}, entry);
+        await updateInventoryEntry(entry);
         res.status(200).end();
     } catch {
         res.sendStatus(400);
@@ -26,13 +27,12 @@ inventoryRoutes.post('/inventory/:id', requireAdmin, async (req, res) => {
 });
 
 inventoryRoutes.get('/inventory', requireAdmin, async (req, res) => {
-    const entries: InventoryEntryModel[] = await getInventoryCollection().find({}).toArray();
-    res.json(entries);
+    res.json(await getInventoryEntries());
 });
 
 inventoryRoutes.delete('/inventory/:id', requireAdmin, async (req, res) => {
     try {
-        await getInventoryCollection().deleteOne({_id: req.params.id});
+        await deleteInventoryEntryById(req.params.id);
         res.status(200).end();
     } catch {
         res.sendStatus(400);

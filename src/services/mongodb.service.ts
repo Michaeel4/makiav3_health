@@ -40,4 +40,13 @@ export function getProjectCollection(): mongodb.Collection {
     }
     return mongoClient.db("healthcheck").collection('project');
 }
+
+export function getMeatCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("meat").collection('meat');
+}
+
+
 export {mongoClient};
