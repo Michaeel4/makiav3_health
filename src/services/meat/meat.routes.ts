@@ -1,6 +1,6 @@
 import express = require('express');
 import { getMeatEntries, getMeatEntryById, createMeatEntry, updateMeatEntryImages } from './meat.controller';
-import { requireAdmin, requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
+import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
@@ -88,7 +88,7 @@ meatRoutes.get('/meat/image/:hash', requireUser, (req, res) => {
 });
 
 
- meatRoutes.post('/meat/filter', async (req, res) => {
+ meatRoutes.post('/meat/filter', requireUser, async (req, res) => {
      const filter: MeatFilterModel = req.body;
 
     try {

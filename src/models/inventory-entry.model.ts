@@ -4,5 +4,4 @@ export interface InventoryEntryModel {
     name: string;
     amount: number;
     locationId?: string;
-    projectId?: string;
 }

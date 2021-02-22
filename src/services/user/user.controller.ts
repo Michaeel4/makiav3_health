@@ -1,4 +1,4 @@
-import { UserCredentials, UserModel } from '../../models/user.model';
+import { UserCredentials, UserModel, UserPermissions } from '../../models/user.model';
 import { getUserCollection } from '../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
@@ -33,9 +33,11 @@ export async function registerUser(user: UserModel): Promise<string | null> {
         username: user.username,
         name: user.name,
         admin: false,
-        allowedLocations: [],
+        permissions: {
+            allowedLocations: [],
+            allowedProjects: []
+        },
         telephone: user.telephone
-
     }
 
     const success = !existingUser && !!await getUserCollection().insertOne(newUser);
@@ -52,4 +54,12 @@ export async function loginUser(credentials: UserCredentials): Promise<string | 
     }
     const result = await bcrypt.compare(credentials.password, existingUser.password);
     return result ? jwt.sign({username: existingUser.username}, config.jwtSecret) : null;
+}
+
+export async function updateUserPermissions(user: UserModel, permissions: UserPermissions): Promise<void> {
+    await getUserCollection().updateOne({_id: user._id}, {
+        $set: {
+            permissions
+        }
+    });
 }

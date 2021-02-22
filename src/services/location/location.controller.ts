@@ -2,10 +2,11 @@ import { UserModel } from '../../models/user.model';
 import { LocationModel } from '../../models/location.model';
 import { getLocationCollection } from '../mongodb.service';
 import { v4 as uuid} from 'uuid';
+import { isAllowedForProject } from '../project/project.controller';
 
-export  function isAllowedForLocation(user: UserModel, location: LocationModel) {
-    return user.admin || user.allowedLocations.findIndex(allowed => {
-        return location._id === allowed
+export  function isAllowedForLocation(user: UserModel, locationId: string) {
+    return user.admin || user.permissions.allowedLocations.findIndex(allowed => {
+        return locationId === allowed
     }) > -1;
 }
 
@@ -15,7 +16,10 @@ async function getLocations(): Promise<LocationModel[]> {
 
 export async function getAllowedLocations(user: UserModel): Promise<LocationModel[]> {
     const locations: LocationModel[] = await getLocations();
-    const allowedLocations = locations.filter(location => isAllowedForLocation(user, location));
+    const allowedLocations = locations.filter(
+        location => location._id  && isAllowedForLocation(user, location._id)
+            && isAllowedForProject(user, location.projectId)
+    );
     return allowedLocations;
 }
 

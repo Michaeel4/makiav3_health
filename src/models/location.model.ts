@@ -2,6 +2,7 @@ export interface LocationModel {
     _id?: string;
     name: string;
     address: LocationAddressModel;
+    projectId?: string;
 }
 
 export interface LocationAddressModel {

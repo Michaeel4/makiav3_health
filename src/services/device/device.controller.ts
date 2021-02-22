@@ -3,14 +3,11 @@ import { DeviceModel } from '../../models/device.model';
 import { getDeviceCollection, getLocationCollection } from '../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { CommandModel } from '../../models/ping.model';
-import { isAllowedForLocation } from '../location/location.controller';
+import { getAllowedLocations, isAllowedForLocation } from '../location/location.controller';
 
 export async function isAllowedForDevice(user: UserModel, device: DeviceModel): Promise<boolean> {
-    const location = await getLocationCollection().findOne({
-        _id: device.locationId
-    });
-    const allowed = isAllowedForLocation(user, location);
-    return location && allowed;
+    const allowedLocations = await getAllowedLocations(user);
+    return allowedLocations.findIndex(location => location._id === device.locationId) > -1;
 }
 
 export async function createDevice(device: DeviceModel): Promise<void> {

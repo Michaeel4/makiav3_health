@@ -1,8 +1,14 @@
 import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { UserModel } from '../../models/user.model';
+import { UserModel, UserPermissions } from '../../models/user.model';
 import { getUserCollection } from '../mongodb.service';
-import { getUserById, getUsers, loginUser, registerUser } from './user.controller';
+import {
+    getUserById,
+    getUsers,
+    loginUser,
+    registerUser,
+    updateUserPermissions
+} from './user.controller';
 
 const userRoutes = express.Router();
 userRoutes.post('/register', async (req, res, next) => {
@@ -51,16 +57,12 @@ userRoutes.get('/user/own', requireUser, (async (req, res, next) => {
 }));
 
 
-userRoutes.post('/user/:id/allowed', requireAdmin, (async (req, res, next) => {
+userRoutes.post('/user/:id/permissions', requireAdmin, (async (req, res, next) => {
     try {
         const user = await getUserById(req.params.id);
-        const allowedLocations: string[] = req.body;
-        if (user && allowedLocations) {
-            await getUserCollection().updateOne({_id: user._id}, {
-                $set: {
-                    allowedLocations
-                }
-            });
+        const permissions: UserPermissions = req.body;
+        if (user && permissions) {
+            await updateUserPermissions(user, permissions);
             res.status(200).end();
         } else {
             res.sendStatus(400);
