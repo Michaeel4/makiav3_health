@@ -13,6 +13,7 @@ import { inventoryRoutes } from './services/inventory/inventory.routes';
 import { projectRoutes } from './services/project/project.routes';
 import { reviveDates } from './utils';
 import { meatRoutes } from './services/meat/meat.routes';
+import { meatStatisticsRoutes } from './services/meat/meat-statistics/meat-statistics.routes';
 export class Server {
     private app = express();
 
@@ -42,6 +43,7 @@ export class Server {
         this.app.use(inventoryRoutes);
         this.app.use(projectRoutes);
         this.app.use(meatRoutes);
+        this.app.use(meatStatisticsRoutes);
 
         this.app.listen(3003);
         console.log(`Server started at port 3003`);
