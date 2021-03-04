@@ -20,9 +20,14 @@ export async function getMeatEntryById(id: string): Promise<MeatEntryModel | nul
     return await getMeatCollection().findOne({_id: id});
 }
 
-export async function updateMeatEntryImages(id: string, images: (string | null)[]): Promise<void> {
-    await getMeatCollection().updateOne({_id: id}, {$set: { images }})
+export async function updateMeatEntryImagesLeft(id: string, imagesLeft: (string | null)[]): Promise<void> {
+    await getMeatCollection().updateOne({_id: id}, {$set: { imagesLeft }})
 }
+
+export async function updateMeatEntryImagesRight(id: string, imagesRight: (string | null)[]): Promise<void> {
+    await getMeatCollection().updateOne({_id: id}, {$set: { imagesRight }})
+}
+
 export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntryModel> {
     let query: FilterQuery<MeatEntryModel> = {};
 

@@ -4,7 +4,8 @@ export interface MeatEntryModel {
     classManually: Classification;
     classAutomatic: Classification;
     type: MeatType;
-    images?: (string | null)[];
+    imagesLeft?: (string | null)[];
+    imagesRight?: (string | null)[];
     locationId: string;
   }
 

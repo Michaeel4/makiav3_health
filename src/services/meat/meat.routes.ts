@@ -1,5 +1,11 @@
 import express = require('express');
-import { getMeatEntries, getMeatEntryById, createMeatEntry, updateMeatEntryImages } from './meat.controller';
+import {
+    getMeatEntries,
+    getMeatEntryById,
+    createMeatEntry,
+    updateMeatEntryImagesLeft,
+    updateMeatEntryImagesRight,
+} from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
@@ -48,14 +54,30 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
         const files = req.files;
 
         if (entry?._id && files) {
-            const foundFiles: UploadedFile[] = [files.first ?? null, files.second ?? null] as UploadedFile[];
-            for (const f of foundFiles.filter((f1) => f1 !== null)) {
+            const foundFiles: UploadedFile[] = [];
+            for (let i = 0; i < 10; i++) {
+                foundFiles[i] = files[i] as UploadedFile;
+
+            }
+
+            for (const f of foundFiles.filter((f1) => f1)) {
                 await f.mv(`${config.uploadDirs.meat}/${getName(f)}`);
             }
 
-            await updateMeatEntryImages(entry._id, foundFiles.map(f => {
-                return f ? getName(f) : null
-            }));
+            const filesLeft: (string | null)[] = [];
+            const filesRight: (string | null)[] = [];
+            foundFiles.forEach((file, index) => {
+               const name = file ? getName(file) : null;
+               if (index < 5) {
+                   filesLeft.push(name);
+               } else {
+                   filesRight.push(name);
+               }
+            });
+
+            await updateMeatEntryImagesLeft(entry._id, filesLeft);
+            await updateMeatEntryImagesRight(entry._id, filesRight);
+
 
 
             res.status(200).end();
