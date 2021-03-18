@@ -4,7 +4,14 @@ import { UserModel } from '../../models/user.model';
 import { config } from '../../config';
 import fs from 'fs';
 import express from 'express';
-import { createDevice, getAllowedDevices, getDeviceById, isAllowedForDevice, rebootDevice } from './device.controller';
+import {
+    calibrateDevice,
+    createDevice,
+    getAllowedDevices,
+    getDeviceById,
+    isAllowedForDevice,
+    rebootDevice
+} from './device.controller';
 
 const deviceRoutes = express.Router();
 
@@ -54,6 +61,18 @@ deviceRoutes.post('/device/:id/reboot', requireUser, async (req, res) => {
     const device = await getDeviceById(req.params.id);
     if (user && device && await isAllowedForDevice(user, device)) {
         await rebootDevice(device);
+        res.status(200).end();
+    } else {
+        res.status(403).end();
+    }
+
+
+});
+deviceRoutes.post('/device/:id/calibrate', requireUser, async (req, res) => {
+    const user: UserModel = req.user as UserModel;
+    const device = await getDeviceById(req.params.id);
+    if (user && device && await isAllowedForDevice(user, device)) {
+        await calibrateDevice(device);
         res.status(200).end();
     } else {
         res.status(403).end();

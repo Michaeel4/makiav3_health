@@ -41,3 +41,10 @@ export async function rebootDevice(device: DeviceModel): Promise<void> {
         }
     });
 }
+export async function calibrateDevice(device: DeviceModel): Promise<void> {
+    await getDeviceCollection().updateOne({_id: device._id}, {
+        $set: {
+            "gyroCalibration": device?.lastPing?.gyroData
+        }
+    });
+}
