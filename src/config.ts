@@ -13,5 +13,6 @@ export const config: HealthCheckServerConfig = {
         meat: '/home/meat/images'
     },
     jwtSecret: '66F6943FEC7755A2788F756839A54E',
-    bcryptRounds: 12
+    bcryptRounds: 12,
+    gyroSmoothingFactor: 0.95
 }
