@@ -5,6 +5,7 @@ export interface HealthCheckServerConfig {
     };
     jwtSecret: string;
     bcryptRounds: number;
+    gyroSmoothingFactor: number;
 }
 
 export const config: HealthCheckServerConfig = {
