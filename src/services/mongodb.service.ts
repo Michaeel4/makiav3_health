@@ -14,6 +14,14 @@ export function getDeviceCollection(): mongodb.Collection {
     return mongoClient.db("healthcheck").collection('device');
 }
 
+export function getEmailReceiverCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("healthcheck").collection('email');
+}
+
+
 export function getLocationCollection(): mongodb.Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');

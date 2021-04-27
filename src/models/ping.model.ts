@@ -7,6 +7,7 @@ export interface PingModel {
     command?: CommandModel;
     timestamp: Date;
     gyroData?: GyroData;
+    emailSent?: boolean;
 }
 
 
