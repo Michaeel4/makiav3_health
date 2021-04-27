@@ -17,6 +17,12 @@ export async function getEmailReceivers(): Promise<EmailReceiver[]> {
     return await getEmailReceiverCollection().find({}).toArray();
 }
 
+export async function deleteEmailReceiver(id: string): Promise<void> {
+    await getEmailReceiverCollection().deleteOne({
+        _id: id
+    });
+}
+
 export async function sendAlertEmail(device: DeviceModel): Promise<void> {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({

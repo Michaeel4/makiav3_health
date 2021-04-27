@@ -5,7 +5,7 @@ import { config } from '../../config';
 import fs from 'fs';
 import express from 'express';
 import { EmailReceiver } from '../../models/email-receiver.model';
-import { addEmailReceiver, getEmailReceivers } from './email.controller';
+import { addEmailReceiver, deleteEmailReceiver, getEmailReceivers } from './email.controller';
 
 
 const emailRoutes = express.Router();
@@ -24,6 +24,16 @@ emailRoutes.get('/email', requireAdmin, async (req, res) => {
     res.json(await getEmailReceivers());
 });
 
+emailRoutes.delete('/email/:id', requireAdmin, async (req, res) => {
+   const id = req.params.id;
+   if (id) {
+       await deleteEmailReceiver(id);
+       res.status(200).end();
+   } else {
+       res.status(400).end();
+   }
+
+});
 
 
 export { emailRoutes };
