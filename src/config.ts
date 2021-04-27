@@ -17,5 +17,5 @@ export const config: HealthCheckServerConfig = {
     jwtSecret: '66F6943FEC7755A2788F756839A54E',
     bcryptRounds: 12,
     gyroSmoothingFactor: 0.95,
-    timeoutInMs: 3000
+    timeoutInMs: 30000
 }
