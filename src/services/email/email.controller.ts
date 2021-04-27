@@ -46,8 +46,8 @@ export async function startHealthChecker() {
     emailInterval = setInterval(async () => {
         const devices: DeviceModel[] = await getDeviceCollection().find({}).toArray();
         await Promise.all(devices.map(async device => {
-            if (
-                !device?.lastPing?.emailSent && (
+            if (device.lastPing &&
+                !device.lastPing.emailSent && (
                     (device.lastPing.status === DeviceStatus.Online && device.lastPing.timestamp < new Date(Date.now() - config.timeoutInMs))
                     || (device.lastPing.status === DeviceStatus.Warning || device.lastPing.status === DeviceStatus.Moved)
                 )
