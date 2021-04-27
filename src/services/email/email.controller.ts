@@ -43,6 +43,7 @@ export async function sendAlertEmail(device: DeviceModel): Promise<void> {
             subject: '⚠️ Healthcheck Alert ⚠️',
             text: `${device.name} ist ausgefallen! Letzter Ping: ${JSON.stringify(device.lastPing)}`,
         });
+        console.log(`sent email to: ${receiver.email}`);
     }));
 }
 
