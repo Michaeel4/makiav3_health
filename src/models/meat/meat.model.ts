@@ -20,19 +20,17 @@ export interface MeatEntryModel {
 
   export function compareEvaluation(classMan: Classification, classAuto: Classification): number[] {
     return [
-      Math.abs(tradingClassToInt(classMan.tradingClass) - tradingClassToInt(classAuto.tradingClass)),
+      Math.abs(tradingClassToInt[classMan.tradingClass] - tradingClassToInt[classAuto.tradingClass]),
       Math.abs(classMan.fatClass.charCodeAt(0) - classAuto.fatClass.charCodeAt(0))
     ];
   }
 
-  function tradingClassToInt(a: TradingClass): number {
-    switch (a){
-      case 'E': return 0;
-      case 'U': return 1;
-      case 'R': return 2;
-      case 'O': return 3;
-      case 'P': return 4;
-    }
+  const tradingClassToInt = {
+      'E': 0,
+      'U': 1,
+      'R': 2,
+      'O': 3,
+      'P': 4,
   }
 
 
