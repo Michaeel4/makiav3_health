@@ -33,6 +33,9 @@ export async function updateDevicePing(ping: PingModel): Promise<void> {
         };
     }
 
+    if (oldDevicePing?.lastPing.status === ping.status) {
+        ping.emailSent = oldDevicePing?.lastPing.emailSent
+    }
 
     await getDeviceCollection().updateOne({_id: ping.id}, {
         $set: {
