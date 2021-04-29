@@ -26,6 +26,21 @@ meatRoutes.get('/meat', requireUser, async (req, res) => {
 
 });
 
+meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
+    const classification: Classification = req.body;
+    const id = req.params.id;
+    if (classification && id) {
+        try {
+            await labelMeatEntry(id, classification);
+            res.status(200).end();
+        } catch {
+            res.status(500).end();
+        }
+    } else {
+        res.status(400).end();
+    }
+});
+
 meatRoutes.post('/meat', requireDeviceToken, async (req, res) => {
     const meat: MeatEntryModel = req.body;
 
@@ -45,20 +60,7 @@ meatRoutes.post('/meat', requireDeviceToken, async (req, res) => {
     }
  });
 
-meatRoutes.post('/meat/:id/label', requireDeviceToken, async (req, res) => {
-    const classification: Classification = req.body;
-    const id = req.params.id;
-    if (classification && id) {
-        try {
-            await labelMeatEntry(id, classification);
-            res.status(200).end();
-        } catch {
-            res.status(500).end();
-        }
-    } else {
-        res.status(400).end();
-    }
-});
+
 
 
 
