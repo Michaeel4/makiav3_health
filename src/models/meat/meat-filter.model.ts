@@ -10,6 +10,7 @@ export interface MeatFilterModel {
   types?: MeatType[];
   tradingClasses?: TradingClass[];
   fatClasses?: FatClass[];
+  labelled?: boolean;
 }
 
 

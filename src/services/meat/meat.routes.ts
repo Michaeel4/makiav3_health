@@ -4,14 +4,14 @@ import {
     getMeatEntryById,
     createMeatEntry,
     updateMeatEntryImagesLeft,
-    updateMeatEntryImagesRight,
+    updateMeatEntryImagesRight, labelMeatEntry,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
 import fs from 'fs';
-import { MeatEntryModel } from '../../models/meat/meat.model';
+import { Classification, MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 
@@ -45,6 +45,20 @@ meatRoutes.post('/meat', requireDeviceToken, async (req, res) => {
     }
  });
 
+meatRoutes.post('/meat/:id/label', requireDeviceToken, async (req, res) => {
+    const classification: Classification = req.body;
+    const id = req.params.id;
+    if (classification && id) {
+        try {
+            await labelMeatEntry(id, classification);
+            res.status(200).end();
+        } catch {
+            res.status(500).end();
+        }
+    } else {
+        res.status(400).end();
+    }
+});
 
 
 

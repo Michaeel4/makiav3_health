@@ -1,7 +1,7 @@
 export interface MeatEntryModel {
     _id?: string;
     timeStamp: Date;
-    classManually: Classification;
+    classManually?: Classification;
     classAutomatic: Classification;
     type: MeatType;
     imagesLeft?: (string | null)[];
