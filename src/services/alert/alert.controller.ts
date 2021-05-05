@@ -1,10 +1,24 @@
-import { getDeviceCollection, getEmailReceiverCollection } from '../mongodb.service';
+import { getAlertCollection, getDeviceCollection, getEmailReceiverCollection } from '../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { EmailReceiver } from '../../models/email-receiver.model';
 import * as nodemailer from 'nodemailer';
 import { DeviceModel } from '../../models/device.model';
 import { DeviceStatus } from '../../models/device-status.enum';
 import { config } from '../../config';
+import { AlertModel } from '../../models/alert.model';
+
+export async function addAlert(device: DeviceModel): Promise<void> {
+    await getAlertCollection().insertOne({
+        _id: uuid(),
+        timestamp: new Date(),
+        device
+    });
+}
+
+export async function getAlerts(): Promise<AlertModel[]> {
+    return await getAlertCollection().find({}).toArray();
+}
+
 
 export async function addEmailReceiver(email: string): Promise<void> {
     await getEmailReceiverCollection().insertOne({
@@ -65,6 +79,7 @@ export async function startHealthChecker() {
                     }
                 });
 
+                await addAlert(device);
                 await sendAlertEmail(device);
             }
         }));

@@ -14,8 +14,8 @@ import { projectRoutes } from './services/project/project.routes';
 import { reviveDates } from './utils';
 import { meatRoutes } from './services/meat/meat.routes';
 import { meatStatisticsRoutes } from './services/meat/meat-statistics/meat-statistics.routes';
-import { emailRoutes } from './services/email/email.routes';
-import { startHealthChecker } from './services/email/email.controller';
+import { alertRoutes } from './services/alert/alert.routes';
+import { startHealthChecker } from './services/alert/alert.controller';
 export class Server {
     private app = express();
 
@@ -46,7 +46,7 @@ export class Server {
         this.app.use(projectRoutes);
         this.app.use(meatRoutes);
         this.app.use(meatStatisticsRoutes);
-        this.app.use(emailRoutes);
+        this.app.use(alertRoutes);
 
         this.app.listen(3003);
         console.log(`Server started at port 3003`);

@@ -5,12 +5,12 @@ import { config } from '../../config';
 import fs from 'fs';
 import express from 'express';
 import { EmailReceiver } from '../../models/email-receiver.model';
-import { addEmailReceiver, deleteEmailReceiver, getEmailReceivers } from './email.controller';
+import { addEmailReceiver, deleteEmailReceiver, getAlerts, getEmailReceivers } from './alert.controller';
 
 
-const emailRoutes = express.Router();
+const alertRoutes = express.Router();
 
-emailRoutes.post('/email', requireAdmin, async (req, res) => {
+alertRoutes.post('/alert/email', requireAdmin, async (req, res) => {
     const receiver: EmailReceiver = req.body;
     if (receiver.email?.length) {
         await addEmailReceiver(receiver.email);
@@ -20,11 +20,15 @@ emailRoutes.post('/email', requireAdmin, async (req, res) => {
     }
 });
 
-emailRoutes.get('/email', requireAdmin, async (req, res) => {
+alertRoutes.get('/alert/email', requireAdmin, async (req, res) => {
     res.json(await getEmailReceivers());
 });
 
-emailRoutes.delete('/email/:id', requireAdmin, async (req, res) => {
+alertRoutes.get('/alert', requireAdmin, async (req, res) => {
+    res.json(await getAlerts());
+});
+
+alertRoutes.delete('/alert/:id', requireAdmin, async (req, res) => {
    const id = req.params.id;
    if (id) {
        await deleteEmailReceiver(id);
@@ -36,4 +40,4 @@ emailRoutes.delete('/email/:id', requireAdmin, async (req, res) => {
 });
 
 
-export { emailRoutes };
+export { alertRoutes };

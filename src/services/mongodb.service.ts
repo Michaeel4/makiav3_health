@@ -49,6 +49,13 @@ export function getProjectCollection(): mongodb.Collection {
     return mongoClient.db("healthcheck").collection('project');
 }
 
+export function getAlertCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("healthcheck").collection('alert');
+}
+
 export function getMeatCollection(): mongodb.Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
