@@ -4,4 +4,5 @@ export interface AlertModel {
     _id: string;
     timestamp: Date;
     device: DeviceModel;
+    online: boolean;
 }

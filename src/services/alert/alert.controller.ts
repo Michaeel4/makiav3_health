@@ -7,11 +7,12 @@ import { DeviceStatus } from '../../models/device-status.enum';
 import { config } from '../../config';
 import { AlertModel } from '../../models/alert.model';
 
-export async function addAlert(device: DeviceModel): Promise<void> {
+export async function addAlert(device: DeviceModel, online: boolean): Promise<void> {
     await getAlertCollection().insertOne({
         _id: uuid(),
         timestamp: new Date(),
-        device
+        device,
+        online
     });
 }
 
@@ -79,7 +80,7 @@ export async function startHealthChecker() {
                     }
                 });
 
-                await addAlert(device);
+                await addAlert(device, false);
                 await sendAlertEmail(device);
             }
         }));

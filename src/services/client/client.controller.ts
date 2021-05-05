@@ -3,14 +3,15 @@ import { PingModel } from '../../models/ping.model';
 import { DeviceModel } from '../../models/device.model';
 import { config } from '../../config';
 import { DeviceStatus } from '../../models/device-status.enum';
+import { addAlert } from '../alert/alert.controller';
 
 
 export async function updateDevicePing(ping: PingModel): Promise<void> {
-    const oldDevicePing = await getDeviceCollection().findOne<DeviceModel>({
+    const oldDevice = await getDeviceCollection().findOne<DeviceModel>({
         _id: ping.id
     });
 
-    const gyro1 = oldDevicePing?.lastPing?.gyroData;
+    const gyro1 = oldDevice?.lastPing?.gyroData;
     const gyro2 = ping.gyroData;
 
     if (gyro1 && gyro2) {
@@ -33,8 +34,12 @@ export async function updateDevicePing(ping: PingModel): Promise<void> {
         };
     }
 
-    if (oldDevicePing?.lastPing.status === ping.status) {
-        ping.emailSent = oldDevicePing?.lastPing.emailSent
+    if (oldDevice?.lastPing.emailSent && ping.status === DeviceStatus.Online && ping.timestamp >= new Date(Date.now() - config.timeoutInMs)) {
+       await addAlert(oldDevice, true);
+    }
+
+    if (oldDevice?.lastPing.status === ping.status) {
+        ping.emailSent = oldDevice?.lastPing.emailSent
     }
 
     await getDeviceCollection().updateOne({_id: ping.id}, {
