@@ -36,6 +36,7 @@ export async function updateDevicePing(ping: PingModel): Promise<void> {
 
     if (oldDevice?.lastPing.emailSent && ping.status === DeviceStatus.Online && ping.timestamp >= new Date(Date.now() - config.timeoutInMs)) {
        await addAlert(oldDevice, true);
+        oldDevice.lastPing.emailSent = false;
     }
 
     if (oldDevice?.lastPing.status === ping.status) {
