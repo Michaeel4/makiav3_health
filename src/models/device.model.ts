@@ -7,6 +7,6 @@ export interface DeviceModel {
     locationId: string;
     name: string;
     serial: number;
-    lastPing: PingModel;
+    lastPing?: PingModel;
     gyroCalibration?: GyroData;
 }
