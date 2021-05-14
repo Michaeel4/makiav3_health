@@ -22,6 +22,14 @@ export async function createDevice(device: DeviceModel): Promise<void> {
     });
 }
 
+export async function deleteDevice(device: DeviceModel): Promise<void> {
+    await getDeviceCollection().deleteOne({_id: device._id});
+}
+
+export async function updateDevice(device: DeviceModel): Promise<void> {
+    await getDeviceCollection().replaceOne({_id: device._id}, device);
+}
+
 async function getDevices(): Promise<DeviceModel[]> {
     return await getDeviceCollection().find({}).toArray();
 }

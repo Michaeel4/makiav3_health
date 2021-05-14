@@ -6,11 +6,11 @@ import fs from 'fs';
 import express from 'express';
 import {
     calibrateDevice,
-    createDevice,
+    createDevice, deleteDevice,
     getAllowedDevices,
     getDeviceById,
     isAllowedForDevice,
-    rebootDevice
+    rebootDevice, updateDevice
 } from './device.controller';
 import { imagesForDevice } from '../client/client.controller';
 
@@ -23,11 +23,32 @@ deviceRoutes.post('/device', requireUser, async (req, res) => {
         await createDevice(device);
         res.status(200).end();
     } else {
-        res.sendStatus(403);
+        res.status(403).end();
     }
-
-
 });
+
+deviceRoutes.put('/device', requireUser, async (req, res) => {
+    const device: DeviceModel = req.body;
+    const user: UserModel = req.user as UserModel;
+    if (await isAllowedForDevice(user, device)) {
+        await updateDevice(device);
+        res.status(200).end();
+    } else {
+        res.status(403).end();
+    }
+});
+
+deviceRoutes.delete('/device/:id', requireUser, async (req, res) => {
+    const device = await getDeviceById(req.params.id);
+    const user: UserModel = req.user as UserModel;
+    if (device && await isAllowedForDevice(user, device)) {
+        await deleteDevice(device);
+        res.status(200).end()
+    } else {
+        res.status(403).end();
+    }
+});
+
 
 deviceRoutes.get('/device', requireUser, async (req, res) => {
     const user: UserModel = req.user as UserModel;
@@ -59,7 +80,7 @@ deviceRoutes.get('/device/:id/image', requireUser, async (req, res) => {
             res.status(400).end();
         }
     } else {
-        res.sendStatus(403);
+        res.status(403).end();
     }
 
 

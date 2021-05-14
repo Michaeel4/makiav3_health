@@ -28,7 +28,6 @@ clientRoutes.post('/device/:id/image', async (req, res) => {
     const device: DeviceModel | null = await getDeviceById(req.params.id);
 
     if (image && !Array.isArray(image) && device?._id) {
-        console.log('got image with size:', image.data.length)
         imagesForDevice[device._id] = image.data;
         res.status(200).end();
     } else {
