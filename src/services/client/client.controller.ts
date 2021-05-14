@@ -5,6 +5,7 @@ import { config } from '../../config';
 import { DeviceStatus } from '../../models/device-status.enum';
 import { addAlert } from '../alert/alert.controller';
 
+export const imagesForDevice: {[deviceId: string]: Buffer} = {};
 
 export async function updateDevicePing(ping: PingModel): Promise<void> {
     const oldDevice = await getDeviceCollection().findOne<DeviceModel>({
@@ -34,7 +35,7 @@ export async function updateDevicePing(ping: PingModel): Promise<void> {
         };
     }
 
-    if (oldDevice?.lastPing.emailSent && ping.status === DeviceStatus.Online && ping.timestamp >= new Date(Date.now() - config.timeoutInMs)) {
+    if (oldDevice?.lastPing?.emailSent && ping.status === DeviceStatus.Online && ping.timestamp >= new Date(Date.now() - config.timeoutInMs)) {
        await addAlert(oldDevice, true);
         oldDevice.lastPing.emailSent = false;
     }

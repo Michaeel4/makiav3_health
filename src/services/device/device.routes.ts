@@ -12,6 +12,7 @@ import {
     isAllowedForDevice,
     rebootDevice
 } from './device.controller';
+import { imagesForDevice } from '../client/client.controller';
 
 const deviceRoutes = express.Router();
 
@@ -38,13 +39,17 @@ deviceRoutes.get('/device/:id/image', requireUser, async (req, res) => {
     const user: UserModel = req.user as UserModel;
 
     const device = await getDeviceById(req.params.id);
-    if (user && device && await isAllowedForDevice(user, device)) {
-        const path = `${config.uploadDirs.health}/${req.params.id}.jpg`;
+    if (user && device?._id && await isAllowedForDevice(user, device)) {
         try {
-            await fs.promises.access(path);
 
-            res.contentType('image/jpg');
-            res.sendFile(path);
+            const buffer = imagesForDevice[device._id];
+            if (buffer) {
+                res.contentType('image/jpg');
+                res.write(buffer);
+            } else {
+                res.status(204).send();
+            }
+
 
         } catch {
             res.status(400).end();
