@@ -11,7 +11,7 @@ export async function isAllowedForDevice(user: UserModel, device: DeviceModel): 
 }
 
 export async function getNewDeviceSerial(): Promise<number> {
-    return (await getDeviceCollection().find({}).sort({serial:-1}).limit(1).toArray())[0];
+    return (await getDeviceCollection().find({}).sort({serial:-1}).limit(1).toArray())[0].serial + 1;
 }
 
 export async function createDevice(device: DeviceModel): Promise<void> {
