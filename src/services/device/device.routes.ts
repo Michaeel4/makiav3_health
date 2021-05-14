@@ -45,7 +45,11 @@ deviceRoutes.get('/device/:id/image', requireUser, async (req, res) => {
             const buffer = imagesForDevice[device._id];
             if (buffer) {
                 res.contentType('image/jpg');
-                res.write(buffer);
+                res.setHeader('Content-Length', buffer.length);
+                res.setHeader( "Cache-Control", "no-cache, no-store, must-revalidate")
+
+                res.send(buffer);
+                res.status(200).end();
             } else {
                 res.status(204).send();
             }
