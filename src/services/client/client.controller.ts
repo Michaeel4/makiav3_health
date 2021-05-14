@@ -40,7 +40,7 @@ export async function updateDevicePing(ping: PingModel): Promise<void> {
         oldDevice.lastPing.emailSent = false;
     }
 
-    if (oldDevice?.lastPing.status === ping.status) {
+    if (oldDevice?.lastPing?.status === ping.status) {
         ping.emailSent = oldDevice?.lastPing.emailSent
     }
 
