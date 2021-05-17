@@ -26,6 +26,15 @@ meatRoutes.get('/meat', requireUser, async (req, res) => {
 
 });
 
+meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
+    try {
+        res.json(await getMeatEntryById(req.params.id))
+    } catch {
+        res.status(500).end();
+    }
+
+});
+
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
     const classification: Classification = req.body;
     const id = req.params.id;
