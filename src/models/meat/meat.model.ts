@@ -1,3 +1,5 @@
+import { DiseaseModel } from './disease.model';
+
 export interface MeatEntryModel {
     _id?: string;
     timeStamp: Date;
@@ -7,6 +9,7 @@ export interface MeatEntryModel {
     imagesLeft?: (string | null)[];
     imagesRight?: (string | null)[];
     locationId: string;
+    diseases?: DiseaseModel[];
 }
 
 export interface Classification {
