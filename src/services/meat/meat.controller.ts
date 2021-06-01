@@ -50,11 +50,11 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
             timeStamp: {
                 $gt: currentEntry?.timeStamp
             },
-            ...(labelled ? {
-                classManually: {
-                    $exists: true
-                }
-            }: {})
+
+            classManually: {
+                $exists: labelled
+            }
+
         }).sort({
             timeStamp: 1
         }).limit(1)
@@ -65,11 +65,9 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
         timeStamp: {
             $lt: currentEntry?.timeStamp
         },
-        ...(labelled ? {
-            classManually: {
-                $exists: true
-            }
-        }: {})
+        classManually: {
+            $exists: labelled
+        }
     }).sort({
         timeStamp: -1
     }).limit(1)
