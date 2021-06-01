@@ -41,6 +41,32 @@ export async function updateMeatEntryImagesRight(id: string, imagesRight: (strin
     await getMeatCollection().updateOne({_id: id}, {$set: {imagesRight}});
 }
 
+export async function getMeatEntryIdByOffset(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string> {
+
+    const currentEntry = await getMeatEntryById(currentId);
+
+    if (direction === 'NEXT') {
+        return (await getMeatCollection().find({
+            timeStamp: {
+                $gt: currentEntry?.timeStamp
+            }
+        }).sort({
+            timeStamp: 1
+        }).limit(1)
+            .toArray())[0]
+    }
+
+    return (await getMeatCollection().find({
+        timeStamp: {
+            $lt: currentEntry?.timeStamp
+        }
+    }).sort({
+        timeStamp: -1
+    }).limit(1)
+        .toArray())[0]
+
+}
+
 export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntryModel> {
     let query: FilterQuery<MeatEntryModel> = {};
 
