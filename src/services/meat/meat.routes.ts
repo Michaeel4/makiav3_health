@@ -4,7 +4,7 @@ import {
     getMeatEntryById,
     createMeatEntry,
     updateMeatEntryImagesLeft,
-    updateMeatEntryImagesRight, labelMeatEntry, getMeatEntryIdByOffset,
+    updateMeatEntryImagesRight, labelMeatEntry, getMeatEntryIdByOffset, getNeighborEntry,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
@@ -134,13 +134,13 @@ meatRoutes.get('/meat/image/:hash', requireUser, (req, res) => {
 
 });
 
-meatRoutes.post('/meat/offest', requireUser, async (req, res) => {
+meatRoutes.post('/meat/direction', requireUser, async (req, res) => {
     const currentId = req.body.currentId;
-    const offest = req.body.offset;
-    if (currentId && offest) {
+    const direction = req.body.direction;
+    if (currentId && direction) {
         try {
             res.json({
-                id: await getMeatEntryIdByOffset(currentId, offest)
+                id: await getNeighborEntry(currentId, direction)
             })
         } catch {
             res.status(500).end();

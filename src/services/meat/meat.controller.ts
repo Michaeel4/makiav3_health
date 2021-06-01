@@ -41,7 +41,7 @@ export async function updateMeatEntryImagesRight(id: string, imagesRight: (strin
     await getMeatCollection().updateOne({_id: id}, {$set: {imagesRight}});
 }
 
-export async function getMeatEntryIdByOffset(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string> {
+export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string> {
 
     const currentEntry = await getMeatEntryById(currentId);
 
