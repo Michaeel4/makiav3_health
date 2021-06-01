@@ -41,38 +41,40 @@ export async function updateMeatEntryImagesRight(id: string, imagesRight: (strin
     await getMeatCollection().updateOne({_id: id}, {$set: {imagesRight}});
 }
 
-export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS', labelled: boolean): Promise<string> {
+export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS', labelled: boolean): Promise<string | null> {
 
     const currentEntry = await getMeatEntryById(currentId);
 
-    if (direction === 'NEXT') {
+    if (currentEntry) {
+        if (direction === 'NEXT' ) {
+            return (await getMeatCollection().find({
+                timeStamp: {
+                    $gt: new Date(currentEntry?.timeStamp)
+                },
+
+                classManually: {
+                    $exists: labelled
+                }
+
+            }).sort({
+                timeStamp: 1
+            }).limit(1)
+                .toArray())[0]?._id
+        }
+
         return (await getMeatCollection().find({
             timeStamp: {
-                $gt: currentEntry?.timeStamp
+                $lt:  new Date(currentEntry?.timeStamp)
             },
-
             classManually: {
                 $exists: labelled
             }
-
         }).sort({
-            timeStamp: 1
+            timeStamp: -1
         }).limit(1)
             .toArray())[0]?._id
     }
-
-    return (await getMeatCollection().find({
-        timeStamp: {
-            $lt: currentEntry?.timeStamp
-        },
-        classManually: {
-            $exists: labelled
-        }
-    }).sort({
-        timeStamp: -1
-    }).limit(1)
-        .toArray())[0]?._id
-
+    return null;
 }
 
 export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntryModel> {
