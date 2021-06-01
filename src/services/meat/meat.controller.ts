@@ -49,7 +49,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
         if (direction === 'NEXT' ) {
             return (await getMeatCollection().find({
                 timeStamp: {
-                    $gt: new Date(currentEntry?.timeStamp)
+                    $gt: currentEntry?.timeStamp
                 },
 
                 classManually: {
@@ -64,7 +64,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
 
         return (await getMeatCollection().find({
             timeStamp: {
-                $lt:  new Date(currentEntry?.timeStamp)
+                $lt:  currentEntry?.timeStamp
             },
             classManually: {
                 $exists: labelled
