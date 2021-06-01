@@ -47,7 +47,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
 
     if (currentEntry) {
         if (direction === 'NEXT' ) {
-            return (await getMeatCollection().find({
+            const query = {
                 timeStamp: {
                     $gt: new Date(currentEntry?.timeStamp)
                 },
@@ -56,7 +56,9 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
                     $exists: labelled
                 }
 
-            }).sort({
+            };
+            console.dir(query);
+            return (await getMeatCollection().find(query).sort({
                 timeStamp: 1
             }).limit(1)
                 .toArray())[0]?._id
