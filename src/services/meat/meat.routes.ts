@@ -4,7 +4,7 @@ import {
     getMeatEntryById,
     createMeatEntry,
     updateMeatEntryImagesLeft,
-    updateMeatEntryImagesRight, labelMeatEntry, getMeatEntryIdByOffset, getNeighborEntry,
+    updateMeatEntryImagesRight, labelMeatEntry, getNeighborEntry,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
