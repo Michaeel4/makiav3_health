@@ -41,7 +41,7 @@ export async function updateMeatEntryImagesRight(id: string, imagesRight: (strin
     await getMeatCollection().updateOne({_id: id}, {$set: {imagesRight}});
 }
 
-export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string> {
+export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS', labelled: boolean): Promise<string> {
 
     const currentEntry = await getMeatEntryById(currentId);
 
@@ -49,7 +49,12 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
         return (await getMeatCollection().find({
             timeStamp: {
                 $gt: currentEntry?.timeStamp
-            }
+            },
+            ...(labelled ? {
+                classManually: {
+                    $exists: true
+                }
+            }: {})
         }).sort({
             timeStamp: 1
         }).limit(1)
@@ -59,7 +64,12 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
     return (await getMeatCollection().find({
         timeStamp: {
             $lt: currentEntry?.timeStamp
-        }
+        },
+        ...(labelled ? {
+            classManually: {
+                $exists: true
+            }
+        }: {})
     }).sort({
         timeStamp: -1
     }).limit(1)
