@@ -53,7 +53,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
         }).sort({
             timeStamp: 1
         }).limit(1)
-            .toArray())[0]
+            .toArray())[0]?._id
     }
 
     return (await getMeatCollection().find({
@@ -63,7 +63,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
     }).sort({
         timeStamp: -1
     }).limit(1)
-        .toArray())[0]
+        .toArray())[0]?._id
 
 }
 
