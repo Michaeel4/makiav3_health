@@ -1,4 +1,4 @@
-import { requireUser } from '../../middleware/auth.middleware';
+import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
 import { DeviceModel } from '../../models/device.model';
 import { UserModel } from '../../models/user.model';
 import { config } from '../../config';
@@ -38,7 +38,7 @@ deviceRoutes.put('/device', requireUser, async (req, res) => {
     }
 });
 
-deviceRoutes.delete('/device/:id', requireUser, async (req, res) => {
+deviceRoutes.delete('/device/:id', requireAdmin, async (req, res) => {
     const device = await getDeviceById(req.params.id);
     const user: UserModel = req.user as UserModel;
     if (device && await isAllowedForDevice(user, device)) {
