@@ -28,7 +28,7 @@ alertRoutes.get('/alert', requireAdmin, async (req, res) => {
     res.json(await getAlerts());
 });
 
-alertRoutes.delete('/alert/:id', requireAdmin, async (req, res) => {
+alertRoutes.delete('/alert/email/:id', requireAdmin, async (req, res) => {
    const id = req.params.id;
    if (id) {
        await deleteEmailReceiver(id);
