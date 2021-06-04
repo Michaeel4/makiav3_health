@@ -14,7 +14,7 @@ clientRoutes.post('/ping', async (req, res) => {
     const ping: PingModel = req.body;
     const device: DeviceModel | null = await getDeviceById(ping.id);
     if (device) {
-        await updateDevicePing(ping);
+        await updateDevicePing(ping, device);
 
         res.json(device.lastPing); // send back old ping
 

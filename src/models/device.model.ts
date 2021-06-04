@@ -1,6 +1,7 @@
 import { DeviceStatus } from './device-status.enum';
 import { PingModel } from './ping.model';
 import { GyroData } from './gyro.model';
+import { HealthCheckClientConfig } from '../config';
 
 export interface DeviceModel {
     _id?: string;
@@ -9,4 +10,5 @@ export interface DeviceModel {
     serial?: number;
     lastPing?: PingModel;
     gyroCalibration?: GyroData;
+    clientConfig?: HealthCheckClientConfig;
 }

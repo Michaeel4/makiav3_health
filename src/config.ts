@@ -8,6 +8,15 @@ export interface HealthCheckServerConfig {
     timeoutInMs: number;
 }
 
+export interface HealthCheckClientConfig {
+    clientId: string;
+    serverHost: string;
+    pythonTimeOutinMs: number;
+    uploadDir: string;
+    hasGyro: boolean;
+}
+
+
 export const config: HealthCheckServerConfig = {
     uploadDirs: {
         meat: '/home/meat/images'

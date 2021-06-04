@@ -4,10 +4,18 @@ import { DeviceModel } from '../../models/device.model';
 import { config } from '../../config';
 import { DeviceStatus } from '../../models/device-status.enum';
 import { addAlert } from '../alert/alert.controller';
+import { updateDevice } from '../device/device.controller';
 
 export const imagesForDevice: {[deviceId: string]: Buffer} = {};
 
-export async function updateDevicePing(ping: PingModel): Promise<void> {
+export async function updateDevicePing(ping: PingModel, device: DeviceModel): Promise<void> {
+
+    if (ping.config) {
+        device.clientConfig = ping.config;
+        await updateDevice(device);
+    }
+
+
     const oldDevice = await getDeviceCollection().findOne<DeviceModel>({
         _id: ping.id
     });
