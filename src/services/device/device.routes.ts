@@ -100,12 +100,12 @@ deviceRoutes.post('/device/:id/reboot', requireUser, async (req, res) => {
 });
 
 
-deviceRoutes.post('/device/:id/restart/:pid', requireUser, async (req, res) => {
+deviceRoutes.post('/device/:id/restart/:processName', requireUser, async (req, res) => {
     const user: UserModel = req.user as UserModel;
     const device = await getDeviceById(req.params.id);
-    const pid = +req.params.pid;
-    if (user && pid && device && await isAllowedForDevice(user, device)) {
-        await restartClientProcess(device, pid);
+    const processName = req.params.pid;
+    if (user && processName && device && await isAllowedForDevice(user, device)) {
+        await restartClientProcess(device, processName);
         res.status(200).end();
     } else {
         res.status(403).end();
