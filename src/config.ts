@@ -9,7 +9,6 @@ export interface HealthCheckServerConfig {
 }
 
 export interface HealthCheckClientConfig {
-    clientId: string;
     serverHost: string;
     pythonTimeOutinMs: number;
     uploadDir: string;
