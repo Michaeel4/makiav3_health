@@ -29,3 +29,8 @@ export async function createLocation(location: LocationModel): Promise<void> {
         _id: uuid()
     });
 }
+export async function updateLocation(location: LocationModel): Promise<void> {
+    await getLocationCollection().replaceOne({
+        _id: location._id
+    }, location);
+}
