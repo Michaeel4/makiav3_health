@@ -11,7 +11,7 @@ import {
 } from './user.controller';
 
 const userRoutes = express.Router();
-userRoutes.post('/register', async (req, res, next) => {
+userRoutes.post('/register', requireAdmin, async (req, res, next) => {
     try {
         const token = await registerUser(req.body);
         if (token) {
@@ -25,6 +25,8 @@ userRoutes.post('/register', async (req, res, next) => {
         res.sendStatus(500);
     }
 });
+
+
 
 userRoutes.post('/login', (async (req, res, next) => {
     try {
