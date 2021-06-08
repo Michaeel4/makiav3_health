@@ -6,6 +6,7 @@ export interface PingModel {
     id: string;
     status: DeviceStatus;
     command?: CommandModel;
+    commandArgs?: any;
     timestamp: Date;
     gyroData?: GyroData;
     emailSent?: boolean;
@@ -16,5 +17,5 @@ export interface PingModel {
 
 
 export enum CommandModel {
-    REBOOT = 'REBOOT'
+    REBOOT = 'REBOOT', RESTART_PROCESS = 'RESTART_PROCESS'
 }

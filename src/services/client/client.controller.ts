@@ -6,6 +6,7 @@ import { DeviceStatus } from '../../models/device-status.enum';
 import { addAlert } from '../alert/alert.controller';
 import { updateDevice } from '../device/device.controller';
 
+
 export const imagesForDevice: {[deviceId: string]: Buffer} = {};
 
 export async function updateDevicePing(ping: PingModel, device: DeviceModel): Promise<void> {
@@ -58,3 +59,5 @@ export async function updateDevicePing(ping: PingModel, device: DeviceModel): Pr
         }
     });
 }
+
+

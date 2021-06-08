@@ -61,3 +61,12 @@ export async function calibrateDevice(device: DeviceModel): Promise<void> {
         }
     });
 }
+export async function restartClientProcess(device: DeviceModel, pid: number) {
+    await getDeviceCollection().updateOne({_id: device._id}, {
+        $set: {
+            "lastPing.command": CommandModel.RESTART_PROCESS,
+            "lastPing.commandArgs": pid
+        }
+    });
+}
+
