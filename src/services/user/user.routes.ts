@@ -15,7 +15,7 @@ userRoutes.post('/register', requireAdmin, async (req, res, next) => {
     try {
         const token = await registerUser(req.body);
         if (token) {
-            res.send(token);
+            res.status(200).end();
         } else {
             res.sendStatus(422);
         }
