@@ -7,7 +7,7 @@ import { getAllowedLocations, isAllowedForLocation } from '../location/location.
 
 export async function isAllowedForDevice(user: UserModel, device: DeviceModel): Promise<boolean> {
     const allowedLocations = await getAllowedLocations(user);
-    return allowedLocations.findIndex(location => location._id === device.locationId) > -1;
+    return user.permissions.allowedDevices.includes(device._id!) || allowedLocations.findIndex(location => location._id === device.locationId) > -1;
 }
 
 export async function getNewDeviceSerial(): Promise<number> {

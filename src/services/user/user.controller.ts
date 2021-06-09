@@ -35,7 +35,8 @@ export async function registerUser(user: UserModel): Promise<string | null> {
         admin: false,
         permissions: {
             allowedLocations: [],
-            allowedProjects: []
+            allowedProjects: [],
+            allowedDevices: []
         },
         telephone: user.telephone
     }

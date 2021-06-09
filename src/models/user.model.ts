@@ -14,4 +14,5 @@ export interface UserCredentials {
 export interface UserPermissions {
     allowedLocations: string[];
     allowedProjects: string[];
+    allowedDevices: string[];
 }
