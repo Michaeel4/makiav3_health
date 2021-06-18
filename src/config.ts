@@ -15,7 +15,7 @@ export interface HealthCheckClientConfig {
     pythonTimeOutinMs: number;
     uploadDir: string;
     hasGyro: boolean;
-    cameraType: CameraType;
+    cameraType?: CameraType;
 }
 
 
