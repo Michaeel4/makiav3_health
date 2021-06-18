@@ -86,12 +86,12 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
         }
 
         for (const f of foundFiles.filter((f1) => f1)) {
-            await f.mv(`${config.uploadDirs.meat}/${getName(f)}`);
+            await f.mv(`${config.uploadDirs.meat}/${getName(f, entry.timeStamp)}`);
         }
 
 
         const fileNames = foundFiles.map((file, index) => {
-            return getName(file);
+            return getName(file, entry.timeStamp);
         });
 
         await updateMeatEntryImages(entry, device, fileNames);
