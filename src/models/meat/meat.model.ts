@@ -6,10 +6,19 @@ export interface MeatEntryModel {
     classManually?: Classification;
     classAutomatic: Classification;
     type: MeatType;
-    imagesLeft?: (string | null)[];
-    imagesRight?: (string | null)[];
     locationId: string;
     diseases?: DiseaseModel[];
+    cameras?: CameraModel[];
+}
+
+export enum CameraType {
+    PigCounter = 'PIG_COUNTER',
+    GeschlingeDetector = 'GESCHLINGE_DETECTOR'
+}
+
+export interface CameraModel {
+    deviceId: string;
+    images: string[];
 }
 
 export interface Classification {

@@ -1,3 +1,5 @@
+import { CameraType } from './models/meat/meat.model';
+
 export interface HealthCheckServerConfig {
     uploadDirs: {
         meat: string;
@@ -13,6 +15,7 @@ export interface HealthCheckClientConfig {
     pythonTimeOutinMs: number;
     uploadDir: string;
     hasGyro: boolean;
+    cameraType: CameraType;
 }
 
 

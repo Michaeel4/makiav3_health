@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import { UserModel } from '../models/user.model';
 import { getProjectCollection } from '../services/mongodb.service';
+import { getDeviceById } from '../services/device/device.controller';
 
 
 export function requireUser(req: Request, res: Response, next: NextFunction) {
@@ -33,8 +34,10 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction) {
 export async function requireDeviceToken(req: Request, res: Response, next: NextFunction) {
     const deviceToken = req.header('Authorization');
     if (deviceToken) {
-        const project = await getProjectCollection().findOne({deviceToken});
-        if (project) {
+        const device = await getDeviceById(deviceToken);
+        if (device) {
+            // @ts-ignore
+            req.device = device;
             next();
         } else {
             res.status(403).end();

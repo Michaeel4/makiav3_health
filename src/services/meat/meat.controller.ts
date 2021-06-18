@@ -3,14 +3,43 @@ import { Classification, MeatEntryModel } from '../../models/meat/meat.model';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../mongodb.service';
 import { Condition, FilterQuery } from 'mongodb';
+import { DeviceModel } from '../../models/device.model';
 
-export async function createMeatEntry(entry: MeatEntryModel): Promise<string> {
+
+export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
+    const existingEntries = await getMeatEntriesAtTimestamp(entry.timeStamp);
+    if (existingEntries.length > 0) {
+        const existing = existingEntries[0]; // take first found
+        return existing._id!;
+    } else {
+        return await createMeatEntry(entry);
+    }
+}
+
+
+async function createMeatEntry(entry: MeatEntryModel): Promise<string> {
     const _id = uuid();
     await getMeatCollection().insertOne({
         _id,
-        ...entry
+        ...entry,
+        cameras: []
     });
     return _id;
+}
+async function updateMeatEntry(entry: MeatEntryModel): Promise<void> {
+    await getMeatCollection().replaceOne({
+        _id: entry._id
+    }, entry);
+}
+
+export async function updateMeatEntryImages(entry: MeatEntryModel, device: DeviceModel, images: string[]): Promise<void> {
+    entry.cameras?.push({
+        deviceId: device._id!,
+        images
+    })
+
+    await updateMeatEntry(entry);
+
 }
 
 export async function labelMeatEntry(_id: string, classification: Classification): Promise<void> {
@@ -33,13 +62,23 @@ export async function getMeatEntryById(id: string): Promise<MeatEntryModel | nul
     return await getMeatCollection().findOne({_id: id});
 }
 
-export async function updateMeatEntryImagesLeft(id: string, imagesLeft: (string | null)[]): Promise<void> {
-    await getMeatCollection().updateOne({_id: id}, {$set: {imagesLeft}});
+const TIME_THRESHOLD = 1; // seconds
+export async function getMeatEntriesAtTimestamp(timestamp: Date): Promise<MeatEntryModel[]> {
+    const start = new Date(timestamp.getTime() - (1000 * TIME_THRESHOLD));
+    const end = new Date(timestamp.getTime() + (1000 * TIME_THRESHOLD));
+
+
+
+    const filter: MeatFilterModel = {
+        dateRange: {
+            start,
+            end
+        }
+    }
+
+    return await getMeatEntries(filter);
 }
 
-export async function updateMeatEntryImagesRight(id: string, imagesRight: (string | null)[]): Promise<void> {
-    await getMeatCollection().updateOne({_id: id}, {$set: {imagesRight}});
-}
 
 export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS', labelled: boolean): Promise<string | null> {
 
