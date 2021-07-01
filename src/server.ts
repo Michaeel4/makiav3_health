@@ -76,7 +76,15 @@ export class MediaServer {
         http: {
             port: 8000,
             allow_origin: '*'
-        }
+        },
+        auth: {
+            api : true,
+            api_user: 'admin',
+            api_pass: 'nms2018',
+            play: true,
+            publish: true,
+            secret: 'NkSWTgnYsAIm6gi3BaUJFhrND8iSTE'
+        },
     };
 
     nms: any;
