@@ -81,8 +81,8 @@ export class MediaServer {
         },
         auth: {
             api : true,
-            api_user: 'admin',
-            api_pass: 'nms2018',
+            api_user: 'meat',
+            api_pass: 'pwd4mediaserver',
             play: true,
             publish: true,
             secret: streamSecret
