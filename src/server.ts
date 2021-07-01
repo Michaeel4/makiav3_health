@@ -84,6 +84,7 @@ export class MediaServer {
             api_user: 'meat',
             api_pass: 'pwd4mediaserver',
             play: true,
+            publish: true,
             secret: streamSecret
         },
     };
