@@ -5,6 +5,7 @@ export interface UserModel extends UserCredentials {
     telephone: string;
     admin: boolean;
     permissions: UserPermissions;
+    streamSecret?: string;
 }
 
 export interface UserCredentials {

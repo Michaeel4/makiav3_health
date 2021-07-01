@@ -63,6 +63,8 @@ export class Server {
 
 }
 
+export const streamSecret = 'NkSWTgnYsAIm6gi3BaUJFhrND8iSTE';
+
 export class MediaServer {
 
     config = {
@@ -83,7 +85,7 @@ export class MediaServer {
             api_pass: 'nms2018',
             play: true,
             publish: true,
-            secret: 'NkSWTgnYsAIm6gi3BaUJFhrND8iSTE'
+            secret: streamSecret
         },
     };
 

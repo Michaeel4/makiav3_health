@@ -9,6 +9,7 @@ import {
     registerUser,
     updateUserPermissions
 } from './user.controller';
+import { streamSecret } from '../../server';
 
 const userRoutes = express.Router();
 userRoutes.post('/register', requireAdmin, async (req, res, next) => {
@@ -55,6 +56,7 @@ userRoutes.get('/user', requireAdmin, (async (req, res, next) => {
 }));
 userRoutes.get('/user/own', requireUser, (async (req, res, next) => {
     delete (req.user as UserModel).password;
+    (req.user as any).streamSecret = streamSecret;
     res.json(req.user);
 }));
 
