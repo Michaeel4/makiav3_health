@@ -40,7 +40,7 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
     const diseases: DiseaseModel[] = req.body;
     const id = req.params.id;
-    if (diseases?.length && id) {
+    if (diseases && id) {
         try {
             await labelMeatEntry(id, diseases);
             res.status(200).end();
