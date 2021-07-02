@@ -6,5 +6,5 @@ const server = new Server();
 const mediaServer = new MediaServer();
 setTimeout(async () => {
     await server.start();
-    mediaServer.start();
+    //mediaServer.start();
 }, 0);

@@ -1,6 +1,5 @@
 import { RowName, StatisticEntryModel } from '../../../models/meat/statistic-entry.model';
 import { getMeatEntries } from '../meat.controller';
-import { compareEvaluation } from '../../../models/meat/meat.model';
 
 export async function calculateStatistic(locationId: string): Promise<StatisticEntryModel[]> {
     const entries = await getMeatEntries({locationId, labelled: true});
@@ -14,7 +13,7 @@ export async function calculateStatistic(locationId: string): Promise<StatisticE
 
 
     entries.forEach(entry => {
-        const evaluation = compareEvaluation(entry.classManually!, entry.classAutomatic);
+        const evaluation = [0,0]; //compareEvaluation(entry.diseasesManually!, entry.diseasesAutomatic);
         statistics[0].offsets[Math.min(evaluation[0], 4)]++;
         statistics[1].offsets[Math.min(evaluation[1], 4)]++;
         statistics[2].offsets[Math.min(evaluation[0] + evaluation[1], 4)]++;

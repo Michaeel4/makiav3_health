@@ -1,5 +1,6 @@
 import express = require('express');
 import {
+    deleteMeatEntry,
     getMeatEntries,
     getMeatEntryById,
     getNeighborEntry,
@@ -11,9 +12,10 @@ import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
 import fs from 'fs';
-import { Classification, MeatEntryModel } from '../../models/meat/meat.model';
+import {  MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
+import { DiseaseModel } from '../../models/meat/disease.model';
 
 const meatRoutes = express.Router();
 
@@ -36,15 +38,24 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
 });
 
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
-    const classification: Classification = req.body;
+    const diseases: DiseaseModel[] = req.body;
     const id = req.params.id;
-    if (classification && id) {
+    if (diseases?.length && id) {
         try {
-            await labelMeatEntry(id, classification);
+            await labelMeatEntry(id, diseases);
             res.status(200).end();
         } catch {
             res.status(500).end();
         }
+    } else {
+        res.status(400).end();
+    }
+});
+
+meatRoutes.delete('/meat/:id', requireUser, async (req, res) => {
+    const entry: MeatEntryModel | null = await getMeatEntryById(req.params.id);
+    if (entry) {
+        await deleteMeatEntry(entry);
     } else {
         res.status(400).end();
     }

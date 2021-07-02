@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid';
-import { Classification, MeatEntryModel } from '../../models/meat/meat.model';
+import {  MeatEntryModel } from '../../models/meat/meat.model';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../mongodb.service';
 import { Condition, FilterQuery } from 'mongodb';
 import { DeviceModel } from '../../models/device.model';
+import { DiseaseModel } from '../../models/meat/disease.model';
 
 
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
@@ -32,6 +33,12 @@ async function updateMeatEntry(entry: MeatEntryModel): Promise<void> {
     }, entry);
 }
 
+export async function deleteMeatEntry(entry: MeatEntryModel): Promise<void> {
+    await getMeatCollection().deleteOne({
+        _id: entry._id
+    });
+}
+
 export async function updateMeatEntryImages(entry: MeatEntryModel, device: DeviceModel, images: string[]): Promise<void> {
     entry.cameras?.push({
         deviceId: device._id!,
@@ -42,13 +49,13 @@ export async function updateMeatEntryImages(entry: MeatEntryModel, device: Devic
 
 }
 
-export async function labelMeatEntry(_id: string, classification: Classification): Promise<void> {
+export async function labelMeatEntry(_id: string, diseases: DiseaseModel[]): Promise<void> {
     await getMeatCollection().updateOne({
             _id
         },
         {
             $set: {
-                classManually: classification
+                diseasesManually: diseases
             }
         }
     );
@@ -91,7 +98,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
                     $gt: currentEntry?.timeStamp
                 },
 
-                classManually: {
+                diseasesManually: {
                     $exists: labelled
                 }
 
@@ -105,7 +112,7 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
             timeStamp: {
                 $lt:  currentEntry?.timeStamp
             },
-            classManually: {
+            diseasesManually: {
                 $exists: labelled
             }
         }).sort({
@@ -129,7 +136,7 @@ export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntry
         query = buildMultipleFilter(query, 'type', filterModel.types);
     }
     if (filterModel.labelled !== undefined) {
-        query = buildExistFilter(query, 'classManually', filterModel.labelled);
+        query = buildExistFilter(query, 'diseasesManually', filterModel.labelled);
     }
 
     return query;

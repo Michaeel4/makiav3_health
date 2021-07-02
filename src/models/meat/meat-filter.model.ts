@@ -1,5 +1,5 @@
 import { Condition, FilterQuery } from 'mongodb';
-import {FatClass, MeatEntryModel, MeatType, TradingClass} from "./meat.model";
+import {MeatEntryModel, MeatType} from "./meat.model";
 
 export interface MeatFilterModel {
   locationId?: string;
@@ -8,8 +8,6 @@ export interface MeatFilterModel {
       end: Date;
   };
   types?: MeatType[];
-  tradingClasses?: TradingClass[];
-  fatClasses?: FatClass[];
   labelled?: boolean;
 }
 
