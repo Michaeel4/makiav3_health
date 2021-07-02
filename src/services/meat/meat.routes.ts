@@ -140,11 +140,10 @@ meatRoutes.get('/meat/image/:hash', requireUser, (req, res) => {
 meatRoutes.post('/meat/direction', requireUser, async (req, res) => {
     const currentId = req.body.currentId;
     const direction = req.body.direction;
-    const labelled = req.body.labelled;
     if (currentId && direction) {
         try {
             res.json({
-                id: await getNeighborEntry(currentId, direction, labelled)
+                id: await getNeighborEntry(currentId, direction)
             });
         } catch {
             res.status(500).end();

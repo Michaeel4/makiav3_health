@@ -87,7 +87,7 @@ export async function getMeatEntriesAtTimestamp(timestamp: Date): Promise<MeatEn
 }
 
 
-export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS', labelled: boolean): Promise<string | null> {
+export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | null> {
 
     const currentEntry = await getMeatEntryById(currentId);
 
@@ -96,10 +96,6 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
             return (await getMeatCollection().find({
                 timeStamp: {
                     $gt: currentEntry?.timeStamp
-                },
-
-                diseasesManually: {
-                    $exists: labelled
                 }
 
             }).sort({
@@ -111,9 +107,6 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
         return (await getMeatCollection().find({
             timeStamp: {
                 $lt:  currentEntry?.timeStamp
-            },
-            diseasesManually: {
-                $exists: labelled
             }
         }).sort({
             timeStamp: -1

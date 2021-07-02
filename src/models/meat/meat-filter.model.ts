@@ -1,5 +1,4 @@
-import { Condition, FilterQuery } from 'mongodb';
-import {MeatEntryModel, MeatType} from "./meat.model";
+import {MeatType} from "./meat.model";
 
 export interface MeatFilterModel {
   locationId?: string;
