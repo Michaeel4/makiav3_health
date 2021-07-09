@@ -79,6 +79,11 @@ export class MediaServer {
             port: 8000,
             allow_origin: '*'
         },
+        https: {
+            port: 8443,
+            key: '/etc/webmin/letsencrypt-key.pem',
+            cert: '/etc/webmin/letsencrypt-full.pem'
+        },
         auth: {
             api : true,
             api_user: 'meat',
