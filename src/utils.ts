@@ -11,6 +11,5 @@ export function reviveDates(key: string, value: any) {
     return value;
 }
 export function getName(f: any, date: Date) {
-    console.log(JSON.stringify(f));
     return date.toISOString() + '_' + f.md5 + '_' + f.mimetype.replace('/', '.');
 }
