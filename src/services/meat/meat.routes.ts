@@ -91,12 +91,14 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
     const files = req.files;
 
     if (device && entry?._id && files) {
-        const foundFiles: UploadedFile[] = [];
+        let foundFiles: UploadedFile[] = [];
         for (let i = 0; i < 10; i++) {
             foundFiles[i] = files[i] as UploadedFile;
         }
 
-        for (const f of foundFiles.filter((f1) => !!f1)) {
+        foundFiles = foundFiles.filter((f1) => !!f1);
+
+        for (const f of foundFiles) {
             await f.mv(`${config.uploadDirs.meat}/${getName(f, entry.timeStamp)}`);
         }
 
