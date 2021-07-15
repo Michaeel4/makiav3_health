@@ -5,6 +5,7 @@ export interface MeatEntryModel {
     timeStamp: Date;
     type: MeatType;
     locationId: string;
+    slaughterId: number;
     diseasesManually?: DiseaseModel[];
     diseasesAutomatic?: DiseaseModel[];
     cameras?: CameraModel[];
