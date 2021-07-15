@@ -90,10 +90,6 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
     const entry: MeatEntryModel | null = await getMeatEntryById(req.params.id);
     const files = req.files;
 
-    console.log(device);
-    console.log(entry);
-    console.log(files);
-
     if (device && entry?._id && files) {
         let foundFiles: UploadedFile[] = [];
         for (let i = 0; i < 10; i++) {
