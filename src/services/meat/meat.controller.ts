@@ -11,6 +11,10 @@ export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
     const existingEntries = await getMeatEntriesAtTimestamp(entry.timeStamp);
     if (existingEntries.length > 0) {
         const existing = existingEntries[0]; // take first found
+        if(entry.slaughterId) {
+            existing.slaughterId = entry.slaughterId;
+            await updateMeatEntry(existing);
+        }
         return existing._id!;
     } else {
         return await createMeatEntry(entry);
