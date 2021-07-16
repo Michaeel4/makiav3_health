@@ -2,7 +2,8 @@ import { DiseaseModel } from './disease.model';
 
 export interface MeatEntryModel {
     _id?: string;
-    timeStamp: Date;
+    timeEnter: Date;
+    timeLeave: Date;
     type: MeatType;
     locationId: string;
     slaughterId: number;

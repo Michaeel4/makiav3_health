@@ -8,7 +8,7 @@ import { DiseaseModel } from '../../models/meat/disease.model';
 
 
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
-    const existingEntries = await getMeatEntriesAtTimestamp(entry.timeStamp);
+    const existingEntries = await getMeatEntriesAtTimestamp(entry.timeEnter, entry.timeLeave);
     if (existingEntries.length > 0) {
         const existing = existingEntries[0]; // take first found
         if(entry.slaughterId) {
@@ -73,21 +73,16 @@ export async function getMeatEntryById(id: string): Promise<MeatEntryModel | nul
     return await getMeatCollection().findOne({_id: id});
 }
 
-const TIME_THRESHOLD = 1; // seconds
-export async function getMeatEntriesAtTimestamp(timestamp: Date): Promise<MeatEntryModel[]> {
-    const start = new Date(timestamp.getTime() - (1000 * TIME_THRESHOLD));
-    const end = new Date(timestamp.getTime() + (1000 * TIME_THRESHOLD));
+export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date): Promise<MeatEntryModel[]> {
+    const entries = await getMeatEntries();
 
+    const matched = entries.filter(existing => {
+        return timeEnter > existing.timeEnter && timeLeave > existing.timeLeave && timeEnter < existing.timeLeave;
+    });
 
+    console.dir(matched);
 
-    const filter: MeatFilterModel = {
-        dateRange: {
-            start,
-            end
-        }
-    }
-
-    return await getMeatEntries(filter);
+    return matched;
 }
 
 
@@ -98,22 +93,22 @@ export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'P
     if (currentEntry) {
         if (direction === 'NEXT' ) {
             return (await getMeatCollection().find({
-                timeStamp: {
-                    $gt: currentEntry?.timeStamp
+                timeEnter: {
+                    $gt: currentEntry?.timeEnter
                 }
 
             }).sort({
-                timeStamp: 1
+                timeEnter: 1
             }).limit(1)
                 .toArray())[0]?._id
         }
 
         return (await getMeatCollection().find({
-            timeStamp: {
-                $lt:  currentEntry?.timeStamp
+            timeEnter: {
+                $lt:  currentEntry?.timeEnter
             }
         }).sort({
-            timeStamp: -1
+            timeEnter: -1
         }).limit(1)
             .toArray())[0]?._id
     }
@@ -127,7 +122,7 @@ export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntry
         query = buildPointFilter(query, 'locationId', filterModel.locationId);
     }
     if (filterModel.dateRange?.start || filterModel.dateRange?.end) {
-        query = buildRangeFilter(query, 'timeStamp', filterModel.dateRange.start, filterModel.dateRange.end);
+        query = buildRangeFilter(query, 'timeEnter', filterModel.dateRange.start, filterModel.dateRange.end);
     }
     if (filterModel.types) {
         query = buildMultipleFilter(query, 'type', filterModel.types);
