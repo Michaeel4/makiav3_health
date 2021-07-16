@@ -5,11 +5,10 @@ import { getMeatCollection } from '../mongodb.service';
 import { Condition, FilterQuery } from 'mongodb';
 import { DeviceModel } from '../../models/device.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
-import * as Moment from 'moment';
-import { extendMoment } from 'moment-range';
+const Moment = require('moment');
+const MomentRange = require('moment-range');
 
-const moment = extendMoment(Moment);
-
+const moment = MomentRange.extendMoment(Moment);
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
     const existingEntries = await getMeatEntriesAtTimestamp(entry.timeEnter, entry.timeLeave);
     if (existingEntries.length > 0) {
