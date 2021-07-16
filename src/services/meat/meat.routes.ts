@@ -74,7 +74,8 @@ meatRoutes.post('/meat', requireDeviceToken, async (req, res) => {
                     id
                 });
             }
-        } catch {
+        } catch (e) {
+            console.dir(e);
             res.status(500).end();
         }
     } else {
