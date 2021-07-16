@@ -5,7 +5,10 @@ import { getMeatCollection } from '../mongodb.service';
 import { Condition, FilterQuery } from 'mongodb';
 import { DeviceModel } from '../../models/device.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
+import * as Moment from 'moment';
+import { extendMoment } from 'moment-range';
 
+const moment = extendMoment(Moment);
 
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
     const existingEntries = await getMeatEntriesAtTimestamp(entry.timeEnter, entry.timeLeave);
@@ -75,9 +78,11 @@ export async function getMeatEntryById(id: string): Promise<MeatEntryModel | nul
 
 export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date): Promise<MeatEntryModel[]> {
     const entries = await getMeatEntries();
+    const range = moment.range(moment(timeEnter), moment(timeLeave));
 
     const matched = entries.filter(existing => {
-        return timeEnter > existing.timeEnter && timeLeave > existing.timeLeave && timeEnter < existing.timeLeave;
+        const existingRange = moment.range(moment(existing.timeEnter), moment(existing.timeLeave));
+        return existingRange.overlaps(range);
     });
 
     console.dir(matched);
