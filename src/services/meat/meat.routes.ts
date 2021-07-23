@@ -5,7 +5,7 @@ import {
     getMeatEntryById,
     getNeighborEntry,
     handleMeatEntry,
-    labelMeatEntry, updateMeatEntryImages,
+    labelMeatEntry, unlabelMeatEntry, updateMeatEntryImages,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
@@ -50,6 +50,21 @@ meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
     } else {
         res.status(400).end();
     }
+});
+
+meatRoutes.delete('/meat/:id/label', requireUser, async (req, res) => {
+    const id = req.params.id;
+    if (id) {
+        try {
+            await unlabelMeatEntry(id);
+            res.status(200).end();
+        } catch {
+            res.status(500).end();
+        }
+    } else {
+        res.status(400).end();
+    }
+
 });
 
 meatRoutes.delete('/meat/:id', requireUser, async (req, res) => {
