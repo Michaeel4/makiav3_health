@@ -69,7 +69,7 @@ export class MediaServer {
 
     config = {
         rtmp: {
-            port: 3333,
+            port: 3001,
             chunk_size: 60000,
             gop_cache: true,
             ping: 30,
