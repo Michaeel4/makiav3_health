@@ -100,7 +100,7 @@ export class MediaServer {
     }
 
     start() {
-        this.nms.run();
+        // this.nms.run();
         console.log('media server started!')
     }
 

@@ -6,7 +6,7 @@ import { config } from '../../config';
 import jwt from 'jsonwebtoken';
 
 export async function getUsers(): Promise<UserModel[]> {
-    const users = await getUserCollection().find<UserModel>({}).toArray();
+    const users = await getUserCollection().find<UserModel>({}, {}).toArray();
     return users.map(u => {
         delete u.password;
         return u;
