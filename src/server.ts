@@ -16,8 +16,10 @@ import { meatRoutes } from './services/meat/meat.routes';
 import { meatStatisticsRoutes } from './services/meat/meat-statistics/meat-statistics.routes';
 import { alertRoutes } from './services/alert/alert.routes';
 import { startHealthChecker } from './services/alert/alert.controller';
+import { Mutex } from 'async-mutex';
 
 const NodeMediaServer = require('node-media-server');
+export const imageMutex = new Mutex();
 
 
 
