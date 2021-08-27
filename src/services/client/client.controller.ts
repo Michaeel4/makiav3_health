@@ -15,7 +15,10 @@ export async function updateDevicePing(ping: PingModel, device: DeviceModel): Pr
         device.clientConfig = ping.config;
         await updateDevice(device);
     }
-
+    if (ping.deviceInfo) {
+        device.deviceInfo = ping.deviceInfo;
+        await updateDevice(device);
+    }
 
     const oldDevice = await getDeviceCollection().findOne<DeviceModel>({
         _id: ping.id
