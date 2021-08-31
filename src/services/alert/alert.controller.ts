@@ -8,12 +8,13 @@ import { config } from '../../config';
 import { AlertModel } from '../../models/alert.model';
 
 export async function addAlert(device: DeviceModel, online: boolean): Promise<void> {
-    await getAlertCollection().insertOne({
+    // TODO: fix alerts
+    /*await getAlertCollection().insertOne({
         _id: uuid(),
         timestamp: new Date(),
         device,
         online
-    });
+    });*/
 }
 
 export async function getAlerts(): Promise<AlertModel[]> {
