@@ -34,4 +34,4 @@ build_prod:
 
   script:
     - npm run build
-    - rsync -rav --delete . /outHealthNode
+    - rsync -rav --delete . /out
