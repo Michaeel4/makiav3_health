@@ -39,7 +39,11 @@ export class Server {
         }));
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(cors());
-        this.app.use(fileUpload());
+        this.app.use(fileUpload({
+            limits: {
+                fileSize: 1024 * 1024 * 1024
+            }
+        }));
 
         this.app.use(passport.initialize());
         initPassportStrategies();
