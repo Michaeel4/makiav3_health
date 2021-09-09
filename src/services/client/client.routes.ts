@@ -2,7 +2,7 @@ import { PingModel } from '../../models/ping.model';
 import { DeviceModel } from '../../models/device.model';
 import { config } from '../../config';
 import express from 'express';
-import { imagesForDevice, updateDevicePing } from './client.controller';
+import { imagesForDevice, setVideoUploading, updateDevicePing } from './client.controller';
 import { getDeviceById } from '../device/device.controller';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -44,6 +44,8 @@ clientRoutes.post('/device/:id/video', async (req, res) => {
 
     if (video && !Array.isArray(video) && device?._id) {
         try {
+            await setVideoUploading(device, true);
+
             const fileName = video.name;
             const camFolder = device._id;
             const folder = req.body.path;
@@ -57,6 +59,8 @@ clientRoutes.post('/device/:id/video', async (req, res) => {
         } catch (e) {
             console.error(e);
             res.status(500).end();
+        } finally {
+            await setVideoUploading(device, false);
         }
     } else {
         res.status(400).end();

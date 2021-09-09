@@ -12,4 +12,5 @@ export interface DeviceModel {
     gyroCalibration?: GyroData;
     clientConfig?: HealthCheckClientConfig;
     deviceInfo?: DeviceInfoModel;
+    isCurrentlyUploadingVideo: boolean;
 }

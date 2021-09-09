@@ -63,4 +63,12 @@ export async function updateDevicePing(ping: PingModel, device: DeviceModel): Pr
     });
 }
 
+export async function setVideoUploading(device: DeviceModel, uploading: boolean): Promise<void> {
+    await getDeviceCollection().updateOne({_id: device._id}, {
+        $set: {
+            isCurrentlyUploadingVideo: uploading
+        }
+    });
+}
+
 
