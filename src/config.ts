@@ -2,7 +2,7 @@ import { CameraType } from './models/meat/meat.model';
 
 export interface HealthCheckServerConfig {
     uploadDirs: {
-        meat: string;
+        meatImages: string;
         meatVideos: string;
     };
     jwtSecret: string;
@@ -22,7 +22,7 @@ export interface HealthCheckClientConfig {
 
 export const config: HealthCheckServerConfig = {
     uploadDirs: {
-        meat: '/home/meat/images',
+        meatImages: '/mnt/images/meat',
         meatVideos: '/mnt/videos/meat_upload'
     },
     jwtSecret: '66F6943FEC7755A2788F756839A54E',

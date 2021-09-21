@@ -115,7 +115,7 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
         foundFiles = foundFiles.filter((f1) => !!f1);
 
         for (const f of foundFiles) {
-            await f.mv(`${config.uploadDirs.meat}/${getName(f, entry.timeEnter)}`);
+            await f.mv(`${config.uploadDirs.meatImages}/${getName(f, entry.timeEnter)}`);
         }
 
 
@@ -136,7 +136,7 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
 
 meatRoutes.get('/meat/image/:hash', requireUser, (req, res) => {
     const mime = req.params.hash.split('_')[1].replace('.', '/');
-    const filepath = path.resolve(`${config.uploadDirs.meat}/${req.params.hash}`);
+    const filepath = path.resolve(`${config.uploadDirs.meatImages}/${req.params.hash}`);
     if (mime.startsWith('video')) {
         const size = fs.statSync(filepath).size;
         const head = {
