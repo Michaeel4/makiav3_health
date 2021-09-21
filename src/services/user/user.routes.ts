@@ -83,7 +83,7 @@ userRoutes.post('/user/:id/views', requireAdmin, (async (req, res, next) => {
     try {
         const user = await getUserById(req.params.id);
         const view: UserView = req.body?.view;
-        if (user && view) {
+        if (user) {
             await updateUserView(user, view);
             res.status(200).end();
         } else {
