@@ -1,13 +1,13 @@
 import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { UserModel, UserPermissions } from '../../models/user.model';
+import { UserModel, UserPermissions, UserView } from '../../models/user.model';
 import { getUserCollection } from '../mongodb.service';
 import {
     getUserById,
     getUsers,
     loginUser,
     registerUser,
-    updateUserPermissions
+    updateUserPermissions, updateUserView
 } from './user.controller';
 import { streamSecret } from '../../server';
 
@@ -67,6 +67,24 @@ userRoutes.post('/user/:id/permissions', requireAdmin, (async (req, res, next) =
         const permissions: UserPermissions = req.body;
         if (user && permissions) {
             await updateUserPermissions(user, permissions);
+            res.status(200).end();
+        } else {
+            res.sendStatus(400);
+        }
+
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+}));
+
+userRoutes.post('/user/:id/views', requireAdmin, (async (req, res, next) => {
+    try {
+        const user = await getUserById(req.params.id);
+        const view: UserView = req.body;
+        if (user && view) {
+            await updateUserView(user, view);
             res.status(200).end();
         } else {
             res.sendStatus(400);

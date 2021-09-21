@@ -6,6 +6,7 @@ export interface UserModel extends UserCredentials {
     admin: boolean;
     permissions: UserPermissions;
     streamSecret?: string;
+    UserView?: UserView
 }
 
 export interface UserCredentials {
@@ -16,4 +17,8 @@ export interface UserPermissions {
     allowedLocations: string[];
     allowedProjects: string[];
     allowedDevices: string[];
+}
+
+export enum UserView {
+    AnimalWelfare = 'ANIMAL_WELFARE'
 }

@@ -1,16 +1,16 @@
 export interface TailModel {
-  tailClass1: TailClass1;
-  tailClass2: TailClass2;
-  tailClass3: TailClass3;
+  length: TailLength;
+  lesion: TailLesion;
+  bodyLesion: BodyLesion;
 }
 
-export enum TailClass1 {
-  Class1, Class2, Class3, None
+export enum TailLength {
+  Intact, Short, TooShort, Unassessable
 }
 
-export enum TailClass2 {
-  Class1, Class2, Class3, None
+export enum TailLesion {
+  None, Minor, Major, Unassessable
 }
-export enum TailClass3 {
-  Class1, Class2, Class3, None
+export enum BodyLesion {
+  Zero, One, Two, Unassessable
 }
