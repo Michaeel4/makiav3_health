@@ -1,4 +1,5 @@
 import { DiseaseModel } from './disease.model';
+import { TailModel } from './tail.model';
 
 export interface MeatEntryModel {
     _id?: string;
@@ -9,6 +10,8 @@ export interface MeatEntryModel {
     slaughterId: number;
     diseasesManually?: DiseaseModel[];
     diseasesAutomatic?: DiseaseModel[];
+    tailManually?: TailModel;
+
     cameras?: CameraModel[];
 }
 
@@ -22,4 +25,4 @@ export interface CameraModel {
     images: string[];
 }
 
-export type MeatType = 'BEEF' | 'PORK' | 'CHICKEN';
+export type MeatType = 'PORK' | 'TAIL';
