@@ -25,4 +25,4 @@ export interface CameraModel {
     images: string[];
 }
 
-export type MeatType = 'PORK' | 'TAIL';
+export type MeatType = 'PORK';
