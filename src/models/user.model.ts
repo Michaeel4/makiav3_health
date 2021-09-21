@@ -6,7 +6,7 @@ export interface UserModel extends UserCredentials {
     admin: boolean;
     permissions: UserPermissions;
     streamSecret?: string;
-    UserView?: UserView
+    userView?: UserView
 }
 
 export interface UserCredentials {
