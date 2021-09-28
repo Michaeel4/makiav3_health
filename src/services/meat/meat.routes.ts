@@ -5,7 +5,7 @@ import {
     getMeatEntryById,
     getNeighborEntry,
     handleMeatEntry,
-    labelMeatEntry, unlabelMeatEntry, updateMeatEntryImages,
+    labelMeatEntry, labelTail, unlabelMeatEntry, updateMeatEntryImages,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
@@ -16,6 +16,7 @@ import {  MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
+import { TailModel } from '../../models/meat/tail.model';
 
 const meatRoutes = express.Router();
 
@@ -43,6 +44,21 @@ meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
     if (diseases && id) {
         try {
             await labelMeatEntry(id, diseases);
+            res.status(200).end();
+        } catch {
+            res.status(500).end();
+        }
+    } else {
+        res.status(400).end();
+    }
+});
+
+meatRoutes.post('/meat/:id/label/tail', requireUser, async (req, res) => {
+    const tail: TailModel = req.body;
+    const id = req.params.id;
+    if (tail && id) {
+        try {
+            await labelTail(id, tail);
             res.status(200).end();
         } catch {
             res.status(500).end();

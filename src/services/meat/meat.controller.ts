@@ -6,6 +6,7 @@ import { Condition, FilterQuery } from 'mongodb';
 import { DeviceModel } from '../../models/device.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
 import { buildFilter } from './filter.controller';
+import { TailModel } from '../../models/meat/tail.model';
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 
@@ -63,6 +64,18 @@ export async function labelMeatEntry(_id: string, diseases: DiseaseModel[]): Pro
         {
             $set: {
                 diseasesManually: diseases
+            }
+        }
+    );
+}
+
+export async function labelTail(_id: string, tail: TailModel): Promise<void> {
+    await getMeatCollection().updateOne({
+            _id
+        },
+        {
+            $set: {
+                tailManually: tail
             }
         }
     );
