@@ -93,6 +93,18 @@ export async function unlabelMeatEntry(_id: string): Promise<void> {
     );
 }
 
+export async function unlabelTail(_id: string): Promise<void> {
+    await getMeatCollection().updateOne({
+            _id
+        },
+        {
+            $unset: {
+                tailManually: ''
+            }
+        }
+    );
+}
+
 export async function getMeatEntries(filter?: MeatFilterModel): Promise<MeatEntryModel[]> {
     return await getMeatCollection().find(filter ? buildFilter(filter) : {}).toArray();
 }
