@@ -1,13 +1,13 @@
 import { requireUser } from '../../middleware/auth.middleware';
-
-import express = require('express');
 import {
     createRockEntry,
-    deleteRockEntry, getNeighborRockEntry,
+    deleteRockEntry,
+    getNeighborRockEntry,
     getRockEntries,
     getRockEntryById,
     labelRockEntry,
-    unlabelRockEntry, updateRockEntryImages
+    unlabelRockEntry,
+    updateRockEntryImages
 } from './rock.controller';
 import { RockClassification, RockEntryModel } from '../../models/rock/rock-entry.model';
 
@@ -16,6 +16,7 @@ import { config } from '../../config';
 import { getName } from '../../utils';
 import path from 'path';
 import fs from 'fs';
+import express = require('express');
 
 const rockRoutes = express.Router();
 

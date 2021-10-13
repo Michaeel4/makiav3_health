@@ -31,4 +31,4 @@ export const config: HealthCheckServerConfig = {
     bcryptRounds: 12,
     gyroSmoothingFactor: 0.95,
     timeoutInMs: 300000
-}
+};

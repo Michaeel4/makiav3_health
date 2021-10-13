@@ -1,21 +1,22 @@
 import { v4 as uuid } from 'uuid';
-import {  MeatEntryModel } from '../../models/meat/meat.model';
+import { MeatEntryModel } from '../../models/meat/meat.model';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../mongodb.service';
-import { Condition, FilterQuery } from 'mongodb';
 import { DeviceModel } from '../../models/device.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
 import { buildFilter } from './filter.controller';
 import { TailModel } from '../../models/meat/tail.model';
+
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 
 const moment = MomentRange.extendMoment(Moment);
+
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
     const existingEntries = await getMeatEntriesAtTimestamp(entry.timeEnter, entry.timeLeave);
     if (existingEntries.length > 0) {
         const existing = existingEntries[0]; // take first found
-        if(entry.slaughterId) {
+        if (entry.slaughterId) {
             existing.slaughterId = entry.slaughterId;
             await updateMeatEntry(existing);
         }
@@ -35,6 +36,7 @@ async function createMeatEntry(entry: MeatEntryModel): Promise<string> {
     });
     return _id;
 }
+
 async function updateMeatEntry(entry: MeatEntryModel): Promise<void> {
     await getMeatCollection().replaceOne({
         _id: entry._id
@@ -51,7 +53,7 @@ export async function updateMeatEntryImages(entry: MeatEntryModel, device: Devic
     entry.cameras?.push({
         deviceId: device._id!,
         images
-    })
+    });
 
     await updateMeatEntry(entry);
 
@@ -133,7 +135,7 @@ export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' 
     const currentEntry = await getMeatEntryById(currentId);
 
     if (currentEntry) {
-        if (direction === 'NEXT' ) {
+        if (direction === 'NEXT') {
             return (await getMeatCollection().find({
                 timeEnter: {
                     $gt: currentEntry?.timeEnter
@@ -142,17 +144,17 @@ export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' 
             }).sort({
                 timeEnter: 1
             }).limit(1)
-                .toArray())[0]?._id
+                .toArray())[0]?._id;
         }
 
         return (await getMeatCollection().find({
             timeEnter: {
-                $lt:  currentEntry?.timeEnter
+                $lt: currentEntry?.timeEnter
             }
         }).sort({
             timeEnter: -1
         }).limit(1)
-            .toArray())[0]?._id
+            .toArray())[0]?._id;
     }
     return null;
 }

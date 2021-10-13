@@ -1,9 +1,9 @@
 import { UserModel } from '../../models/user.model';
 import { DeviceModel } from '../../models/device.model';
-import { getDeviceCollection, getLocationCollection } from '../mongodb.service';
+import { getDeviceCollection } from '../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { CommandModel } from '../../models/ping.model';
-import { getAllowedLocations, isAllowedForLocation } from '../location/location.controller';
+import { getAllowedLocations } from '../location/location.controller';
 
 export async function isAllowedForDevice(user: UserModel, device: DeviceModel): Promise<boolean> {
     const allowedLocations = await getAllowedLocations(user);
@@ -11,7 +11,7 @@ export async function isAllowedForDevice(user: UserModel, device: DeviceModel): 
 }
 
 export async function getNewDeviceSerial(): Promise<number> {
-    return (await getDeviceCollection().find({}).sort({serial:-1}).limit(1).toArray())[0].serial + 1;
+    return (await getDeviceCollection().find({}).sort({serial: -1}).limit(1).toArray())[0].serial + 1;
 }
 
 export async function createDevice(device: DeviceModel): Promise<void> {
@@ -50,22 +50,24 @@ export async function getDeviceById(id: string): Promise<DeviceModel | null> {
 export async function rebootDevice(device: DeviceModel): Promise<void> {
     await getDeviceCollection().updateOne({_id: device._id}, {
         $set: {
-            "lastPing.command": CommandModel.REBOOT
+            'lastPing.command': CommandModel.REBOOT
         }
     });
 }
+
 export async function calibrateDevice(device: DeviceModel): Promise<void> {
     await getDeviceCollection().updateOne({_id: device._id}, {
         $set: {
-            "gyroCalibration": device?.lastPing?.gyroData
+            'gyroCalibration': device?.lastPing?.gyroData
         }
     });
 }
+
 export async function restartClientProcess(device: DeviceModel, processName: string) {
     await getDeviceCollection().updateOne({_id: device._id}, {
         $set: {
-            "lastPing.command": CommandModel.RESTART_PROCESS,
-            "lastPing.commandArgs": processName
+            'lastPing.command': CommandModel.RESTART_PROCESS,
+            'lastPing.commandArgs': processName
         }
     });
 }

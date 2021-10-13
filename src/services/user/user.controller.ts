@@ -39,7 +39,7 @@ export async function registerUser(user: UserModel): Promise<string | null> {
             allowedDevices: []
         },
         telephone: user.telephone
-    }
+    };
 
     const success = !existingUser && !!await getUserCollection().insertOne(newUser);
 
@@ -48,6 +48,7 @@ export async function registerUser(user: UserModel): Promise<string | null> {
     }
     return null;
 }
+
 export async function loginUser(credentials: UserCredentials): Promise<string | null> {
     const existingUser = await getUserByUsername(credentials.username);
     if (!existingUser || !existingUser.password) {
@@ -64,6 +65,7 @@ export async function updateUserPermissions(user: UserModel, permissions: UserPe
         }
     });
 }
+
 export async function updateUserView(user: UserModel, userView: UserView): Promise<void> {
     await getUserCollection().updateOne({_id: user._id}, {
         $set: {

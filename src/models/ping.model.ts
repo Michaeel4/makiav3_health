@@ -1,7 +1,7 @@
 import { DeviceStatus } from './device-status.enum';
 import { GyroData } from './gyro.model';
 import { HealthCheckClientConfig } from '../config';
-import {DeviceInfoModel} from "./device-info.model";
+import { DeviceInfoModel } from './device-info.model';
 
 export type LogInfo = { name: string, content: string };
 

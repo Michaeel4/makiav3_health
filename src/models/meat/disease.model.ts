@@ -30,18 +30,18 @@ export enum Disease {
     Kratzspuren = 'KRATZSPUREN'
 }
 
-export const diseasesForGroup: {[group in DiseaseGroup]: Disease[]} = {
+export const diseasesForGroup: { [group in DiseaseGroup]: Disease[] } = {
     [DiseaseGroup.Leber]: [
         Disease.Milkspots,
         Disease.Perihepatitis,
         Disease.Peritonitis,
         Disease.Fettleber,
     ],
-   [DiseaseGroup.Lunge]: [
-       Disease.Pneumonie,
-       Disease.Pleuritis,
-       Disease.Blutfuelle
-   ],
+    [DiseaseGroup.Lunge]: [
+        Disease.Pneumonie,
+        Disease.Pleuritis,
+        Disease.Blutfuelle
+    ],
     [DiseaseGroup.Herz]: [
         Disease.Epicarditis,
         Disease.Pericarditits,
@@ -55,10 +55,10 @@ export const diseasesForGroup: {[group in DiseaseGroup]: Disease[]} = {
         Disease.MasSchaden,
         Disease.Kratzspuren
     ]
-}
+};
 
 export enum DiseaseSeverity {
-    Leicht ='LEICHT',
+    Leicht = 'LEICHT',
     Mittel = 'MITTEL',
     Schwer = 'SCHWER'
 }

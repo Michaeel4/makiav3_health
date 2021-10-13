@@ -1,7 +1,7 @@
 import { PingModel } from './ping.model';
 import { GyroData } from './gyro.model';
 import { HealthCheckClientConfig } from '../config';
-import {DeviceInfoModel} from "./device-info.model";
+import { DeviceInfoModel } from './device-info.model';
 
 export interface DeviceModel {
     _id?: string;

@@ -1,13 +1,13 @@
 import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
 import { UserModel, UserPermissions, UserView } from '../../models/user.model';
-import { getUserCollection } from '../mongodb.service';
 import {
     getUserById,
     getUsers,
     loginUser,
     registerUser,
-    updateUserPermissions, updateUserView
+    updateUserPermissions,
+    updateUserView
 } from './user.controller';
 import { streamSecret } from '../../server';
 
@@ -26,7 +26,6 @@ userRoutes.post('/register', requireAdmin, async (req, res, next) => {
         res.sendStatus(500);
     }
 });
-
 
 
 userRoutes.post('/login', (async (req, res, next) => {
@@ -98,4 +97,4 @@ userRoutes.post('/user/:id/views', requireAdmin, (async (req, res, next) => {
 }));
 
 
-export {userRoutes}
+export { userRoutes };

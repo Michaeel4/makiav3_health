@@ -5,14 +5,18 @@ import {
     getMeatEntryById,
     getNeighborMeatEntry,
     handleMeatEntry,
-    labelMeatEntry, labelTail, unlabelMeatEntry, unlabelTail, updateMeatEntryImages,
+    labelMeatEntry,
+    labelTail,
+    unlabelMeatEntry,
+    unlabelTail,
+    updateMeatEntryImages,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
 import fs from 'fs';
-import {  MeatEntryModel } from '../../models/meat/meat.model';
+import { MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { DiseaseModel } from '../../models/meat/disease.model';

@@ -1,4 +1,3 @@
-
 export interface UserModel extends UserCredentials {
     _id?: string;
     name: string;
@@ -13,6 +12,7 @@ export interface UserCredentials {
     username: string;
     password?: string;
 }
+
 export interface UserPermissions {
     allowedLocations: string[];
     allowedProjects: string[];

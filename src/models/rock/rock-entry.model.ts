@@ -17,8 +17,8 @@ export enum Gefaehrdungsklasse {
     SehrGering = 'SEHR_GERING', Gering = 'GERING', Mittel = 'MITTEL', Hoch = 'HOCH'
 }
 
-export enum Gebirgsverhaltenstyp{
-    Standfest = 'STANDFEST', Nachbruechig = "NACHBRUECHIG", Aufgelockert = 'AUFGELOCKERT', Zerlegt = 'ZERLEGT'
+export enum Gebirgsverhaltenstyp {
+    Standfest = 'STANDFEST', Nachbruechig = 'NACHBRUECHIG', Aufgelockert = 'AUFGELOCKERT', Zerlegt = 'ZERLEGT'
 }
 
 export enum Bergwassereinfluss {

@@ -1,8 +1,4 @@
-import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { DeviceModel } from '../../models/device.model';
-import { UserModel } from '../../models/user.model';
-import { config } from '../../config';
-import fs from 'fs';
+import { requireAdmin } from '../../middleware/auth.middleware';
 import express from 'express';
 import { EmailReceiver } from '../../models/email-receiver.model';
 import { addEmailReceiver, deleteEmailReceiver, getAlerts, getEmailReceivers } from './alert.controller';
@@ -29,13 +25,13 @@ alertRoutes.get('/alert', requireAdmin, async (req, res) => {
 });
 
 alertRoutes.delete('/alert/email/:id', requireAdmin, async (req, res) => {
-   const id = req.params.id;
-   if (id) {
-       await deleteEmailReceiver(id);
-       res.status(200).end();
-   } else {
-       res.status(400).end();
-   }
+    const id = req.params.id;
+    if (id) {
+        await deleteEmailReceiver(id);
+        res.status(200).end();
+    } else {
+        res.status(400).end();
+    }
 
 });
 

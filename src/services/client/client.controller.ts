@@ -7,7 +7,7 @@ import { addAlert } from '../alert/alert.controller';
 import { updateDevice } from '../device/device.controller';
 
 
-export const imagesForDevice: {[deviceId: string]: Buffer} = {};
+export const imagesForDevice: { [deviceId: string]: Buffer } = {};
 
 export async function updateDevicePing(ping: PingModel, device: DeviceModel): Promise<void> {
 
@@ -43,17 +43,17 @@ export async function updateDevicePing(ping: PingModel, device: DeviceModel): Pr
                 x: (gyro1.rotation.x * config.gyroSmoothingFactor) + (gyro2.rotation.x * (1 - config.gyroSmoothingFactor)),
                 y: (gyro1.rotation.y * config.gyroSmoothingFactor) + (gyro2.rotation.y * (1 - config.gyroSmoothingFactor)),
             },
-            temp: (gyro1.temp * config.gyroSmoothingFactor) + (gyro2.temp * (1- config.gyroSmoothingFactor))
+            temp: (gyro1.temp * config.gyroSmoothingFactor) + (gyro2.temp * (1 - config.gyroSmoothingFactor))
         };
     }
 
     if (oldDevice?.lastPing?.emailSent && ping.status === DeviceStatus.Online && ping.timestamp >= new Date(Date.now() - config.timeoutInMs)) {
-       await addAlert(oldDevice, true);
+        await addAlert(oldDevice, true);
         oldDevice.lastPing.emailSent = false;
     }
 
     if (oldDevice?.lastPing?.status === ping.status) {
-        ping.emailSent = oldDevice?.lastPing.emailSent
+        ping.emailSent = oldDevice?.lastPing.emailSent;
     }
 
     await getDeviceCollection().updateOne({_id: ping.id}, {

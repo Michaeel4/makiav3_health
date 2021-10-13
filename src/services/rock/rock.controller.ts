@@ -12,6 +12,7 @@ export async function createRockEntry(entry: RockEntryModel): Promise<string> {
     });
     return _id;
 }
+
 async function updateRockEntry(entry: RockEntryModel): Promise<void> {
     await getRockCollection().replaceOne({
         _id: entry._id
@@ -68,7 +69,7 @@ export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' 
     const currentEntry = await getRockEntryById(currentId);
 
     if (currentEntry) {
-        if (direction === 'NEXT' ) {
+        if (direction === 'NEXT') {
             return (await getRockCollection().find({
                 creationDate: {
                     $gt: currentEntry?.creationDate
@@ -77,17 +78,17 @@ export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' 
             }).sort({
                 creationDate: 1
             }).limit(1)
-                .toArray())[0]?._id
+                .toArray())[0]?._id;
         }
 
         return (await getRockCollection().find({
             creationDate: {
-                $lt:  currentEntry?.creationDate
+                $lt: currentEntry?.creationDate
             }
         }).sort({
             creationDate: -1
         }).limit(1)
-            .toArray())[0]?._id
+            .toArray())[0]?._id;
     }
     return null;
 }

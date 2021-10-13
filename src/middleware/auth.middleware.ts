@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import { UserModel } from '../models/user.model';
-import { getProjectCollection } from '../services/mongodb.service';
 import { getDeviceById } from '../services/device/device.controller';
 
 
@@ -21,6 +20,7 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
         }
     })(req, res, next);
 }
+
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
     requireUser(req, res, () => {
         const user: UserModel | undefined = req.user as any;
@@ -31,6 +31,7 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction) {
         }
     });
 }
+
 export async function requireDeviceToken(req: Request, res: Response, next: NextFunction) {
     const deviceToken = req.header('Authorization');
     if (deviceToken) {

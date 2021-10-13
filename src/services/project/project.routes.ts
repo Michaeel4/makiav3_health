@@ -1,7 +1,5 @@
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
 import { ProjectModel } from '../../models/project.model';
-import { getProjectCollection } from '../mongodb.service';
-import { v4 as uuid } from 'uuid';
 import { UserModel } from '../../models/user.model';
 import { createProject, getProjects } from './project.controller';
 import express from 'express';
@@ -10,7 +8,7 @@ const projectRoutes = express.Router();
 
 projectRoutes.post('/project', requireAdmin, async (req, res) => {
     const project: ProjectModel = req.body;
-    await createProject(project)
+    await createProject(project);
     res.status(200).end();
 });
 
@@ -25,4 +23,4 @@ projectRoutes.get('/project', requireUser, async (req, res) => {
 });
 
 
-export {projectRoutes};
+export { projectRoutes };

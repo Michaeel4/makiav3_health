@@ -1,7 +1,7 @@
 import bodyParser = require('body-parser');
 import cors = require('cors');
 import express = require('express');
-import {initMongoDb} from './services/mongodb.service';
+import { initMongoDb } from './services/mongodb.service';
 import fileUpload from 'express-fileupload';
 import passport from 'passport';
 import { initPassportStrategies } from './middleware/passport';
@@ -21,7 +21,6 @@ import { rockRoutes } from './services/rock/rock.routes';
 
 const NodeMediaServer = require('node-media-server');
 export const imageMutex = new Mutex();
-
 
 
 export class Server {
@@ -93,7 +92,7 @@ export class MediaServer {
             cert: '/etc/webmin/letsencrypt-full.pem'
         },
         auth: {
-            api : true,
+            api: true,
             api_user: 'meat',
             api_pass: 'pwd4mediaserver',
             play: true,
@@ -109,7 +108,7 @@ export class MediaServer {
 
     start() {
         // this.nms.run();
-        console.log('media server started!')
+        console.log('media server started!');
     }
 
 
