@@ -3,7 +3,7 @@ import {
     deleteMeatEntry,
     getMeatEntries,
     getMeatEntryById,
-    getNeighborEntry,
+    getNeighborMeatEntry,
     handleMeatEntry,
     labelMeatEntry, labelTail, unlabelMeatEntry, unlabelTail, updateMeatEntryImages,
 } from './meat.controller';
@@ -192,7 +192,7 @@ meatRoutes.post('/meat/direction', requireUser, async (req, res) => {
     if (currentId && direction) {
         try {
             res.json({
-                id: await getNeighborEntry(currentId, direction)
+                id: await getNeighborMeatEntry(currentId, direction)
             });
         } catch {
             res.status(500).end();

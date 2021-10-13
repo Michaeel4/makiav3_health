@@ -4,6 +4,7 @@ export interface HealthCheckServerConfig {
     uploadDirs: {
         meatImages: string;
         meatVideos: string;
+        rockImages: string;
     };
     jwtSecret: string;
     bcryptRounds: number;
@@ -23,7 +24,8 @@ export interface HealthCheckClientConfig {
 export const config: HealthCheckServerConfig = {
     uploadDirs: {
         meatImages: '/mnt/images/meat',
-        meatVideos: '/mnt/videos/meat_upload'
+        meatVideos: '/mnt/videos/meat_upload',
+        rockImages: '/mnt/images/rock'
     },
     jwtSecret: '66F6943FEC7755A2788F756839A54E',
     bcryptRounds: 12,

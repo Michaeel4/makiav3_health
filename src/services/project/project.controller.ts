@@ -6,8 +6,7 @@ import { UserModel } from '../../models/user.model';
 export async function createProject(project: ProjectModel): Promise<void> {
     await getProjectCollection().insertOne({
         ...project,
-        _id: uuid(),
-        deviceToken: uuid()
+        _id: uuid()
     });
 }
 

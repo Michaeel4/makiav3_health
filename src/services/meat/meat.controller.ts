@@ -128,7 +128,7 @@ export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date
 }
 
 
-export async function getNeighborEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | null> {
+export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | null> {
 
     const currentEntry = await getMeatEntryById(currentId);
 

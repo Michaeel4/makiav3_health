@@ -17,6 +17,7 @@ import { meatStatisticsRoutes } from './services/meat/meat-statistics/meat-stati
 import { alertRoutes } from './services/alert/alert.routes';
 import { startHealthChecker } from './services/alert/alert.controller';
 import { Mutex } from 'async-mutex';
+import { rockRoutes } from './services/rock/rock.routes';
 
 const NodeMediaServer = require('node-media-server');
 export const imageMutex = new Mutex();
@@ -56,6 +57,7 @@ export class Server {
         this.app.use(inventoryRoutes);
         this.app.use(projectRoutes);
         this.app.use(meatRoutes);
+        this.app.use(rockRoutes);
         this.app.use(meatStatisticsRoutes);
         this.app.use(alertRoutes);
 

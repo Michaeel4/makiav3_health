@@ -63,5 +63,12 @@ export function getMeatCollection(): mongodb.Collection {
     return mongoClient.db("meat").collection('meat');
 }
 
+export function getRockCollection(): mongodb.Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db("rock").collection('rock');
+}
+
 
 export {mongoClient};
