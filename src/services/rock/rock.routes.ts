@@ -73,6 +73,7 @@ rockRoutes.delete('/rock/:id', requireUser, async (req, res) => {
     const entry: RockEntryModel | null = await getRockEntryById(req.params.id);
     if (entry) {
         await deleteRockEntry(entry);
+        res.status(200).end();
     } else {
         res.status(400).end();
     }

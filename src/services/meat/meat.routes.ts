@@ -106,6 +106,7 @@ meatRoutes.delete('/meat/:id', requireUser, async (req, res) => {
     const entry: MeatEntryModel | null = await getMeatEntryById(req.params.id);
     if (entry) {
         await deleteMeatEntry(entry);
+        res.status(200).end();
     } else {
         res.status(400).end();
     }
