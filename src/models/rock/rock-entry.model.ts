@@ -1,5 +1,6 @@
 export interface RockEntryModel {
     _id?: string;
+    name?: string;
     creationDate: Date;
     classificationManually?: RockClassification;
     classificationAutomatic?: RockClassification;
@@ -9,7 +10,6 @@ export interface RockEntryModel {
 export interface RockClassification {
     gefaehrdungsklasse: Gefaehrdungsklasse;
     gebirgsverhaltenstyp: Gebirgsverhaltenstyp;
-    bergwassereinfluss: Bergwassereinfluss;
     vegetationseinfluss: Vegetationseinfluss;
 }
 
@@ -19,10 +19,6 @@ export enum Gefaehrdungsklasse {
 
 export enum Gebirgsverhaltenstyp {
     Standfest = 'STANDFEST', Nachbruechig = 'NACHBRUECHIG', Aufgelockert = 'AUFGELOCKERT', Zerlegt = 'ZERLEGT'
-}
-
-export enum Bergwassereinfluss {
-    Kein = 'KEIN', Gering = 'GERING', Hoch = 'HOCH'
 }
 
 export enum Vegetationseinfluss {
