@@ -8,6 +8,9 @@ export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntry
     if (filterModel.locationId) {
         query = buildPointFilter(query, 'locationId', filterModel.locationId);
     }
+    if (filterModel.deviceId) {
+        query = buildMatchInArrayFilter(query, 'cameras', 'deviceId', filterModel.deviceId);
+    }
     if (filterModel.dateRange?.start || filterModel.dateRange?.end) {
         query = buildRangeFilter(query, 'timeEnter', filterModel.dateRange.start, filterModel.dateRange.end);
     }
@@ -25,6 +28,13 @@ function buildPointFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof M
     return {
         ...filterQuery,
         [key]: value
+    };
+}
+
+function buildMatchInArrayFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, matchKey: any, value: any): FilterQuery<MeatEntryModel> {
+    return {
+        ...filterQuery,
+        [key]: { $elemMatch: { [matchKey]: value }},
     };
 }
 
