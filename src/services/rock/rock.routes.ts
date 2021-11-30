@@ -139,7 +139,7 @@ rockRoutes.post('/rock/:id/name', requireUser, async (req, res) => {
     const name = req.body?.name;
 
 
-    if (entry?._id && name) {
+    if (entry?._id) {
         await updateRockEntryName(entry, name);
 
 
