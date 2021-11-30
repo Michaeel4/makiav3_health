@@ -5,7 +5,7 @@ cache:
     
 build_branch:
   stage: build
-  image: node:latest
+  image: node:17.1.0
   tags:
     - dev
   before_script:
@@ -19,7 +19,7 @@ build_branch:
 
 build_prod:
   stage: build
-  image: node:latest
+  image: node:17.1.0
   when: manual
   only:
     - master
