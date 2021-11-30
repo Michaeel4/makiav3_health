@@ -30,6 +30,11 @@ export async function updateRockEntryImages(entry: RockEntryModel, images: strin
     await updateRockEntry(entry);
 }
 
+export async function updateRockEntryName(entry: RockEntryModel, name: string): Promise<void> {
+    entry.name = name;
+    await updateRockEntry(entry);
+}
+
 export async function labelRockEntry(_id: string, classification: RockClassification): Promise<void> {
     await getRockCollection().updateOne({
             _id

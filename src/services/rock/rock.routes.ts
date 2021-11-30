@@ -7,7 +7,8 @@ import {
     getRockEntryById,
     labelRockEntry,
     unlabelRockEntry,
-    updateRockEntryImages
+    updateRockEntryImages,
+    updateRockEntryName
 } from './rock.controller';
 import { RockClassification, RockEntryModel } from '../../models/rock/rock-entry.model';
 
@@ -123,6 +124,23 @@ rockRoutes.post('/rock/:id/images', requireUser, async (req, res) => {
         });
 
         await updateRockEntryImages(entry, fileNames);
+
+
+        res.status(200).end();
+    } else {
+        res.status(400).end();
+    }
+
+
+});
+
+rockRoutes.post('/rock/:id/name', requireUser, async (req, res) => {
+    const entry: RockEntryModel | null = await getRockEntryById(req.params.id);
+    const name = req.body?.name;
+
+
+    if (entry?._id && name) {
+        await updateRockEntryName(entry, name);
 
 
         res.status(200).end();
