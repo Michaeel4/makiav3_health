@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getRockCollection } from '../mongodb.service';
+import { getRockCollection } from '../db/mongodb.service';
 import { RockClassification, RockEntryModel } from '../../models/rock/rock-entry.model';
 
 

@@ -3,6 +3,7 @@ export interface LocationModel {
     name: string;
     address: LocationAddressModel;
     projectId?: string;
+    makiaId?: number;
 }
 
 export interface LocationAddressModel {

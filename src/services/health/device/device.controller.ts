@@ -1,6 +1,6 @@
 import { UserModel } from '../../../models/health/user.model';
 import { DeviceModel } from '../../../models/health/device.model';
-import { getDeviceCollection } from '../../mongodb.service';
+import { getDeviceCollection } from '../../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { CommandModel } from '../../../models/health/ping.model';
 import { getAllowedLocations } from '../location/location.controller';

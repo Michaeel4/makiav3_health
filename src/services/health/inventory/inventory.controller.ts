@@ -1,5 +1,5 @@
 import { InventoryEntryModel } from '../../../models/health/inventory-entry.model';
-import { getInventoryCollection } from '../../mongodb.service';
+import { getInventoryCollection } from '../../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 
 export async function createInventoryEntry(entry: InventoryEntryModel): Promise<void> {

@@ -1,4 +1,4 @@
-import { getAlertCollection, getDeviceCollection, getEmailReceiverCollection } from '../../mongodb.service';
+import { getAlertCollection, getDeviceCollection, getEmailReceiverCollection } from '../../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { EmailReceiver } from '../../../models/health/email-receiver.model';
 import * as nodemailer from 'nodemailer';

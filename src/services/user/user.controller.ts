@@ -1,5 +1,5 @@
 import { UserCredentials, UserModel, UserPermissions, UserView } from '../../models/health/user.model';
-import { getUserCollection } from '../mongodb.service';
+import { getUserCollection } from '../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
 import { config } from '../../config';

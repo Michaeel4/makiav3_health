@@ -1,4 +1,17 @@
 import { CameraType } from './models/meat/meat.model';
+import { PoolConfig } from 'promise-mysql';
+
+
+export const mysqlConfig: PoolConfig = {
+    host: 'localhost',
+    port: 3306,
+    database: 'makia', // e.g. 'my-database',
+    user: 'root', // e.g. 'my-db-user'
+    password: 'dnhD7skVghZjxWrU2SOKnzw2pOurOG!', //'zr0vbR95lpTPZPKn', //, // , // , // e.g. 'my-db-password'
+    connectionLimit: 5,
+    connectTimeout: 10000, // 10 seconds
+    acquireTimeout: 10000 // 10 seconds
+};
 
 export interface HealthCheckServerConfig {
     uploadDirs: {

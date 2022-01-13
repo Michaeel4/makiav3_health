@@ -1,4 +1,4 @@
-import { getDeviceCollection } from '../../mongodb.service';
+import { getDeviceCollection } from '../../db/mongodb.service';
 import { PingModel } from '../../../models/health/ping.model';
 import { DeviceModel } from '../../../models/health/device.model';
 import { config } from '../../../config';

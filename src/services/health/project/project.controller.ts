@@ -1,5 +1,5 @@
 import { ProjectModel } from '../../../models/health/project.model';
-import { getProjectCollection } from '../../mongodb.service';
+import { getProjectCollection } from '../../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { UserModel } from '../../../models/health/user.model';
 

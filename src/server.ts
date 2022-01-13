@@ -1,7 +1,7 @@
 import bodyParser = require('body-parser');
 import cors = require('cors');
 import express = require('express');
-import { initMongoDb } from './services/mongodb.service';
+import { initMongoDb } from './services/db/mongodb.service';
 import fileUpload from 'express-fileupload';
 import passport from 'passport';
 import { initPassportStrategies } from './middleware/passport';
@@ -18,6 +18,8 @@ import { alertRoutes } from './services/health/alert/alert.routes';
 import { startHealthChecker } from './services/health/alert/alert.controller';
 import { Mutex } from 'async-mutex';
 import { rockRoutes } from './services/rock/rock.routes';
+import { initMySQL } from './services/db/mysql.service';
+import { makiaRoutes } from './services/makia/makia.service';
 
 const NodeMediaServer = require('node-media-server');
 export const imageMutex = new Mutex();
@@ -29,8 +31,9 @@ export class Server {
     public async start(): Promise<void> {
         try {
             await initMongoDb();
+            await initMySQL();
         } catch (err) {
-            console.error('Mongo init failed. ', err);
+            console.error('DB init failed. ', err);
             return;
         }
 
@@ -57,6 +60,7 @@ export class Server {
         this.app.use(projectRoutes);
         this.app.use(meatRoutes);
         this.app.use(rockRoutes);
+        this.app.use(makiaRoutes);
         this.app.use(meatStatisticsRoutes);
         this.app.use(alertRoutes);
 
