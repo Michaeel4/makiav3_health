@@ -1,8 +1,8 @@
-import { getDeviceCollection } from '../mongodb.service';
-import { PingModel } from '../../models/ping.model';
-import { DeviceModel } from '../../models/device.model';
-import { config } from '../../config';
-import { DeviceStatus } from '../../models/device-status.enum';
+import { getDeviceCollection } from '../../mongodb.service';
+import { PingModel } from '../../../models/health/ping.model';
+import { DeviceModel } from '../../../models/health/device.model';
+import { config } from '../../../config';
+import { DeviceStatus } from '../../../models/health/device-status.enum';
 import { addAlert } from '../alert/alert.controller';
 import { updateDevice } from '../device/device.controller';
 

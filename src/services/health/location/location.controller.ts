@@ -1,6 +1,6 @@
-import { UserModel } from '../../models/user.model';
-import { LocationModel } from '../../models/location.model';
-import { getLocationCollection } from '../mongodb.service';
+import { UserModel } from '../../../models/health/user.model';
+import { LocationModel } from '../../../models/health/location.model';
+import { getLocationCollection } from '../../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import { isAllowedForProject } from '../project/project.controller';
 

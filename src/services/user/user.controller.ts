@@ -1,4 +1,4 @@
-import { UserCredentials, UserModel, UserPermissions, UserView } from '../../models/user.model';
+import { UserCredentials, UserModel, UserPermissions, UserView } from '../../models/health/user.model';
 import { getUserCollection } from '../mongodb.service';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';

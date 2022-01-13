@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { MeatEntryModel } from '../../models/meat/meat.model';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../mongodb.service';
-import { DeviceModel } from '../../models/device.model';
+import { DeviceModel } from '../../models/health/device.model';
 import { DiseaseModel } from '../../models/meat/disease.model';
 import { buildFilter } from './filter.controller';
 import { TailModel } from '../../models/meat/tail.model';

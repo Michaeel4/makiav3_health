@@ -1,5 +1,5 @@
-import { requireAdmin } from '../../middleware/auth.middleware';
-import { InventoryEntryModel } from '../../models/inventory-entry.model';
+import { requireAdmin } from '../../../middleware/auth.middleware';
+import { InventoryEntryModel } from '../../../models/health/inventory-entry.model';
 import {
     createInventoryEntry,
     deleteInventoryEntryById,

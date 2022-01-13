@@ -1,8 +1,8 @@
-import { UserModel } from '../../models/user.model';
-import { DeviceModel } from '../../models/device.model';
-import { getDeviceCollection } from '../mongodb.service';
+import { UserModel } from '../../../models/health/user.model';
+import { DeviceModel } from '../../../models/health/device.model';
+import { getDeviceCollection } from '../../mongodb.service';
 import { v4 as uuid } from 'uuid';
-import { CommandModel } from '../../models/ping.model';
+import { CommandModel } from '../../../models/health/ping.model';
 import { getAllowedLocations } from '../location/location.controller';
 
 export async function isAllowedForDevice(user: UserModel, device: DeviceModel): Promise<boolean> {

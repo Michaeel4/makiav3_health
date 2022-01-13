@@ -1,6 +1,6 @@
 import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { UserModel, UserPermissions, UserView } from '../../models/user.model';
+import { UserModel, UserPermissions, UserView } from '../../models/health/user.model';
 import {
     getUserById,
     getUsers,

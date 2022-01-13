@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
-import { UserModel } from '../models/user.model';
-import { getDeviceById } from '../services/device/device.controller';
+import { UserModel } from '../models/health/user.model';
+import { getDeviceById } from '../services/health/device/device.controller';
 
 
 export function requireUser(req: Request, res: Response, next: NextFunction) {

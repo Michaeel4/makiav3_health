@@ -1,12 +1,12 @@
-import { PingModel } from '../../models/ping.model';
-import { DeviceModel } from '../../models/device.model';
-import { config } from '../../config';
+import { PingModel } from '../../../models/health/ping.model';
+import { DeviceModel } from '../../../models/health/device.model';
+import { config } from '../../../config';
 import express from 'express';
 import { imagesForDevice, setVideoUploading, updateDevicePing } from './client.controller';
 import { getDeviceById } from '../device/device.controller';
 import * as fs from 'fs';
 import * as path from 'path';
-import { imageMutex } from '../../server';
+import { imageMutex } from '../../../server';
 
 const clientRoutes = express.Router();
 

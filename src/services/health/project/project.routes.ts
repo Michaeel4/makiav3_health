@@ -1,6 +1,6 @@
-import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { ProjectModel } from '../../models/project.model';
-import { UserModel } from '../../models/user.model';
+import { requireAdmin, requireUser } from '../../../middleware/auth.middleware';
+import { ProjectModel } from '../../../models/health/project.model';
+import { UserModel } from '../../../models/health/user.model';
 import { createProject, getProjects } from './project.controller';
 import express from 'express';
 

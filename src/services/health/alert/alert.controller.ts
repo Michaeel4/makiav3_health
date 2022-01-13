@@ -1,11 +1,11 @@
-import { getAlertCollection, getDeviceCollection, getEmailReceiverCollection } from '../mongodb.service';
+import { getAlertCollection, getDeviceCollection, getEmailReceiverCollection } from '../../mongodb.service';
 import { v4 as uuid } from 'uuid';
-import { EmailReceiver } from '../../models/email-receiver.model';
+import { EmailReceiver } from '../../../models/health/email-receiver.model';
 import * as nodemailer from 'nodemailer';
-import { DeviceModel } from '../../models/device.model';
-import { DeviceStatus } from '../../models/device-status.enum';
-import { config } from '../../config';
-import { AlertModel } from '../../models/alert.model';
+import { DeviceModel } from '../../../models/health/device.model';
+import { DeviceStatus } from '../../../models/health/device-status.enum';
+import { config } from '../../../config';
+import { AlertModel } from '../../../models/health/alert.model';
 
 export async function addAlert(device: DeviceModel, online: boolean): Promise<void> {
     // TODO: fix alerts

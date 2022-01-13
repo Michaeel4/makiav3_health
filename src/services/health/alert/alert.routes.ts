@@ -1,6 +1,6 @@
-import { requireAdmin } from '../../middleware/auth.middleware';
+import { requireAdmin } from '../../../middleware/auth.middleware';
 import express from 'express';
-import { EmailReceiver } from '../../models/email-receiver.model';
+import { EmailReceiver } from '../../../models/health/email-receiver.model';
 import { addEmailReceiver, deleteEmailReceiver, getAlerts, getEmailReceivers } from './alert.controller';
 
 

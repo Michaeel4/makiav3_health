@@ -1,6 +1,6 @@
-import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { LocationModel } from '../../models/location.model';
-import { UserModel } from '../../models/user.model';
+import { requireAdmin, requireUser } from '../../../middleware/auth.middleware';
+import { LocationModel } from '../../../models/health/location.model';
+import { UserModel } from '../../../models/health/user.model';
 import express from 'express';
 import { createLocation, getAllowedLocations, updateLocation } from './location.controller';
 

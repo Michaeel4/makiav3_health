@@ -1,7 +1,7 @@
-import { ProjectModel } from '../../models/project.model';
-import { getProjectCollection } from '../mongodb.service';
+import { ProjectModel } from '../../../models/health/project.model';
+import { getProjectCollection } from '../../mongodb.service';
 import { v4 as uuid } from 'uuid';
-import { UserModel } from '../../models/user.model';
+import { UserModel } from '../../../models/health/user.model';
 
 export async function createProject(project: ProjectModel): Promise<void> {
     await getProjectCollection().insertOne({

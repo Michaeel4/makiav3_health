@@ -1,6 +1,6 @@
-import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { DeviceModel } from '../../models/device.model';
-import { UserModel } from '../../models/user.model';
+import { requireAdmin, requireUser } from '../../../middleware/auth.middleware';
+import { DeviceModel } from '../../../models/health/device.model';
+import { UserModel } from '../../../models/health/user.model';
 import express from 'express';
 import {
     calibrateDevice,
@@ -14,7 +14,7 @@ import {
     updateDevice
 } from './device.controller';
 import { imagesForDevice } from '../client/client.controller';
-import { imageMutex } from '../../server';
+import { imageMutex } from '../../../server';
 
 const deviceRoutes = express.Router();
 
