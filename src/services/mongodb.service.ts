@@ -1,20 +1,20 @@
-import * as mongodb from 'mongodb';
+import { Collection, MongoClient } from 'mongodb';
 
-let mongoClient: mongodb.MongoClient | undefined;
+let mongoClient: MongoClient | undefined;
 
 export async function initMongoDb(): Promise<void> {
-    mongoClient = await mongodb.connect('mongodb://localhost:27017', {useUnifiedTopology: true});
+    mongoClient = await MongoClient.connect('mongodb://localhost:27017');
     console.log('Connected to mongo.');
 }
 
-export function getDeviceCollection(): mongodb.Collection {
+export function getDeviceCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('device');
 }
 
-export function getEmailReceiverCollection(): mongodb.Collection {
+export function getEmailReceiverCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
@@ -22,49 +22,49 @@ export function getEmailReceiverCollection(): mongodb.Collection {
 }
 
 
-export function getLocationCollection(): mongodb.Collection {
+export function getLocationCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('location');
 }
 
-export function getUserCollection(): mongodb.Collection {
+export function getUserCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('user');
 }
 
-export function getInventoryCollection(): mongodb.Collection {
+export function getInventoryCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('inventory');
 }
 
-export function getProjectCollection(): mongodb.Collection {
+export function getProjectCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('project');
 }
 
-export function getAlertCollection(): mongodb.Collection {
+export function getAlertCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('healthcheck').collection('alert');
 }
 
-export function getMeatCollection(): mongodb.Collection {
+export function getMeatCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }
     return mongoClient.db('meat').collection('meat');
 }
 
-export function getRockCollection(): mongodb.Collection {
+export function getRockCollection(): Collection {
     if (!mongoClient) {
         throw new Error('Mongo not connected!');
     }

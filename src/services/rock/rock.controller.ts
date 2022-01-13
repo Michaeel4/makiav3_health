@@ -9,7 +9,7 @@ export async function createRockEntry(entry: RockEntryModel): Promise<string> {
         _id,
         ...entry,
         images: []
-    });
+    } as any);
     return _id;
 }
 
@@ -61,21 +61,21 @@ export async function unlabelRockEntry(_id: string): Promise<void> {
 
 
 export async function getRockEntries(): Promise<RockEntryModel[]> {
-    return await getRockCollection().find({}).toArray();
+    return await getRockCollection().find<RockEntryModel>({}).toArray();
 }
 
 export async function getRockEntryById(id: string): Promise<RockEntryModel | null> {
-    return await getRockCollection().findOne({_id: id});
+    return await getRockCollection().findOne<RockEntryModel>({_id: id});
 }
 
 
-export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | null> {
+export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | undefined> {
 
     const currentEntry = await getRockEntryById(currentId);
 
     if (currentEntry) {
         if (direction === 'NEXT') {
-            return (await getRockCollection().find({
+            return (await getRockCollection().find<RockEntryModel>({
                 creationDate: {
                     $gt: currentEntry?.creationDate
                 }
@@ -86,7 +86,7 @@ export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' 
                 .toArray())[0]?._id;
         }
 
-        return (await getRockCollection().find({
+        return (await getRockCollection().find<RockEntryModel>({
             creationDate: {
                 $lt: currentEntry?.creationDate
             }
@@ -95,5 +95,5 @@ export async function getNeighborRockEntry(currentId: string, direction: 'NEXT' 
         }).limit(1)
             .toArray())[0]?._id;
     }
-    return null;
+    return undefined;
 }

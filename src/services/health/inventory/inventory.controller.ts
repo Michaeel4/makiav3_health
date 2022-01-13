@@ -6,7 +6,7 @@ export async function createInventoryEntry(entry: InventoryEntryModel): Promise<
     await getInventoryCollection().insertOne({
         ...entry,
         _id: uuid()
-    });
+    } as any);
 }
 
 export async function updateInventoryEntry(entry: InventoryEntryModel): Promise<void> {
@@ -14,7 +14,7 @@ export async function updateInventoryEntry(entry: InventoryEntryModel): Promise<
 }
 
 export async function getInventoryEntries(): Promise<InventoryEntryModel[]> {
-    return await getInventoryCollection().find({}).toArray();
+    return await getInventoryCollection().find<InventoryEntryModel>({}).toArray();
 }
 
 export async function deleteInventoryEntryById(id: string): Promise<void> {

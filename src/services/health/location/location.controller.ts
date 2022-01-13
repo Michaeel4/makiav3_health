@@ -11,7 +11,7 @@ export function isAllowedForLocation(user: UserModel, locationId: string) {
 }
 
 async function getLocations(): Promise<LocationModel[]> {
-    return await getLocationCollection().find({}).toArray();
+    return await getLocationCollection().find<LocationModel>({}).toArray();
 }
 
 export async function getAllowedLocations(user: UserModel): Promise<LocationModel[]> {
@@ -27,7 +27,7 @@ export async function createLocation(location: LocationModel): Promise<void> {
     await getLocationCollection().insertOne({
         ...location,
         _id: uuid()
-    });
+    } as any);
 }
 
 export async function updateLocation(location: LocationModel): Promise<void> {

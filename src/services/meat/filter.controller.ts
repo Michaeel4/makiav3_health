@@ -1,9 +1,9 @@
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
-import { Condition, FilterQuery } from 'mongodb';
+import { Condition, Filter } from 'mongodb';
 import { MeatEntryModel } from '../../models/meat/meat.model';
 
-export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntryModel> {
-    let query: FilterQuery<MeatEntryModel> = {};
+export function buildFilter(filterModel: MeatFilterModel): Filter<MeatEntryModel> {
+    let query: Filter<MeatEntryModel> = {};
 
     if (filterModel.locationId) {
         query = buildPointFilter(query, 'locationId', filterModel.locationId);
@@ -24,21 +24,21 @@ export function buildFilter(filterModel: MeatFilterModel): FilterQuery<MeatEntry
     return query;
 }
 
-function buildPointFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, value: any): FilterQuery<MeatEntryModel> {
+function buildPointFilter(filterQuery: Filter<MeatEntryModel>, key: keyof MeatEntryModel, value: any): Filter<MeatEntryModel> {
     return {
         ...filterQuery,
         [key]: value
     };
 }
 
-function buildMatchInArrayFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, matchKey: any, value: any): FilterQuery<MeatEntryModel> {
+function buildMatchInArrayFilter(filterQuery: Filter<MeatEntryModel>, key: keyof MeatEntryModel, matchKey: any, value: any): Filter<MeatEntryModel> {
     return {
         ...filterQuery,
-        [key]: { $elemMatch: { [matchKey]: value }},
+        [key]: {$elemMatch: {[matchKey]: value}},
     };
 }
 
-function buildRangeFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, startValue: any, endValue: any): FilterQuery<MeatEntryModel> {
+function buildRangeFilter(filterQuery: Filter<MeatEntryModel>, key: keyof MeatEntryModel, startValue: any, endValue: any): Filter<MeatEntryModel> {
     const search: Condition<MeatEntryModel> = {};
     if (startValue) {
         search.$gte = startValue;
@@ -53,7 +53,7 @@ function buildRangeFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof M
     };
 }
 
-function buildMultipleFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, value: any[]): FilterQuery<MeatEntryModel> {
+function buildMultipleFilter(filterQuery: Filter<MeatEntryModel>, key: keyof MeatEntryModel, value: any[]): Filter<MeatEntryModel> {
     return {
         ...filterQuery,
         [key]: {
@@ -62,7 +62,7 @@ function buildMultipleFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyo
     };
 }
 
-function buildExistFilter(filterQuery: FilterQuery<MeatEntryModel>, key: keyof MeatEntryModel, value: boolean): FilterQuery<MeatEntryModel> {
+function buildExistFilter(filterQuery: Filter<MeatEntryModel>, key: keyof MeatEntryModel, value: boolean): Filter<MeatEntryModel> {
     return {
         ...filterQuery,
         [key]: {

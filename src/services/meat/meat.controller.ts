@@ -33,7 +33,7 @@ async function createMeatEntry(entry: MeatEntryModel): Promise<string> {
         _id,
         ...entry,
         cameras: []
-    });
+    } as any);
     return _id;
 }
 
@@ -108,11 +108,11 @@ export async function unlabelTail(_id: string): Promise<void> {
 }
 
 export async function getMeatEntries(filter?: MeatFilterModel): Promise<MeatEntryModel[]> {
-    return await getMeatCollection().find(filter ? buildFilter(filter) : {}).toArray();
+    return (await getMeatCollection().find<MeatEntryModel>(filter ? buildFilter(filter) as any : {}).toArray()) as unknown as MeatEntryModel[];
 }
 
 export async function getMeatEntryById(id: string): Promise<MeatEntryModel | null> {
-    return await getMeatCollection().findOne({_id: id});
+    return await getMeatCollection().findOne<MeatEntryModel>({_id: id});
 }
 
 export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date): Promise<MeatEntryModel[]> {
@@ -130,13 +130,13 @@ export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date
 }
 
 
-export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | null> {
+export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' | 'PREVIOUS'): Promise<string | undefined> {
 
     const currentEntry = await getMeatEntryById(currentId);
 
     if (currentEntry) {
         if (direction === 'NEXT') {
-            return (await getMeatCollection().find({
+            return (await getMeatCollection().find<MeatEntryModel>({
                 timeEnter: {
                     $gt: currentEntry?.timeEnter
                 }
@@ -147,7 +147,7 @@ export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' 
                 .toArray())[0]?._id;
         }
 
-        return (await getMeatCollection().find({
+        return (await getMeatCollection().find<MeatEntryModel>({
             timeEnter: {
                 $lt: currentEntry?.timeEnter
             }
@@ -156,6 +156,6 @@ export async function getNeighborMeatEntry(currentId: string, direction: 'NEXT' 
         }).limit(1)
             .toArray())[0]?._id;
     }
-    return null;
+    return undefined;
 }
 

@@ -29,7 +29,7 @@ export async function registerUser(user: UserModel): Promise<string | null> {
     const existingUser = await getUserByUsername(user.username);
     const newUser: UserModel = {
         _id: uuid(),
-        password: await bcrypt.hash(user.password, config.bcryptRounds),
+        password: await bcrypt.hash(user.password!, config.bcryptRounds),
         username: user.username,
         name: user.name,
         admin: false,
@@ -41,7 +41,7 @@ export async function registerUser(user: UserModel): Promise<string | null> {
         telephone: user.telephone
     };
 
-    const success = !existingUser && !!await getUserCollection().insertOne(newUser);
+    const success = !existingUser && !!await getUserCollection().insertOne(newUser as any);
 
     if (success) {
         return jwt.sign({username: user.username}, config.jwtSecret);
@@ -54,7 +54,7 @@ export async function loginUser(credentials: UserCredentials): Promise<string | 
     if (!existingUser || !existingUser.password) {
         return null;
     }
-    const result = await bcrypt.compare(credentials.password, existingUser.password);
+    const result = await bcrypt.compare(credentials.password!, existingUser.password);
     return result ? jwt.sign({username: existingUser.username}, config.jwtSecret) : null;
 }
 

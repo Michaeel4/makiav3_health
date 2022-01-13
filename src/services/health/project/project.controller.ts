@@ -7,11 +7,11 @@ export async function createProject(project: ProjectModel): Promise<void> {
     await getProjectCollection().insertOne({
         ...project,
         _id: uuid()
-    });
+    } as any);
 }
 
 export async function getProjects(): Promise<ProjectModel[]> {
-    return await getProjectCollection().find({}).toArray();
+    return await getProjectCollection().find<ProjectModel>({}).toArray();
 }
 
 export function isAllowedForProject(user: UserModel, projectId: string | undefined): boolean {

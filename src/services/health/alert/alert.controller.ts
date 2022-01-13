@@ -18,7 +18,7 @@ export async function addAlert(device: DeviceModel, online: boolean): Promise<vo
 }
 
 export async function getAlerts(): Promise<AlertModel[]> {
-    return await getAlertCollection().find({}).toArray();
+    return await getAlertCollection().find<AlertModel>({}).toArray();
 }
 
 
@@ -26,11 +26,11 @@ export async function addEmailReceiver(email: string): Promise<void> {
     await getEmailReceiverCollection().insertOne({
         _id: uuid(),
         email
-    });
+    } as any);
 }
 
 export async function getEmailReceivers(): Promise<EmailReceiver[]> {
-    return await getEmailReceiverCollection().find({}).toArray();
+    return await getEmailReceiverCollection().find<EmailReceiver>({}).toArray();
 }
 
 export async function deleteEmailReceiver(id: string): Promise<void> {
@@ -67,7 +67,7 @@ let emailInterval: NodeJS.Timeout | null;
 
 export async function startHealthChecker() {
     emailInterval = setInterval(async () => {
-        const devices: DeviceModel[] = await getDeviceCollection().find({}).toArray();
+        const devices: DeviceModel[] = await getDeviceCollection().find<DeviceModel>({}).toArray();
         await Promise.all(devices.map(async device => {
             if (device.lastPing &&
                 !device.lastPing.emailSent && (

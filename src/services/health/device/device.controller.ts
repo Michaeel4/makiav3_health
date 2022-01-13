@@ -19,7 +19,7 @@ export async function createDevice(device: DeviceModel): Promise<void> {
         ...device,
         _id: uuid(),
         serial: await getNewDeviceSerial()
-    });
+    } as any);
 }
 
 export async function deleteDevice(device: DeviceModel): Promise<void> {
@@ -31,7 +31,7 @@ export async function updateDevice(device: DeviceModel): Promise<void> {
 }
 
 async function getDevices(): Promise<DeviceModel[]> {
-    return await getDeviceCollection().find({}).toArray();
+    return await getDeviceCollection().find<DeviceModel>({}).toArray();
 }
 
 
@@ -44,7 +44,7 @@ export async function getAllowedDevices(user: UserModel): Promise<DeviceModel[]>
 
 
 export async function getDeviceById(id: string): Promise<DeviceModel | null> {
-    return await getDeviceCollection().findOne({_id: id});
+    return await getDeviceCollection().findOne<DeviceModel>({_id: id});
 }
 
 export async function rebootDevice(device: DeviceModel): Promise<void> {
