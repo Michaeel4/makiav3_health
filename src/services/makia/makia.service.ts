@@ -1,7 +1,7 @@
 import express = require('express');
 import moment = require('moment');
 import { MakiaLocation } from '../../models/makia/location';
-import { getMySQLQueryFunc } from '../db/mysql.service';
+import { getPool } from '../db/mysql.service';
 import { MakiaEntry } from '../../models/makia/entry';
 import { MakiaFilter } from '../../models/makia/filter';
 import { Moment } from 'moment';
@@ -15,7 +15,7 @@ const makiaRoutes = express.Router();
 
 // Get Locations
 makiaRoutes.get('/makia/locations', requireUser, async (req, res) => {
-    const rows: MakiaLocation[] = await (getMySQLQueryFunc()(
+    const rows: MakiaLocation[] = await (getPool().query(
         'SELECT * FROM locations;'
     ));
     res.json(rows);
@@ -25,7 +25,7 @@ makiaRoutes.get('/makia/locations', requireUser, async (req, res) => {
 
 // Get Entries
 makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
-    const rows: MakiaEntry[] = await (getMySQLQueryFunc()(
+    const rows: MakiaEntry[] = await (getPool().query(
         'SELECT * FROM entries LIMIT 10000;'
     ));
     res.json(rows);
@@ -36,7 +36,7 @@ makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
 makiaRoutes.post('/makia/entries', requireUser, async (req, res) => {
     const entry = req.body as MakiaEntry;
     try {
-        const result = await (getMySQLQueryFunc()(
+        const result = await (getPool().query(
             'INSERT INTO entries (timestamp, locationID, direction, ' +
             'category, stoppedForMs, avgVelocity, minVelocity, stoppedDistance, convoyIndex, convoyType)' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
@@ -53,7 +53,7 @@ makiaRoutes.post('/makia/status', requireUser, async (req, res) => {
     const filter: MakiaFilter = req.body;
     const query = `SELECT COUNT(*) AS Count FROM online_time WHERE timestamp >= "${filter.min_value}" AND timestamp <= "${filter.max_value}";`;
     console.log(query);
-    const result = (await (getMySQLQueryFunc()(query)))[0].Count;
+    const result = (await (getPool().query(query)))[0].Count;
 
     const startTime: Moment = moment(filter.min_value);
     const endTime: Moment = moment(filter.max_value);
@@ -109,7 +109,7 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
     }
 
 
-    const rows: MakiaEntry[] = await (getMySQLQueryFunc()(query));
+    const rows: MakiaEntry[] = await (getPool().query(query));
     res.json(rows);
 
 });
@@ -120,7 +120,7 @@ function getname(f: any) {
 
 
 makiaRoutes.post('/makia/entries/:id/images', requireUser, async (req, res) => {
-    const rows: MakiaEntry[] = await (getMySQLQueryFunc()(
+    const rows: MakiaEntry[] = await (getPool().query(
         `SELECT * FROM entries WHERE id = ?;`,
         [req.params.id]
     ));
@@ -135,7 +135,7 @@ makiaRoutes.post('/makia/entries/:id/images', requireUser, async (req, res) => {
     }
 
 
-    await (getMySQLQueryFunc()('UPDATE entries SET images = ? WHERE id = ?;',
+    await (getPool().query('UPDATE entries SET images = ? WHERE id = ?;',
         [JSON.stringify(foundFiles.map((f3, i) => {
             return f3 ? getname(f3) : entry.images ? JSON.parse(entry.images)?.[i] ?? null : null;
         })), req.params.id

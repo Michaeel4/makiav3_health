@@ -8,11 +8,12 @@ let pool: Pool | undefined;
 export async function initMySQL(): Promise<void> {
     pool = await mysql.createPool(mysqlConfig);
     console.log('Connected to mysql.');
+    console.dir(pool);
 }
 
-export function getMySQLQueryFunc(): any {
+export function getPool(): Pool {
     if (pool) {
-        return pool.query;
+        return pool;
     } else {
         throw 'MYSQL not connected!';
     }
