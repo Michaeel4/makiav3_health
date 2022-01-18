@@ -130,7 +130,7 @@ makiaRoutes.post('/makia/entries/:id/images', requireUser, async (req, res) => {
     const foundFiles: UploadedFile[] = [files.video ?? null, files.license_plate ?? null, files.face ?? null, files.secondary ?? null];
 
     for (const f of foundFiles.filter((f1) => f1 !== null)) {
-        await f.mv('/mnt/training/makia/images/' + getname(f));
+        await f.mv('/mnt/images/makia/' + getname(f));
 
     }
 
@@ -146,7 +146,7 @@ makiaRoutes.post('/makia/entries/:id/images', requireUser, async (req, res) => {
 
 makiaRoutes.get('/makia/image/:hash', requireUser, (req, res) => {
     const mime = req.params.hash.split('_')[1].replace('.', '/');
-    const filepath = path.resolve('/mnt/training/makia/images/' + req.params.hash);
+    const filepath = path.resolve('/mnt/images/makia/' + req.params.hash);
     if (mime.startsWith('video')) {
         const size = fs.statSync(filepath).size;
         const head = {
