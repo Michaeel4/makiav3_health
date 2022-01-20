@@ -8,7 +8,7 @@ import { Moment } from 'moment';
 import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
-import { requireUser } from '../../middleware/auth.middleware';
+import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 
 const makiaRoutes = express.Router();
 
@@ -33,7 +33,7 @@ makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
 
 
 // Add Entry
-makiaRoutes.post('/makia/entries', requireUser, async (req, res) => {
+makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
     const entry = req.body as MakiaEntry;
     try {
         const result = await (getPool().query(
@@ -119,7 +119,7 @@ function getname(f: any) {
 }
 
 
-makiaRoutes.post('/makia/entries/:id/images', requireUser, async (req, res) => {
+makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, res) => {
     const rows: MakiaEntry[] = await (getPool().query(
         `SELECT * FROM entries WHERE id = ?;`,
         [req.params.id]
