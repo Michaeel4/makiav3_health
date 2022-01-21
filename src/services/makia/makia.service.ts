@@ -144,7 +144,7 @@ makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, re
     res.json(entry);
 });
 
-makiaRoutes.get('/makia/image/:hash', requireUser, (req, res) => {
+makiaRoutes.get('/makia/image/:hash', (req, res) => {
     const mime = req.params.hash.split('_')[1].replace('.', '/');
     const filepath = path.resolve('/mnt/images/makia/' + req.params.hash);
     if (mime.startsWith('video')) {
