@@ -7,9 +7,6 @@ let pool: Pool | undefined;
 
 export async function initMySQL(): Promise<void> {
     pool = await mysql.createPool(mysqlConfig);
-    const connection = await pool.getConnection();
-    console.log('Connected to mysql.');
-    console.dir(connection);
 }
 
 export function getPool(): Pool {

@@ -8,7 +8,7 @@ export const mysqlConfig: PoolConfig = {
     database: 'makia', // e.g. 'my-database',
     user: 'root', // e.g. 'my-db-user'
     password: 'dnhD7skVghZjxWrU2SOKnzw2pOurOG!', //'zr0vbR95lpTPZPKn', //, // , // , // e.g. 'my-db-password'
-    connectionLimit: 5,
+    connectionLimit: 1,
     connectTimeout: 10000, // 10 seconds
     acquireTimeout: 10000 // 10 seconds
 };
