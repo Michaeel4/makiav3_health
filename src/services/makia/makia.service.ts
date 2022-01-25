@@ -35,6 +35,9 @@ makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
 // Add Entry
 makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
     const entry = req.body as MakiaEntry;
+
+    console.log('new entry added', new Date());
+    console.dir(entry);
     try {
         const result = await (getPool().query(
             'INSERT INTO entries (timestamp, locationID, direction, ' +
