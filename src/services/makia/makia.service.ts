@@ -38,17 +38,19 @@ makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
 
     console.log('new entry added', new Date());
     console.dir(entry);
-    try {
-        const result = await (getPool().query(
-            'INSERT INTO entries (timestamp, locationID, direction, ' +
-            'category, stoppedForMs, avgVelocity, minVelocity, stoppedDistance, convoyIndex, convoyType)' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-            [entry.timestamp, entry.locationID, entry.direction, entry.category, entry.stoppedForMs,
-                entry.avgVelocity, entry.minVelocity, entry.stoppedDistance, entry.convoyIndex, entry.convoyType]));
-        res.json(result);
-    } catch (exception) {
-        res.json(exception);
-    }
+    getPool().query(
+        'INSERT INTO entries (timestamp, locationID, direction, ' +
+        'category, stoppedForMs, avgVelocity, minVelocity, stoppedDistance, convoyIndex, convoyType)' +
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [entry.timestamp, entry.locationID, entry.direction, entry.category, entry.stoppedForMs,
+            entry.avgVelocity, entry.minVelocity, entry.stoppedDistance, entry.convoyIndex, entry.convoyType])
+        .then(result => {
+            res.json(result);
+        })
+        .catch(error => {
+            res.json(error);
+        });
+
 });
 
 // Get Status
