@@ -71,5 +71,12 @@ export function getRockCollection(): Collection {
     return mongoClient.db('rock').collection('rock');
 }
 
+export function getLicencePlateCollection(): Collection {
+    if (!mongoClient) {
+        throw new Error('Mongo not connected!');
+    }
+    return mongoClient.db('makia').collection('license_plate');
+}
+
 
 export { mongoClient };

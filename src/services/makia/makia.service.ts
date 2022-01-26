@@ -9,6 +9,7 @@ import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
+import { getLicensePlate, insertLicensePlate } from './makia.controller';
 
 const makiaRoutes = express.Router();
 
@@ -53,6 +54,33 @@ makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
 
 });
 
+// Add LicensePlate
+makiaRoutes.post('/makia/entries/:id/license_plate', requireUser, async (req, res) => {
+    const entry = req.body as { license_plate: string };
+    const plate = entry.license_plate;
+    const entryId = req.params.id;
+    if (plate?.length && entryId?.length) {
+        await insertLicensePlate(entryId, plate);
+        res.status(200).end();
+    } else {
+        res.status(400).end();
+    }
+});
+// Get LicensePlate
+makiaRoutes.get('/makia/entries/:id/license_plate', requireUser, async (req, res) => {
+    const entryId = req.params.id;
+    if (entryId) {
+        const license_plate = await getLicensePlate(entryId);
+        res.json({
+            license_plate
+        });
+    } else {
+        res.status(400).end();
+    }
+
+});
+
+
 // Get Status
 makiaRoutes.post('/makia/status', requireUser, async (req, res) => {
     const filter: MakiaFilter = req.body;
@@ -70,7 +98,6 @@ makiaRoutes.post('/makia/status', requireUser, async (req, res) => {
 });
 
 // Get filtered entries
-
 makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
     const filters: MakiaFilter[] = req.body;
     const conditions: string[] = filters.map((filter) => {
@@ -113,11 +140,11 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
         }
     }
 
-
     const rows: MakiaEntry[] = await (getPool().query(query));
     res.json(rows);
 
 });
+
 
 function getname(f: any) {
     return f.md5 + '_' + f.mimetype.replace('/', '.');
