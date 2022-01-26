@@ -10,7 +10,6 @@ export interface MakiaEntry {
     convoyIndex: number;
     convoyType: MakiaVehicleType;
     images?: string;
-    license_plate?: string;
 }
 
 enum MakiaDirection {
