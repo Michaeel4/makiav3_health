@@ -1,4 +1,5 @@
 export interface MakiaEntry {
+    id: number;
     timestamp: string;
     locationID: number;
     direction: MakiaDirection;

@@ -60,8 +60,14 @@ makiaRoutes.post('/makia/entries/:id/license_plate', requireUser, async (req, re
     const plate = entry.license_plate;
     const entryId = req.params.id;
     if (plate?.length && entryId?.length) {
-        await insertLicensePlate(entryId, plate);
-        res.status(200).end();
+        try {
+            await insertLicensePlate(Number.parseInt(entryId), plate);
+            res.status(200).end();
+        } catch (e) {
+            console.error(e);
+            res.status(500).end();
+        }
+
     } else {
         res.status(400).end();
     }
@@ -70,10 +76,16 @@ makiaRoutes.post('/makia/entries/:id/license_plate', requireUser, async (req, re
 makiaRoutes.get('/makia/entries/:id/license_plate', requireUser, async (req, res) => {
     const entryId = req.params.id;
     if (entryId) {
-        const license_plate = await getLicensePlate(entryId);
-        res.json({
-            license_plate
-        });
+        try {
+
+            const license_plate = await getLicensePlate(Number.parseInt(entryId));
+            res.json({
+                license_plate
+            });
+        } catch (e) {
+            console.error(e);
+            res.status(500).end();
+        }
     } else {
         res.status(400).end();
     }

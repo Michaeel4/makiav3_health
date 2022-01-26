@@ -1,15 +1,15 @@
 import { getLicencePlateCollection } from '../db/mongodb.service';
 
 
-export async function insertLicensePlate(makiaId: string, license_plate: string) {
+export async function insertLicensePlate(makiaId: number, license_plate: string) {
     await getLicencePlateCollection().insertOne({
-        _id: makiaId,
+        id: makiaId,
         license_plate
     } as any);
 }
 
-export async function getLicensePlate(makiaId: string): Promise<string | undefined> {
+export async function getLicensePlate(makiaId: number): Promise<string | undefined> {
     return (await getLicencePlateCollection().findOne<{ license_plate: string }>({
-        _id: makiaId
+        id: makiaId
     }))?.license_plate;
 }
