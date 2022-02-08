@@ -9,7 +9,7 @@ import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
-import { getLicensePlate, insertLicensePlate } from './makia.controller';
+import { getLicensePlate, getLicensePlates, insertLicensePlate } from './makia.controller';
 
 const makiaRoutes = express.Router();
 
@@ -153,6 +153,14 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
     }
 
     const rows: MakiaEntry[] = await (getPool().query(query));
+
+    const licensePlates = await getLicensePlates(rows.map(row => row.id));
+
+    rows.forEach(row => {
+        row.license_plate = licensePlates?.find(plate => plate.id === row.id)?.license_plate;
+    });
+
+
     res.json(rows);
 
 });

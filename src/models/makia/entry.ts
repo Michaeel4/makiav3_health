@@ -11,6 +11,7 @@ export interface MakiaEntry {
     convoyIndex: number;
     convoyType: MakiaVehicleType;
     images?: string;
+    license_plate?: string;
 }
 
 enum MakiaDirection {
@@ -25,4 +26,9 @@ enum MakiaVehicleType {
     Bus = 'BUS',
     Tractor = 'TRACTOR',
     Train = 'TRAIN'
+}
+
+export interface LicensePlate {
+    id: number,
+    license_plate: string;
 }
