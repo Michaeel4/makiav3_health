@@ -172,6 +172,9 @@ function getname(f: any) {
 
 
 makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, res) => {
+    console.log('new media uploaded for entry: ', req.params.id, 'video:', !!((req.files as any).video), new Date());
+
+
     const rows: MakiaEntry[] = await (getPool().query(
         `SELECT * FROM entries WHERE id = ?;`,
         [req.params.id]
