@@ -165,7 +165,7 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
 
 });
 
-
+/*
 makiaRoutes.get('/makia/dump_plates', async (req, res) => {
     const rows: MakiaEntry[] = await (getPool().query(
         'SELECT * FROM entries;'
@@ -195,7 +195,7 @@ makiaRoutes.get('/makia/dump_plates', async (req, res) => {
 
 });
 
-
+*/
 function getname(f: any) {
     return f.md5 + '_' + f.mimetype.replace('/', '.');
 }
