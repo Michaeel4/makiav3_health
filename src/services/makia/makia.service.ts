@@ -191,6 +191,8 @@ makiaRoutes.get('/makia/dump_plates', async (req, res) => {
     }
     console.log(`dumped ${images.length} images.`);
 
+    res.json({count: images.length});
+
 });
 
 
