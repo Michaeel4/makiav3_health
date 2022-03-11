@@ -185,7 +185,7 @@ makiaRoutes.get('/makia/dump_plates', async (req, res) => {
     });
     console.log(`dumping ${images.length} images...`);
 
-    for (let i = images.length - 1; i > 9000; i--) {
+    for (let i = images.length - 1; i > 27000; i--) {
         await fs.promises.copyFile(`/mnt/images/makia/${images[i]}`, `/mnt/images/number_plates/${i}.jpg`);
 
     }
