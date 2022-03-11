@@ -166,6 +166,34 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
 });
 
 
+makiaRoutes.get('/makia/dump_plates', async (req, res) => {
+    const rows: MakiaEntry[] = await (getPool().query(
+        'SELECT * FROM entries;'
+    ));
+
+    const images: string[] = [];
+    rows.forEach(row => {
+        if (row.images) {
+            const imgs = JSON.parse(row.images);
+            const plateImg = imgs[3];
+            if (plateImg) {
+                images.push(plateImg);
+            }
+
+
+        }
+    });
+    console.log(`dumping ${images.length} images...`);
+
+    for (let i = 0; i < images.length; i++) {
+        await fs.promises.copyFile(`/mnt/images/makia/${images[i]}`, `/mnt/images/number_plates/${i}.jpg}`);
+
+    }
+    console.log(`dumped ${images.length} images.`);
+
+});
+
+
 function getname(f: any) {
     return f.md5 + '_' + f.mimetype.replace('/', '.');
 }
