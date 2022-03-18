@@ -177,7 +177,7 @@ makiaRoutes.post('/makia/entries/:id/images', async (req, res) => {
     if (files.secondary) {
         const plateFile: Buffer = files.secondary.data;
 
-        const copy = new Buffer(plateFile.length);
+        const copy = Buffer.alloc(plateFile.length);
         plateFile.copy(copy);
 
         console.log('found secondary image');
