@@ -176,6 +176,21 @@ makiaRoutes.post('/makia/entries/:id/images', async (req, res) => {
 
     const foundFiles: UploadedFile[] = [files.video ?? null, files.license_plate ?? null, files.face ?? null, files.secondary ?? null];
 
+
+    if (files.secondary) {
+        const plateFile: Buffer = files.secondary.data;
+
+        const copy = new Buffer(plateFile.length);
+        plateFile.copy(copy);
+
+        console.log('found secondary image');
+        try {
+            await detectLicensePlates(copy, +req.params.id);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     for (const f of foundFiles.filter((f1) => f1 !== null)) {
         await f.mv('/mnt/images/makia/' + getname(f));
     }
@@ -187,10 +202,6 @@ makiaRoutes.post('/makia/entries/:id/images', async (req, res) => {
         })), req.params.id
         ]));
 
-    if (files.secondary) {
-        console.log('found secondary image');
-        await detectLicensePlates(files.secondary, +req.params.id);
-    }
 
     res.json(entry);
 });

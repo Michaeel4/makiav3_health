@@ -1,6 +1,5 @@
 import { getLicencePlateCollection } from '../db/mongodb.service';
 import { LicensePlate } from '../../models/makia/entry';
-import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import FormData from 'form-data';
 import { IZipEntry } from 'adm-zip';
@@ -33,12 +32,12 @@ export async function getLicensePlates(makiaIds: number[]): Promise<LicensePlate
 }
 
 
-export async function detectLicensePlates(image: UploadedFile, makiaId: number) {
+export async function detectLicensePlates(image: Buffer, makiaId: number) {
 
     console.log('send plate to server..');
     // send to ML server
     const formData = new FormData();
-    formData.append('image', image.data, {filename: 'image.jpg'});
+    formData.append('image', image, {filename: 'image.jpg'});
 
     const response = await fetch(config.numberPlateUrl, {
         method: 'POST',
