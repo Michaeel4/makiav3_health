@@ -1,18 +1,27 @@
 import { getLicencePlateCollection } from '../db/mongodb.service';
 import { LicensePlate } from '../../models/makia/entry';
+import { UploadedFile } from 'express-fileupload';
+import { config } from '../../config';
+import FormData from 'form-data';
+import { IZipEntry } from 'adm-zip';
+import fs from 'fs';
+import { v4 as uuid } from 'uuid';
+
+const fetch = require('node-fetch');
+const AdmZip = require('adm-zip');
 
 
-export async function insertLicensePlate(makiaId: number, license_plate: string) {
+export async function insertLicensePlateImages(makiaId: number, license_plate_images: string[]) {
     await getLicencePlateCollection().insertOne({
         id: makiaId,
-        license_plate
+        license_plate_images
     } as any);
 }
 
-export async function getLicensePlate(makiaId: number): Promise<string | undefined> {
-    return (await getLicencePlateCollection().findOne<{ license_plate: string }>({
+export async function getLicensePlateImages(makiaId: number): Promise<string[] | undefined> {
+    return (await getLicencePlateCollection().findOne<{ license_plate_images: string[] }>({
         id: makiaId
-    }))?.license_plate;
+    }))?.license_plate_images;
 }
 
 export async function getLicensePlates(makiaIds: number[]): Promise<LicensePlate[] | undefined> {
@@ -22,3 +31,40 @@ export async function getLicensePlates(makiaIds: number[]): Promise<LicensePlate
         }
     })).toArray();
 }
+
+
+export async function detectLicensePlates(image: UploadedFile, makiaId: number) {
+
+    // send to ML server
+    const formData = new FormData();
+    formData.append('image', image.data, {filename: 'image.jpg'});
+
+    const response = await fetch(config.numberPlateUrl, {
+        method: 'POST',
+        body: formData
+    });
+
+    // unzip
+    const zipBuffer = await response.buffer();
+    const zip = new AdmZip(zipBuffer);
+    const entries = zip.getEntries();
+
+    const images = entries.map((zipEntry: IZipEntry) => {
+        return zipEntry.getData();
+    });
+
+
+    // write results to disk
+    const fileNames = [];
+    for (let i = 0; i < images.length; i++) {
+        const fileName = `/mnt/images/makia/${uuid()}_image.jpg`;
+        await fs.promises.writeFile(fileName, images[i]);
+        fileNames.push(fileName);
+    }
+
+
+    await insertLicensePlateImages(makiaId, fileNames);
+}
+
+
+

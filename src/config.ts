@@ -10,7 +10,7 @@ export const mysqlConfig: PoolConfig = {
     password: 'dnhD7skVghZjxWrU2SOKnzw2pOurOG!', //'zr0vbR95lpTPZPKn', //, // , // , // e.g. 'my-db-password'
     connectionLimit: 1,
     connectTimeout: 10000, // 10 seconds
-    acquireTimeout: 10000 // 10 seconds
+    acquireTimeout: 10000, // 10 seconds,
 };
 
 export interface HealthCheckServerConfig {
@@ -23,6 +23,7 @@ export interface HealthCheckServerConfig {
     bcryptRounds: number;
     gyroSmoothingFactor: number;
     timeoutInMs: number;
+    numberPlateUrl: string;
 }
 
 export interface HealthCheckClientConfig {
@@ -43,5 +44,6 @@ export const config: HealthCheckServerConfig = {
     jwtSecret: '66F6943FEC7755A2788F756839A54E',
     bcryptRounds: 12,
     gyroSmoothingFactor: 0.95,
-    timeoutInMs: 300000
+    timeoutInMs: 300000,
+    numberPlateUrl: 'http://172.25.138.89:5000/image'
 };

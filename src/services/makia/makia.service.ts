@@ -9,7 +9,7 @@ import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import fs from 'fs';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
-import { getLicensePlate, getLicensePlates, insertLicensePlate } from './makia.controller';
+import { detectLicensePlates, getLicensePlates } from './makia.controller';
 
 const makiaRoutes = express.Router();
 
@@ -53,45 +53,6 @@ makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
         });
 
 });
-
-// Add LicensePlate
-makiaRoutes.post('/makia/entries/:id/license_plate', requireUser, async (req, res) => {
-    const entry = req.body as { license_plate: string };
-    const plate = entry.license_plate;
-    const entryId = req.params.id;
-    if (plate?.length && entryId?.length) {
-        try {
-            await insertLicensePlate(Number.parseInt(entryId), plate);
-            res.status(200).end();
-        } catch (e) {
-            console.error(e);
-            res.status(500).end();
-        }
-
-    } else {
-        res.status(400).end();
-    }
-});
-// Get LicensePlate
-makiaRoutes.get('/makia/entries/:id/license_plate', requireUser, async (req, res) => {
-    const entryId = req.params.id;
-    if (entryId) {
-        try {
-
-            const license_plate = await getLicensePlate(Number.parseInt(entryId));
-            res.json({
-                license_plate
-            });
-        } catch (e) {
-            console.error(e);
-            res.status(500).end();
-        }
-    } else {
-        res.status(400).end();
-    }
-
-});
-
 
 // Get Status
 makiaRoutes.post('/makia/status', requireUser, async (req, res) => {
@@ -157,7 +118,7 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
     const licensePlates = await getLicensePlates(rows.map(row => row.id));
 
     rows.forEach(row => {
-        row.license_plate = licensePlates?.find(plate => plate.id === row.id)?.license_plate;
+        row.license_plate_images = licensePlates?.find(plate => plate.id === row.id)?.license_plate_images;
     });
 
 
@@ -199,9 +160,11 @@ function getname(f: any) {
     return f.md5 + '_' + f.mimetype.replace('/', '.');
 }
 
-
-makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, res) => {
+//requireDeviceToken
+makiaRoutes.post('/makia/entries/:id/images', async (req, res) => {
     console.log('new media uploaded for entry: ', req.params.id, 'video:', !!((req.files as any).video), new Date());
+
+    await detectLicensePlates((req.files as any).secondary, +(req.params.id as any));
 
 
     const rows: MakiaEntry[] = await (getPool().query(
@@ -215,7 +178,6 @@ makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, re
 
     for (const f of foundFiles.filter((f1) => f1 !== null)) {
         await f.mv('/mnt/images/makia/' + getname(f));
-
     }
 
 
@@ -224,6 +186,11 @@ makiaRoutes.post('/makia/entries/:id/images', requireDeviceToken, async (req, re
             return f3 ? getname(f3) : entry.images ? JSON.parse(entry.images)?.[i] ?? null : null;
         })), req.params.id
         ]));
+
+    if (files.secondary) {
+        console.log('found secondary image');
+        await detectLicensePlates(files.secondary, +req.params.id);
+    }
 
     res.json(entry);
 });
@@ -242,9 +209,7 @@ makiaRoutes.get('/makia/image/:hash', (req, res) => {
 
     } else {
         res.contentType(mime);
-
         res.sendFile(filepath);
-
     }
 
 });
