@@ -164,9 +164,6 @@ function getname(f: any) {
 makiaRoutes.post('/makia/entries/:id/images', async (req, res) => {
     console.log('new media uploaded for entry: ', req.params.id, 'video:', !!((req.files as any).video), new Date());
 
-    await detectLicensePlates((req.files as any).secondary, +(req.params.id as any));
-
-
     const rows: MakiaEntry[] = await (getPool().query(
         `SELECT * FROM entries WHERE id = ?;`,
         [req.params.id]
