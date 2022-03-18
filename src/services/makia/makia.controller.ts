@@ -35,6 +35,7 @@ export async function getLicensePlates(makiaIds: number[]): Promise<LicensePlate
 
 export async function detectLicensePlates(image: UploadedFile, makiaId: number) {
 
+    console.log('send plate to server..');
     // send to ML server
     const formData = new FormData();
     formData.append('image', image.data, {filename: 'image.jpg'});
@@ -52,6 +53,8 @@ export async function detectLicensePlates(image: UploadedFile, makiaId: number) 
     const images = entries.map((zipEntry: IZipEntry) => {
         return zipEntry.getData();
     });
+
+    console.log('got ' + images.length + 'plate entries');
 
 
     // write results to disk
