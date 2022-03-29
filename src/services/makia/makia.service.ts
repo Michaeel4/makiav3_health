@@ -129,7 +129,7 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
 
 makiaRoutes.get('/makia/dump_plates', async (req, res) => {
     const rows: MakiaEntry[] = await (getPool().query(
-        'SELECT * FROM entries WHERE id > 770038;'
+        'SELECT * FROM entries WHERE id > 780572;'
     ));
 
     const licensePlates = await getLicensePlates(rows.map(row => row.id));
