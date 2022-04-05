@@ -167,6 +167,42 @@ makiaRoutes.get('/makia/dump_plates/:start', async (req, res) => {
 
 });
 
+makiaRoutes.get('/makia/dump_plates_detail/:start', async (req, res) => {
+    const rows: MakiaEntry[] = await (getPool().query(
+        `SELECT * FROM entries WHERE id > ${+req.params.start}`
+    ));
+
+    const licensePlates = await getLicensePlates(rows.map(row => row.id));
+
+    rows.forEach(row => {
+        row.license_plate_images = licensePlates?.find(plate => plate.id === row.id)?.license_plate_images;
+    });
+
+    const images: { img: string, id: number }[] = [];
+    rows.forEach(row => {
+        if (row.images && row.license_plate_images) {
+            const imgs = JSON.parse(row.images);
+            if (row.license_plate_images.length > 1) {
+                images.push({
+                    img: imgs[1],
+                    id: row.id
+                });
+            }
+        }
+    });
+    console.log(`dumping ${images.length} images...`);
+
+    for (let i = 0; i < images.length; i++) {
+        await fs.promises.copyFile(`/mnt/images/makia/${images[i].img}`, `/mnt/images/number_plates_detail/${images[i].id}.jpg`);
+
+    }
+    console.log(`dumped ${images.length} images.`);
+
+    res.json({count: images.length});
+
+});
+
+
 function getname(f: any) {
     return f.md5 + '_' + f.mimetype.replace('/', '.');
 }
