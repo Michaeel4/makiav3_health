@@ -179,12 +179,12 @@ makiaRoutes.get('/makia/dump_plates_detail/:start', async (req, res) => {
     });
 
     const images: { img: string, id: number }[] = [];
+
     rows.forEach(row => {
-        if (row.images && row.license_plate_images) {
-            const imgs = JSON.parse(row.images);
-            if (row.license_plate_images.length > 1 && imgs[1]) {
+        if (row.license_plate_images) {
+            if (row.license_plate_images.length > 1 && row.license_plate_images[1]) {
                 images.push({
-                    img: imgs[1],
+                    img: row.license_plate_images[1],
                     id: row.id
                 });
             }
