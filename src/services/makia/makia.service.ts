@@ -127,9 +127,9 @@ makiaRoutes.post('/makia/entries/filter', requireUser, async (req, res) => {
 });
 
 
-makiaRoutes.get('/makia/dump_plates', async (req, res) => {
+makiaRoutes.get('/makia/dump_plates/:start', async (req, res) => {
     const rows: MakiaEntry[] = await (getPool().query(
-        'SELECT * FROM entries WHERE id > 779324;'
+        `SELECT * FROM entries WHERE id > ${+req.params.start}`
     ));
 
     const licensePlates = await getLicensePlates(rows.map(row => row.id));
