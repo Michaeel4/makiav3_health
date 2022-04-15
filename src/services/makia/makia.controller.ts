@@ -61,10 +61,12 @@ export async function detectLicensePlates(image: Buffer, makiaId: number) {
     for (let i = 0; i < images.length; i++) {
         const fileName = `${uuid()}_image.jpg`;
         await fs.promises.writeFile(`/mnt/images/makia/${fileName}`, images[i]);
-        if (images.length <= 1) {
-            await fs.promises.copyFile(`/mnt/images/makia/${fileName}`, `/mnt/images/number_plates/${makiaId}.jpg`);
-        }
+
         fileNames.push(fileName);
+    }
+
+    if (images.length <= 1) {
+        await fs.promises.writeFile(`/mnt/images/number_plates/${makiaId}.jpg`, image);
     }
 
 

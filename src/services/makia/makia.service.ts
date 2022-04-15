@@ -142,7 +142,7 @@ makiaRoutes.get('/makia/dump_plates/:start', async (req, res) => {
     rows.forEach(row => {
         if (row.images && row.license_plate_images) {
             const imgs = JSON.parse(row.images);
-            if (row.license_plate_images.length === 1) {
+            if (row.license_plate_images.length < 2) {
                 const plateImg = imgs[3];
                 if (plateImg) {
                     images.push({
@@ -159,41 +159,6 @@ makiaRoutes.get('/makia/dump_plates/:start', async (req, res) => {
 
     for (let i = 0; i < images.length; i++) {
         await fs.promises.copyFile(`/mnt/images/makia/${images[i].img}`, `/mnt/images/number_plates/${images[i].id}.jpg`);
-
-    }
-    console.log(`dumped ${images.length} images.`);
-
-    res.json({count: images.length});
-
-});
-
-makiaRoutes.get('/makia/dump_plates_detail/:start', async (req, res) => {
-    const rows: MakiaEntry[] = await (getPool().query(
-        `SELECT * FROM entries WHERE id > ${+req.params.start}`
-    ));
-
-    const licensePlates = await getLicensePlates(rows.map(row => row.id));
-
-    rows.forEach(row => {
-        row.license_plate_images = licensePlates?.find(plate => plate.id === row.id)?.license_plate_images;
-    });
-
-    const images: { img: string, id: number }[] = [];
-
-    rows.forEach(row => {
-        if (row.license_plate_images) {
-            if (row.license_plate_images.length > 1 && row.license_plate_images[1]) {
-                images.push({
-                    img: row.license_plate_images[1],
-                    id: row.id
-                });
-            }
-        }
-    });
-    console.log(`dumping ${images.length} images...`);
-
-    for (let i = 0; i < images.length; i++) {
-        await fs.promises.copyFile(`/mnt/images/makia/${images[i].img}`, `/mnt/images/number_plates_detail/${images[i].id}.jpg`);
 
     }
     console.log(`dumped ${images.length} images.`);
