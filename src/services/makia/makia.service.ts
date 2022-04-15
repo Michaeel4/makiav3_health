@@ -142,17 +142,12 @@ makiaRoutes.get('/makia/dump_plates/:start', async (req, res) => {
     rows.forEach(row => {
         if (row.images && row.license_plate_images) {
             const imgs = JSON.parse(row.images);
-            if (row.license_plate_images.length < 2) {
-                const plateImg = imgs[3];
-                if (plateImg) {
-                    images.push({
-                        img: plateImg,
-                        id: row.id
-                    });
-                }
+            if (row.license_plate_images.length < 2 && imgs[1]) {
+                images.push({
+                    img: imgs[1],
+                    id: row.id
+                });
             }
-
-
         }
     });
     console.log(`dumping ${images.length} images...`);
