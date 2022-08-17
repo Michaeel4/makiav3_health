@@ -1,4 +1,3 @@
-import {MeatType} from './meat.model';
 
 export interface MeatFilterModel {
     locationId?: string;
@@ -6,7 +5,6 @@ export interface MeatFilterModel {
         start: Date;
         end: Date;
     };
-    types?: MeatType[];
     labelled?: boolean;
     deviceId?: string;
 }

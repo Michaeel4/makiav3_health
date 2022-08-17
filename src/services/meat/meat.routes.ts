@@ -6,9 +6,7 @@ import {
     getNeighborMeatEntry,
     handleMeatEntry,
     labelMeatEntry,
-    labelTail,
     unlabelMeatEntry,
-    unlabelTail,
     updateMeatEntryImages,
 } from './meat.controller';
 import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
@@ -16,11 +14,10 @@ import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
 import fs from 'fs';
-import { MeatEntryModel } from '../../models/meat/meat.model';
+import { MeatClassification, MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
-import { DiseaseModel } from '../../models/meat/disease.model';
-import { TailModel } from '../../models/meat/tail.model';
+
 
 const meatRoutes = express.Router();
 
@@ -43,26 +40,11 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
 });
 
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
-    const diseases: DiseaseModel[] = req.body;
+    const classification: MeatClassification = req.body.classification;
     const id = req.params.id;
-    if (diseases && id) {
+    if (classification && id) {
         try {
-            await labelMeatEntry(id, diseases);
-            res.status(200).end();
-        } catch {
-            res.status(500).end();
-        }
-    } else {
-        res.status(400).end();
-    }
-});
-
-meatRoutes.post('/meat/:id/label/tail', requireUser, async (req, res) => {
-    const tail: TailModel = req.body;
-    const id = req.params.id;
-    if (tail && id) {
-        try {
-            await labelTail(id, tail);
+            await labelMeatEntry(id, classification);
             res.status(200).end();
         } catch {
             res.status(500).end();
@@ -87,20 +69,6 @@ meatRoutes.delete('/meat/:id/label', requireUser, async (req, res) => {
 
 });
 
-meatRoutes.delete('/meat/:id/label/tail', requireUser, async (req, res) => {
-    const id = req.params.id;
-    if (id) {
-        try {
-            await unlabelTail(id);
-            res.status(200).end();
-        } catch {
-            res.status(500).end();
-        }
-    } else {
-        res.status(400).end();
-    }
-
-});
 
 meatRoutes.delete('/meat/:id', requireUser, async (req, res) => {
     const entry: MeatEntryModel | null = await getMeatEntryById(req.params.id);

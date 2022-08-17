@@ -1,11 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import { MeatEntryModel } from '../../models/meat/meat.model';
+import { MeatClassification, MeatEntryModel } from '../../models/meat/meat.model';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../db/mongodb.service';
 import { DeviceModel } from '../../models/health/device.model';
-import { DiseaseModel } from '../../models/meat/disease.model';
 import { buildFilter } from './filter.controller';
-import { TailModel } from '../../models/meat/tail.model';
 
 const Moment = require('moment');
 const MomentRange = require('moment-range');
@@ -59,29 +57,18 @@ export async function updateMeatEntryImages(entry: MeatEntryModel, device: Devic
 
 }
 
-export async function labelMeatEntry(_id: string, diseases: DiseaseModel[]): Promise<void> {
+export async function labelMeatEntry(_id: string, classification: MeatClassification): Promise<void> {
     await getMeatCollection().updateOne({
             _id
         },
         {
             $set: {
-                diseasesManually: diseases
+                classificationManually: classification
             }
         }
     );
 }
 
-export async function labelTail(_id: string, tail: TailModel): Promise<void> {
-    await getMeatCollection().updateOne({
-            _id
-        },
-        {
-            $set: {
-                tailManually: tail
-            }
-        }
-    );
-}
 
 export async function unlabelMeatEntry(_id: string): Promise<void> {
     await getMeatCollection().updateOne({
@@ -89,19 +76,7 @@ export async function unlabelMeatEntry(_id: string): Promise<void> {
         },
         {
             $unset: {
-                diseasesManually: ''
-            }
-        }
-    );
-}
-
-export async function unlabelTail(_id: string): Promise<void> {
-    await getMeatCollection().updateOne({
-            _id
-        },
-        {
-            $unset: {
-                tailManually: ''
+                classificationManually: ''
             }
         }
     );

@@ -1,28 +1,25 @@
-import { DiseaseModel } from './disease.model';
-import { TailModel } from './tail.model';
 
 export interface MeatEntryModel {
     _id?: string;
     timeEnter: Date;
     timeLeave: Date;
-    type: MeatType;
     locationId: string;
-    slaughterId: number;
-    diseasesManually?: DiseaseModel[];
-    diseasesAutomatic?: DiseaseModel[];
-    tailManually?: TailModel;
-
+    slaughterId?: number;
+    classificationManually?: MeatClassification;
     cameras?: CameraModel[];
 }
 
-export enum CameraType {
-    PigCounter = 'PIG_COUNTER',
-    GeschlingeDetector = 'GESCHLINGE_DETECTOR'
+
+export enum MeatClassification {
+    Gut,
+    OK,
+    Fragwuerdig,
+    NichtOK,
 }
+
+export type MeatNeighborDirection = 'NEXT' | 'PREVIOUS' | 'NONE';
 
 export interface CameraModel {
     deviceId: string;
     images: string[];
 }
-
-export type MeatType = 'PORK';

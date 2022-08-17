@@ -13,7 +13,6 @@ import { inventoryRoutes } from './services/health/inventory/inventory.routes';
 import { projectRoutes } from './services/health/project/project.routes';
 import { reviveDates } from './utils';
 import { meatRoutes } from './services/meat/meat.routes';
-import { meatStatisticsRoutes } from './services/meat/meat-statistics/meat-statistics.routes';
 import { alertRoutes } from './services/health/alert/alert.routes';
 import { startHealthChecker } from './services/health/alert/alert.controller';
 import { Mutex } from 'async-mutex';
@@ -61,7 +60,6 @@ export class Server {
         this.app.use(meatRoutes);
         this.app.use(rockRoutes);
         this.app.use(makiaRoutes);
-        this.app.use(meatStatisticsRoutes);
         this.app.use(alertRoutes);
 
         this.app.listen(3003);

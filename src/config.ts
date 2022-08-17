@@ -1,4 +1,3 @@
-import { CameraType } from './models/meat/meat.model';
 import { PoolConfig } from 'promise-mysql';
 
 
@@ -31,7 +30,6 @@ export interface HealthCheckClientConfig {
     pythonTimeOutinMs: number;
     uploadDir: string;
     hasGyro: boolean;
-    cameraType?: CameraType;
 }
 
 

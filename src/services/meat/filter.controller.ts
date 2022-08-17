@@ -14,11 +14,9 @@ export function buildFilter(filterModel: MeatFilterModel): Filter<MeatEntryModel
     if (filterModel.dateRange?.start || filterModel.dateRange?.end) {
         query = buildRangeFilter(query, 'timeEnter', filterModel.dateRange.start, filterModel.dateRange.end);
     }
-    if (filterModel.types) {
-        query = buildMultipleFilter(query, 'type', filterModel.types);
-    }
+
     if (filterModel.labelled !== undefined) {
-        query = buildExistFilter(query, 'diseasesManually', filterModel.labelled);
+        query = buildExistFilter(query, 'classificationManually', filterModel.labelled);
     }
 
     return query;
