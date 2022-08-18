@@ -1,15 +1,7 @@
 import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
-import { UserModel, UserPermissions, UserView } from '../../models/health/user.model';
-import {
-    getUserById,
-    getUsers,
-    loginUser,
-    registerUser,
-    updateUserPermissions,
-    updateUserView
-} from './user.controller';
-import { streamSecret } from '../../server';
+import { UserModel, UserPermissions } from '../../models/health/user.model';
+import { getUserById, getUsers, loginUser, registerUser, updateUserPermissions } from './user.controller';
 
 const userRoutes = express.Router();
 userRoutes.post('/register', requireAdmin, async (req, res, next) => {
@@ -55,7 +47,6 @@ userRoutes.get('/user', requireAdmin, (async (req, res, next) => {
 }));
 userRoutes.get('/user/own', requireUser, (async (req, res, next) => {
     delete (req.user as UserModel).password;
-    (req.user as any).streamSecret = streamSecret;
     res.json(req.user);
 }));
 
@@ -77,24 +68,5 @@ userRoutes.post('/user/:id/permissions', requireAdmin, (async (req, res, next) =
         res.sendStatus(500);
     }
 }));
-
-userRoutes.post('/user/:id/views', requireAdmin, (async (req, res, next) => {
-    try {
-        const user = await getUserById(req.params.id);
-        const view: UserView = req.body?.view;
-        if (user) {
-            await updateUserView(user, view);
-            res.status(200).end();
-        } else {
-            res.sendStatus(400);
-        }
-
-
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(500);
-    }
-}));
-
 
 export { userRoutes };

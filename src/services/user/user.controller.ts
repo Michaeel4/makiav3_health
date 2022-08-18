@@ -1,4 +1,4 @@
-import { UserCredentials, UserModel, UserPermissions, UserView } from '../../models/health/user.model';
+import { UserCredentials, UserModel, UserPermissions } from '../../models/health/user.model';
 import { getUserCollection } from '../db/mongodb.service';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
@@ -62,14 +62,6 @@ export async function updateUserPermissions(user: UserModel, permissions: UserPe
     await getUserCollection().updateOne({_id: user._id}, {
         $set: {
             permissions
-        }
-    });
-}
-
-export async function updateUserView(user: UserModel, userView: UserView): Promise<void> {
-    await getUserCollection().updateOne({_id: user._id}, {
-        $set: {
-            userView
         }
     });
 }

@@ -20,7 +20,6 @@ import { rockRoutes } from './services/rock/rock.routes';
 import { initMySQL } from './services/db/mysql.service';
 import { makiaRoutes } from './services/makia/makia.service';
 
-const NodeMediaServer = require('node-media-server');
 export const imageMutex = new Mutex();
 
 
@@ -69,49 +68,5 @@ export class Server {
         await startHealthChecker();
         console.log('Healthchecker started!');
     }
-
-}
-
-export const streamSecret = 'NkSWTgnYsAIm6gi3BaUJFhrND8iSTE';
-
-export class MediaServer {
-
-    config = {
-        rtmp: {
-            port: 1935,
-            chunk_size: 60000,
-            gop_cache: true,
-            ping: 30,
-            ping_timeout: 60
-        },
-        http: {
-            port: 8000,
-            allow_origin: '*'
-        },
-        https: {
-            port: 8443,
-            key: '/etc/letsencrypt/privkey.pem',
-            cert: '/etc/letsencrypt/fullchain.pem'
-        },
-        auth: {
-            api: true,
-            api_user: 'meat',
-            api_pass: 'pwd4mediaserver',
-            play: true,
-            secret: streamSecret
-        },
-    };
-
-    nms: any;
-
-    constructor() {
-        this.nms = new NodeMediaServer(this.config);
-    }
-
-    start() {
-        this.nms.run();
-        console.log('media server started!');
-    }
-
 
 }
