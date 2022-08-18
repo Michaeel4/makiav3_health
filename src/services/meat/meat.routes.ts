@@ -80,12 +80,9 @@ meatRoutes.delete('/meat/:id', requireUser, async (req, res) => {
     }
 });
 
-meatRoutes.post('/meat', requireDeviceToken, async (req, res) => {
+meatRoutes.post('/meat', requireUser, async (req, res) => {
     const meat: MeatEntryModel = req.body;
-    // @ts-ignore
-    const device = req.device;
-
-    if (meat && device) {
+    if (meat) {
         try {
             const id = await handleMeatEntry(meat);
             if (id) {
