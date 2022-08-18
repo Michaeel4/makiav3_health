@@ -42,7 +42,7 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {
     const classification: MeatClassification = req.body.classification;
     const id = req.params.id;
-    if (classification && id) {
+    if (classification >= 0 && id) {
         try {
             await labelMeatEntry(id, classification);
             res.status(200).end();
