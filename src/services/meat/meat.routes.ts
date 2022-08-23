@@ -1,5 +1,6 @@
 import express = require('express');
 import {
+    deleteAllMeatEntries,
     deleteMeatEntry,
     getMeatEntries,
     getMeatEntryById,
@@ -9,7 +10,7 @@ import {
     unlabelMeatEntry,
     updateMeatEntryImages,
 } from './meat.controller';
-import { requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
+import { requireAdmin, requireDeviceToken, requireUser } from '../../middleware/auth.middleware';
 import { UploadedFile } from 'express-fileupload';
 import { config } from '../../config';
 import path from 'path';
@@ -37,6 +38,14 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
         res.status(500).end();
     }
 
+});
+
+meatRoutes.delete('/meat', requireAdmin, async (req, res) => {
+    try {
+        await deleteAllMeatEntries();
+    } catch {
+        res.status(500).end();
+    }
 });
 
 meatRoutes.post('/meat/:id/label', requireUser, async (req, res) => {

@@ -48,6 +48,13 @@ export async function deleteMeatEntry(entry: MeatEntryModel): Promise<void> {
     });
 }
 
+export async function deleteAllMeatEntries(): Promise<void> {
+    const entries = await getMeatEntries();
+    await Promise.all(entries.map(async entry => {
+        await deleteMeatEntry(entry);
+    }));
+}
+
 export async function updateMeatEntryImages(entry: MeatEntryModel, device: DeviceModel, images: string[]): Promise<void> {
     entry.cameras?.push({
         deviceId: device._id!,
