@@ -18,6 +18,7 @@ import fs from 'fs';
 import { MeatClassification, MeatEntryModel } from '../../models/meat/meat.model';
 import { getName } from '../../utils';
 import { MeatFilterModel } from '../../models/meat/meat-filter.model';
+import { deleteMutex } from '../../server';
 
 
 const meatRoutes = express.Router();
@@ -42,7 +43,10 @@ meatRoutes.get('/meat/:id', requireUser, async (req, res) => {
 
 meatRoutes.delete('/meat', requireAdmin, async (req, res) => {
     try {
-        await deleteAllMeatEntries();
+        await deleteMutex.runExclusive(async () => {
+            await deleteAllMeatEntries();
+            res.end();
+        });
     } catch {
         res.status(500).end();
     }

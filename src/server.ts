@@ -21,6 +21,7 @@ import { initMySQL } from './services/db/mysql.service';
 import { makiaRoutes } from './services/makia/makia.service';
 
 export const imageMutex = new Mutex();
+export const deleteMutex = new Mutex();
 
 
 export class Server {
