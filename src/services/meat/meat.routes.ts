@@ -109,8 +109,10 @@ meatRoutes.post('/meat/:id/images', requireDeviceToken, async (req, res) => {
 
     if (device && entry?._id && files) {
         let foundFiles: UploadedFile[] = [];
-        for (let i = 0; i < 10; i++) {
+        let i = 0;
+        while (files[i]) {
             foundFiles[i] = files[i] as UploadedFile;
+            i++;
         }
 
         foundFiles = foundFiles.filter((f1) => !!f1);
