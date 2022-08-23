@@ -4,24 +4,18 @@ import { MeatFilterModel } from '../../models/meat/meat-filter.model';
 import { getMeatCollection } from '../db/mongodb.service';
 import { DeviceModel } from '../../models/health/device.model';
 import { buildFilter } from './filter.controller';
+import path from 'path';
+import { config } from '../../config';
+import fs from 'fs';
 
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 
+
 const moment = MomentRange.extendMoment(Moment);
 
 export async function handleMeatEntry(entry: MeatEntryModel): Promise<string> {
-    const existingEntries = await getMeatEntriesAtTimestamp(entry.timeEnter, entry.timeLeave);
-    if (existingEntries.length > 0) {
-        const existing = existingEntries[0]; // take first found
-        if (entry.slaughterId) {
-            existing.slaughterId = entry.slaughterId;
-            await updateMeatEntry(existing);
-        }
-        return existing._id!;
-    } else {
-        return await createMeatEntry(entry);
-    }
+    return await createMeatEntry(entry);
 }
 
 
@@ -42,6 +36,13 @@ async function updateMeatEntry(entry: MeatEntryModel): Promise<void> {
 }
 
 export async function deleteMeatEntry(entry: MeatEntryModel): Promise<void> {
+    await Promise.all(entry.cameras!.map(async camera => {
+        await Promise.all(camera.images.map(async image => {
+            const filepath = path.resolve(`${config.uploadDirs.meatImages}/${image}`);
+            await fs.promises.unlink(filepath);
+        }));
+    }));
+
     await getMeatCollection().deleteOne({
         _id: entry._id
     });
@@ -88,20 +89,6 @@ export async function getMeatEntries(filter?: MeatFilterModel): Promise<MeatEntr
 
 export async function getMeatEntryById(id: string): Promise<MeatEntryModel | null> {
     return await getMeatCollection().findOne<MeatEntryModel>({_id: id});
-}
-
-export async function getMeatEntriesAtTimestamp(timeEnter: Date, timeLeave: Date): Promise<MeatEntryModel[]> {
-    const entries = await getMeatEntries();
-    const range = moment.range(moment(timeEnter), moment(timeLeave));
-
-    const matched = entries.filter(existing => {
-        const existingRange = moment.range(moment(existing.timeEnter), moment(existing.timeLeave));
-        return existingRange.overlaps(range);
-    });
-
-    console.dir(matched);
-
-    return matched;
 }
 
 
