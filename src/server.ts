@@ -43,7 +43,7 @@ export class Server {
         this.app.use(cors());
         this.app.use(fileUpload({
             limits: {
-                fileSize: 1024 * 1024 * 1024
+                fileSize: 1024 * 1024 * 1024 * 100
             }
         }));
 
