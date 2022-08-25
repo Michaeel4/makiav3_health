@@ -53,8 +53,13 @@ clientRoutes.post('/device/:id/video', async (req, res) => {
             if (!fs.existsSync(absFolder)) {
                 await fs.promises.mkdir(absFolder, {recursive: true});
             }
-            await fs.promises.writeFile(path.join(absFolder, fileName), video.data);
+
             console.log('Write file ...', fileName);
+
+            await video.mv(path.join(absFolder, fileName));
+
+
+            console.log('Written file ...', fileName);
             res.status(200).end();
         } catch (e) {
             console.error(e);
