@@ -41,14 +41,14 @@ clientRoutes.post('/device/:id/image', async (req, res) => {
 clientRoutes.post('/device/:id/video', async (req, res) => {
     const video = req.files?.video;
     const device: DeviceModel | null = await getDeviceById(req.params.id);
+    const folder = req.header('Path');
 
-    if (video && !Array.isArray(video) && device?._id) {
+    if (video && !Array.isArray(video) && device?._id && folder) {
         try {
             await setVideoUploading(device, true);
 
             const fileName = video.name;
             const camFolder = device._id;
-            const folder = req.body.path;
             const absFolder = path.join(config.uploadDirs.meatVideos, camFolder, folder);
             if (!fs.existsSync(absFolder)) {
                 await fs.promises.mkdir(absFolder, {recursive: true});
