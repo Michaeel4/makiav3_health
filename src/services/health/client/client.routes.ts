@@ -5,7 +5,6 @@ import { imagesForDevice, updateDevicePing } from './client.controller';
 import { getDeviceById } from '../device/device.controller';
 
 import { imageMutex } from '../../../server';
-import { UploadedFile } from 'express-fileupload';
 
 const clientRoutes = express.Router();
 
@@ -26,9 +25,7 @@ clientRoutes.post('/ping', async (req, res) => {
 clientRoutes.post('/device/:id/image', async (req, res) => {
     const image = req.files?.image;
     const device: DeviceModel | null = await getDeviceById(req.params.id);
-    console.log('got image from', device?.name, 'with', (image as UploadedFile)?.size, 'bytes', 'at', new Date());
     await imageMutex.runExclusive(() => {
-        console.log('image lock running');
         if (image && !Array.isArray(image) && device?._id) {
             imagesForDevice[device._id] = image.data;
             res.status(200).end();
