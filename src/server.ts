@@ -42,11 +42,9 @@ export class Server {
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(cors());
         this.app.use(fileUpload({
-            useTempFiles: true,
-            tempFileDir: '/tmp/',
             uploadTimeout: 0,
             limits: {
-                fileSize: 1024 * 1024 * 1024 * 100
+                fileSize: 1024 * 1024 * 1024
             }
         }));
 
