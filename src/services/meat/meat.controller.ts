@@ -36,12 +36,17 @@ async function updateMeatEntry(entry: MeatEntryModel): Promise<void> {
 }
 
 export async function deleteMeatEntry(entry: MeatEntryModel): Promise<void> {
-    await Promise.all(entry.cameras!.map(async camera => {
-        await Promise.all(camera.images.map(async image => {
+    for (const camera of entry.cameras ?? []) {
+        for (const image of camera.images ?? []) {
             const filepath = path.resolve(`${config.uploadDirs.meatImages}/${image}`);
-            await fs.promises.unlink(filepath);
-        }));
-    }));
+            try {
+                await fs.promises.unlink(filepath);
+            } catch (e) {
+                console.error('delete error', e);
+            }
+        }
+    }
+
 
     await getMeatCollection().deleteOne({
         _id: entry._id
