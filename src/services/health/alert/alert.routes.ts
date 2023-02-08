@@ -20,6 +20,11 @@ alertRoutes.get('/alert/email', requireAdmin, async (req, res) => {
     res.json(await getEmailReceivers());
 });
 
+alertRoutes.get('/alert/test_ping', async (req, res) => {
+    res.json({ message: 'pong' });
+});
+
+
 alertRoutes.get('/alert', requireAdmin, async (req, res) => {
     res.json(await getAlerts());
 });

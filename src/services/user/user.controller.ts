@@ -20,6 +20,7 @@ export async function getUserById(id?: string): Promise<UserModel | null> {
 }
 
 export async function getUserByUsername(username: string): Promise<UserModel | null> {
+    console.log('Getting user by username', username);
     return await getUserCollection().findOne<UserModel>({
         username
     });
@@ -32,7 +33,7 @@ export async function registerUser(user: UserModel): Promise<string | null> {
         password: await bcrypt.hash(user.password!, config.bcryptRounds),
         username: user.username,
         name: user.name,
-        admin: false,
+        admin: true,
         permissions: {
             allowedLocations: [],
             allowedProjects: [],
@@ -50,10 +51,16 @@ export async function registerUser(user: UserModel): Promise<string | null> {
 }
 
 export async function loginUser(credentials: UserCredentials): Promise<string | null> {
+    console.log('Logging in user', credentials.username)
     const existingUser = await getUserByUsername(credentials.username);
     if (!existingUser || !existingUser.password) {
+        console.log('User not found');
         return null;
     }
+
+    // convert credentials.password to a string
+
+    
     const result = await bcrypt.compare(credentials.password!, existingUser.password);
     return result ? jwt.sign({username: existingUser.username}, config.jwtSecret) : null;
 }

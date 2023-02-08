@@ -11,6 +11,7 @@ export async function initMySQL(): Promise<void> {
 
 export function getPool(): Pool {
     if (pool) {
+        console.log('MYSQL connected!');
         return pool;
     } else {
         throw 'MYSQL not connected!';

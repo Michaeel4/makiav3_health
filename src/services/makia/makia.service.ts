@@ -20,12 +20,11 @@ makiaRoutes.get('/makia/locations', requireUser, async (req, res) => {
         'SELECT * FROM locations;'
     ));
     res.json(rows);
-
 });
 
 
 // Get Entries
-makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
+makiaRoutes.get('/makia/entries', async (req, res) => {
     const rows: MakiaEntry[] = await (getPool().query(
         'SELECT * FROM entries LIMIT 10000;'
     ));
@@ -34,11 +33,13 @@ makiaRoutes.get('/makia/entries', requireUser, async (req, res) => {
 
 
 // Add Entry
-makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
+makiaRoutes.post('/makia/entries',  async (req, res) => {
     const entry = req.body as MakiaEntry;
 
-    console.log('new entry added', new Date());
-    console.dir(entry);
+    // console.log('new entry added', new Date());
+    // console.dir(entry.avgVelocity);
+
+    // console.log(entry.timestamp, entry.locationID, entry.direction, entry.category, entry.stoppedForMs);
     getPool().query(
         'INSERT INTO entries (timestamp, locationID, direction, ' +
         'category, stoppedForMs, avgVelocity, minVelocity, stoppedDistance, convoyIndex, convoyType)' +
@@ -46,9 +47,12 @@ makiaRoutes.post('/makia/entries', requireDeviceToken, async (req, res) => {
         [entry.timestamp, entry.locationID, entry.direction, entry.category, entry.stoppedForMs,
             entry.avgVelocity, entry.minVelocity, entry.stoppedDistance, entry.convoyIndex, entry.convoyType])
         .then(result => {
+            console.log("inserted data");
             res.json(result);
         })
         .catch(error => {
+            console.log("inserted not data");
+            console.log(error);
             res.json(error);
         });
 

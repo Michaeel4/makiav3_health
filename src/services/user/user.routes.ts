@@ -2,9 +2,9 @@ import express from 'express';
 import { requireAdmin, requireUser } from '../../middleware/auth.middleware';
 import { UserModel, UserPermissions } from '../../models/health/user.model';
 import { getUserById, getUsers, loginUser, registerUser, updateUserPermissions } from './user.controller';
-
+7
 const userRoutes = express.Router();
-userRoutes.post('/register', requireAdmin, async (req, res, next) => {
+userRoutes.post('/register', async (req, res, next) => {
     try {
         const token = await registerUser(req.body);
         if (token) {
@@ -30,11 +30,11 @@ userRoutes.post('/login', (async (req, res, next) => {
         }
     } catch (err) {
         console.error(err);
-        res.sendStatus(500);
+        res.sendStatus(404);
     }
 }));
 
-userRoutes.get('/user', requireAdmin, (async (req, res, next) => {
+userRoutes.get('/user', (async (req, res, next) => {
     try {
         const users = await getUsers();
         res.json(users);
